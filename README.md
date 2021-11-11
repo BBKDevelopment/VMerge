@@ -31,7 +31,20 @@
 
 &nbsp;
 
-## <p align="center">Versions</p> 
+## <p align="center">Versions</p>
+
+&nbsp;
+
+<p align=right>Oct 23, 2021</p>
+<p align=left>1.0.2</p> 
+
+Release notes:
+
+- Added new custom animations.
+- Improved the UI design.
+- Fixed some issues.
+
+&nbsp;
 
 &nbsp;
 
