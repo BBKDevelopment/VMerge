@@ -35,6 +35,20 @@
 
 &nbsp;
 
+<p align=right>Nov 19, 2021</p>
+<p align=left>1.0.3</p> 
+
+Release notes:
+
+- Changed application's theme.
+- Changed application's logo.
+- Updated the packages.
+- Fixed some minor bugs.
+
+&nbsp;
+
+&nbsp;
+
 <p align=right>Oct 23, 2021</p>
 <p align=left>1.0.2</p> 
 
