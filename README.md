@@ -35,6 +35,21 @@
 
 &nbsp;
 
+<p align=right>Jan 24, 2022</p>
+<p align=left>1.1.0</p> 
+
+Release notes:
+
+- Added animations.
+- Changed application's logo.
+- Updated the packages.
+- Made some changes to the user interface.
+- Fixed some minor bugs.
+
+&nbsp;
+
+&nbsp;
+
 <p align=right>Nov 19, 2021</p>
 <p align=left>1.0.3</p> 
 
