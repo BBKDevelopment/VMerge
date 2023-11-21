@@ -20,7 +20,7 @@ dependencies:
   image_gallery_saver: ^2.0.3
   intl: ^0.18.0
   launch_review: ^3.0.1
-  package_info_plus: ^4.2.0
+  package_info_plus: ^5.0.1
   path: ^1.8.3
   path_provider: ^2.1.1
   url_launcher: ^6.2.1
