@@ -8,7 +8,13 @@ import 'dart:developer';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:get_it/get_it.dart';
+import 'package:launch_review_service/launch_review_service.dart';
+import 'package:url_launcher_service/url_launcher_service.dart';
+import 'package:vmerge/utilities/utilities.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+final getIt = GetIt.instance;
 
 class AppBlocObserver extends BlocObserver {
   const AppBlocObserver();
@@ -36,8 +42,24 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
-  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
-  await PhotoManager.clearFileCache();
+
+  await Future.wait(
+    [
+      SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
+      PhotoManager.clearFileCache(),
+      setup(),
+    ],
+  ).onError((error, stackTrace) => [log('$error', stackTrace: stackTrace)]);
 
   runApp(await builder());
+}
+
+Future<void> setup() async {
+  getIt
+    ..registerLazySingleton<LaunchReviewService>(
+      () => const LaunchReviewService(androidAppId: kAndroidAppId),
+    )
+    ..registerLazySingleton<UrlLauncherService>(
+      () => const UrlLauncherService(),
+    );
 }

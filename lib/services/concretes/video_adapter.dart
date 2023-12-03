@@ -2,61 +2,80 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:vmerge/controllers/controllers.dart';
-import 'package:vmerge/models/models.dart';
-import 'package:vmerge/services/abstracts/video_service.dart';
-import 'package:vmerge/utilities/utilities.dart';
+import 'package:vmerge/src/features/edit/edit.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-class VideoAdapter extends VideoService {
-  VideoAdapter() {
-    _videoList = <Video>[];
-    _editPageController = Get.find();
-  }
-  late final List<Video> _videoList;
-  late final EditPageController _editPageController;
+sealed class WechatAssetsPickerServiceException implements Exception {
+  const WechatAssetsPickerServiceException(this.message, this.stackTrace);
 
-  @override
-  Future<List<Video>> getAll(BuildContext context) async {
-    final pickerConfig = AssetPickerConfig(
-      maxAssets: 2,
-      requestType: RequestType.video,
-      pickerTheme: appTheme,
-      textDelegate: const EnglishAssetPickerTextDelegate(),
-    );
+  final String message;
+  final String stackTrace;
+}
 
-    final assets = await AssetPicker.pickAssets(
-      context,
-      pickerConfig: pickerConfig,
-    );
+final class GetVideoMetadataException
+    extends WechatAssetsPickerServiceException {
+  const GetVideoMetadataException(super.message, super.stackTrace);
+}
 
-    //clear old list
-    _videoList.clear();
+final class WechatAssetsPickerService {
+  const WechatAssetsPickerService();
 
-    for (var i = 0; i < (assets?.length ?? 0); i++) {
-      if (assets == null) break;
-      _videoList.add(
-        Video(
-          title: assets[i].title,
-          duration: assets[i].duration,
-          image: await assets[i].thumbnailDataWithSize(
+  Future<List<VideoMetadata>> getVideoMetadatas(
+    BuildContext context, {
+    int maxAssets = 2,
+    AssetPickerTextDelegate? textDelegate,
+  }) async {
+    final List<AssetEntity>? assets;
+    final List<Uint8List?> thumbnails;
+    final List<File?> files;
+    try {
+      assets = await AssetPicker.pickAssets(
+        context,
+        pickerConfig: AssetPickerConfig(
+          maxAssets: 2,
+          requestType: RequestType.video,
+          pickerTheme: Theme.of(context),
+          textDelegate: textDelegate ?? const EnglishAssetPickerTextDelegate(),
+        ),
+      );
+
+      if (assets == null) throw Exception();
+
+      thumbnails = await Future.wait(
+        assets.map(
+          (assetEntity) => assetEntity.thumbnailDataWithSize(
             const ThumbnailSize.square(256),
             format: ThumbnailFormat.png,
           ),
-          file: await assets[i].loadFile(),
+        ),
+      );
+
+      files = await Future.wait(
+        assets.map((assetEntity) => assetEntity.loadFile()),
+      );
+    } catch (error, stackTrace) {
+      throw GetVideoMetadataException(
+        '[$WechatAssetsPickerService] - Could not get video metadata.',
+        '$stackTrace',
+      );
+    }
+
+    final videoMetadatas = <VideoMetadata>[];
+    for (var i = 0; i < assets.length; i++) {
+      videoMetadatas.add(
+        VideoMetadata(
+          title: assets[i].title,
+          duration: assets[i].duration,
+          thumbnail: thumbnails[i],
+          file: files[i],
         ),
       );
     }
 
-    if (_videoList.length > 1) {
-      await _editPageController.setFile(_videoList[0].file, _videoList[1].file);
-    } else {
-      _editPageController.file.clear();
-      _editPageController.assets.clear();
-    }
-
-    return _videoList;
+    return videoMetadatas;
   }
 }

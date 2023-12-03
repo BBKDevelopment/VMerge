@@ -59,6 +59,7 @@ const String kPrivacyIconPath = 'assets/images/privacy.svg';
 const String kLicenseIconPath = 'assets/images/license.svg';
 const String kBBKLogoIconPath = 'assets/images/bbk_logo.png';
 const String kCloseIconPath = 'assets/images/close.svg';
+const String kErrorIconPath = 'assets/images/error.svg';
 
 //values
 const double kIconSize = 28;
