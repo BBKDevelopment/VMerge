@@ -14,7 +14,7 @@ dependencies:
   flutter_ffmpeg: ^0.4.2
   flutter_localizations:
     sdk: flutter
-  flutter_native_splash: ^2.3.4
+  flutter_native_splash: ^2.3.8
   flutter_svg: ^2.0.8
   get: ^4.6.6
   image_gallery_saver: ^2.0.3
