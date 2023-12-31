@@ -9,6 +9,7 @@ environment:
 dependencies:
   bloc: ^8.1.2
   bottom_navy_bar: ^6.0.0
+  device_info_plus: ^9.1.1
   equatable: ^2.0.5
   flutter:
     sdk: flutter
@@ -38,57 +39,65 @@ dependencies:
     git:
       url: https://github.com/BBKDevelopment/Video-Player-Service.git
       ref: v1.0.0
-  wechat_assets_picker: ^8.7.1
+  wechat_assets_picker: ^8.8.1+1
 
 dev_dependencies:
   build_runner: ^2.4.6
+  flutter_gen_runner: ^5.3.2
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
   very_good_analysis: ^5.1.0
 
+flutter_gen:
+  output: lib/src/core/gen/
+  line_length: 80
+  integrations:
+    flutter_svg: true
+    lottie: true
+
 flutter:
   uses-material-design: true
-  generate: true
 
   assets:
     - assets/images/
+    - assets/fonts/roboto_mono/
 
   fonts:
     - family: RobotoMono
       fonts:
-        - asset: assets/fonts/RobotoMono-Thin.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-Thin.ttf
           weight: 100
-        - asset: assets/fonts/RobotoMono-ThinItalic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-ThinItalic.ttf
           weight: 100
           style: italic
-        - asset: assets/fonts/RobotoMono-ExtraLight.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/RobotoMono-ExtraLightItalic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-ExtraLightItalic.ttf
           weight: 200
           style: italic
-        - asset: assets/fonts/RobotoMono-Light.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-Light.ttf
           weight: 300
-        - asset: assets/fonts/RobotoMono-LightItalic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-LightItalic.ttf
           weight: 300
           style: italic
-        - asset: assets/fonts/RobotoMono-Regular.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-Regular.ttf
           weight: 400
-        - asset: assets/fonts/RobotoMono-Italic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-Italic.ttf
           weight: 400
           style: italic
-        - asset: assets/fonts/RobotoMono-Medium.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-Medium.ttf
           weight: 500
-        - asset: assets/fonts/RobotoMono-MediumItalic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-MediumItalic.ttf
           weight: 500
           style: italic
-        - asset: assets/fonts/RobotoMono-SemiBold.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/RobotoMono-SemiBoldItalic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-SemiBoldItalic.ttf
           weight: 600
           style: italic
-        - asset: assets/fonts/RobotoMono-Bold.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-Bold.ttf
           weight: 700
-        - asset: assets/fonts/RobotoMono-BoldItalic.ttf
+        - asset: assets/fonts/roboto_mono/RobotoMono-BoldItalic.ttf
           weight: 700
           style: italic
