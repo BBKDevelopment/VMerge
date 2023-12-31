@@ -1,0 +1,9 @@
+{
+    "@@locale": "en",
+    "appName": "VMerge",
+    "video": "Video",
+    "merge": "Merge",
+    "more": "More",
+    "selectTwoVideos": "Please select at least 2 videos to continue!",
+    "openPicker": "Open picker"
+}
