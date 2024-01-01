@@ -4,6 +4,12 @@
     "video": "Video",
     "merge": "Merge",
     "more": "More",
-    "selectTwoVideos": "Please select at least 2 videos to continue!",
-    "openPicker": "Open picker"
+    "selectTwoVideosMessage": "Please select at least 2 videos to continue!",
+    "openPicker": "Open picker",
+    "copyrightMessage": "Copyright © 2023 BBK Development",
+    "rateUs": "Rate Us",
+    "contactUs": "Contact Us",
+    "termsAndConditions": "Terms and Conditions",
+    "privacyPolicy": "Privacy Policy",
+    "licenses": "Licenses"
 }

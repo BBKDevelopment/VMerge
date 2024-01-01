@@ -115,17 +115,53 @@ abstract class AppLocalizations {
   /// **'More'**
   String get more;
 
-  /// No description provided for @selectTwoVideos.
+  /// No description provided for @selectTwoVideosMessage.
   ///
   /// In en, this message translates to:
   /// **'Please select at least 2 videos to continue!'**
-  String get selectTwoVideos;
+  String get selectTwoVideosMessage;
 
   /// No description provided for @openPicker.
   ///
   /// In en, this message translates to:
   /// **'Open picker'**
   String get openPicker;
+
+  /// No description provided for @copyrightMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Copyright © 2023 BBK Development'**
+  String get copyrightMessage;
+
+  /// No description provided for @rateUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Us'**
+  String get rateUs;
+
+  /// No description provided for @contactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contactUs;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @licenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Licenses'**
+  String get licenses;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

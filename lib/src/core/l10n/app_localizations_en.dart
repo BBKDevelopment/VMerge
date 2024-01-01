@@ -17,8 +17,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get more => 'More';
 
   @override
-  String get selectTwoVideos => 'Please select at least 2 videos to continue!';
+  String get selectTwoVideosMessage => 'Please select at least 2 videos to continue!';
 
   @override
   String get openPicker => 'Open picker';
+
+  @override
+  String get copyrightMessage => 'Copyright © 2023 BBK Development';
+
+  @override
+  String get rateUs => 'Rate Us';
+
+  @override
+  String get contactUs => 'Contact Us';
+
+  @override
+  String get termsAndConditions => 'Terms and Conditions';
+
+  @override
+  String get privacyPolicy => 'Privacy Policy';
+
+  @override
+  String get licenses => 'Licenses';
 }
