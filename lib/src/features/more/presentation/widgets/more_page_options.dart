@@ -81,65 +81,47 @@ class _MorePageOption extends StatelessWidget {
     }
   }
 
-  String get _getOptionAssetPath {
-    switch (option) {
-      case MorePageOption.rateUs:
-        return kStarIconPath;
-      case MorePageOption.contactUs:
-        return kMailIconPath;
-      case MorePageOption.termsAndConditions:
-        return kTermsIconPath;
-      case MorePageOption.privacyPolicy:
-        return kPrivacyIconPath;
-      case MorePageOption.licenses:
-        return kLicenseIconPath;
-    }
-  }
-
-  String get _getOptionTitle {
-    switch (option) {
-      case MorePageOption.rateUs:
-        return kRateText;
-      case MorePageOption.contactUs:
-        return kContactsText;
-      case MorePageOption.termsAndConditions:
-        return kTermsText;
-      case MorePageOption.privacyPolicy:
-        return kPrivacyText;
-      case MorePageOption.licenses:
-        return kLicenseText;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
       animation: animation,
       builder: (context, child) {
-        return SlideTransition(
-          position: Tween(
-            begin: const Offset(1.2, 0),
-            end: Offset.zero,
-          ).animate(
-            CurvedAnimation(
-              parent: animation,
-              curve: Interval(
-                option.index / MorePageOption.values.length / 2,
-                (option.index + 1) / MorePageOption.values.length / 2,
-                curve: Curves.easeInOutCubic,
-              ),
+        return FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: Interval(
+              0,
+              (option.index + 1) / MorePageOption.values.length,
+              curve: Curves.easeOut,
             ),
           ),
-          child: child,
+          child: SlideTransition(
+            position: Tween(
+              begin: const Offset(0, -0.2),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: Interval(
+                  0,
+                  (option.index + 1) / MorePageOption.values.length,
+                  curve: Curves.easeOut,
+                ),
+              ),
+            ),
+            child: child,
+          ),
         );
       },
       child: ListTile(
+        contentPadding: AppPadding.verticalXSmall,
         leading: SvgPicture.asset(
-          _getOptionAssetPath,
+          option.assetPath,
+          width: IconSize.small,
+          fit: BoxFit.fitWidth,
         ),
         title: Text(
-          _getOptionTitle,
-          style: kSemiBoldTextStyle,
+          option.title(context),
         ),
         onTap: () => _onTapOption(context),
       ),

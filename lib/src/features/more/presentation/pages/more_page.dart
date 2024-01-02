@@ -5,11 +5,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:launch_review_service/launch_review_service.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
@@ -34,7 +34,7 @@ class _MorePageState extends State<MorePage>
     _animationController = AnimationController(
       vsync: this,
       duration: kMorePageInAnimationDuration,
-    );
+    )..forward();
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
   }
 
@@ -46,12 +46,12 @@ class _MorePageState extends State<MorePage>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      appBar: const VMergeAppBar(),
-      body: Container(
-        color: kPrimaryColorDark,
-        padding: const EdgeInsets.symmetric(horizontal: 22),
-        width: double.infinity,
+      appBar: CustomAppBar(title: l10n.appName),
+      body: Padding(
+        padding: AppPadding.general,
         child: Column(
           children: [
             Expanded(
@@ -67,10 +67,25 @@ class _MorePageState extends State<MorePage>
                         );
                 },
                 separatorBuilder: (context, index) {
-                  return const Divider(
-                    color: kPrimaryColor,
-                    thickness: 1,
-                    height: 4,
+                  return AnimatedBuilder(
+                    animation: _animation,
+                    builder: (_, child) {
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: _animation,
+                          curve: Interval(
+                            0,
+                            (index + 1) / MorePageOption.values.length,
+                            curve: Curves.easeOut,
+                          ),
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: const Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
                   );
                 },
               ),
@@ -88,5 +103,37 @@ enum MorePageOption {
   contactUs,
   termsAndConditions,
   privacyPolicy,
-  licenses,
+  licenses;
+
+  String get assetPath {
+    switch (this) {
+      case MorePageOption.rateUs:
+        return Assets.images.star.path;
+      case MorePageOption.contactUs:
+        return Assets.images.mail.path;
+      case MorePageOption.termsAndConditions:
+        return Assets.images.description.path;
+      case MorePageOption.privacyPolicy:
+        return Assets.images.privacy.path;
+      case MorePageOption.licenses:
+        return Assets.images.license.path;
+    }
+  }
+
+  String title(BuildContext context) {
+    final l10n = context.l10n;
+
+    switch (this) {
+      case MorePageOption.rateUs:
+        return l10n.rateUs;
+      case MorePageOption.contactUs:
+        return l10n.contactUs;
+      case MorePageOption.termsAndConditions:
+        return l10n.termsAndConditions;
+      case MorePageOption.privacyPolicy:
+        return l10n.privacyPolicy;
+      case MorePageOption.licenses:
+        return l10n.licenses;
+    }
+  }
 }
