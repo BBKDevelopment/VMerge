@@ -74,7 +74,7 @@ class _MorePageState extends State<MorePage>
                         opacity: CurvedAnimation(
                           parent: _animation,
                           curve: Interval(
-                            0,
+                            1 / MorePageOption.values.length,
                             (index + 1) / MorePageOption.values.length,
                             curve: Curves.easeOut,
                           ),
