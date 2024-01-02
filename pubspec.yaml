@@ -60,8 +60,9 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/
     - assets/fonts/roboto_mono/
+    - assets/images/
+    - assets/licenses/
 
   fonts:
     - family: RobotoMono
