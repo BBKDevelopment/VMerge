@@ -26,6 +26,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get copyrightMessage => 'Copyright © 2023 BBK Development';
 
   @override
+  String get theme => 'Theme';
+
+  @override
   String get rateUs => 'Rate Us';
 
   @override
@@ -39,4 +42,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get licenses => 'Licenses';
+
+  @override
+  String get darkMode => 'Dark Mode';
+
+  @override
+  String get mainColor => 'Main Color';
 }

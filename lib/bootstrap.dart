@@ -75,12 +75,12 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
 Future<void> setup() async {
   getIt
-    ..registerLazySingleton<AppTheme>(
-      () => const LightAppTheme(),
+    ..registerFactoryParam<AppTheme, Color, void>(
+      (color, _) => LightAppTheme(color),
       instanceName: '$LightAppTheme',
     )
-    ..registerLazySingleton<AppTheme>(
-      () => const DarkAppTheme(),
+    ..registerFactoryParam<AppTheme, Color, void>(
+      (color, _) => DarkAppTheme(color),
       instanceName: '$DarkAppTheme',
     )
     ..registerLazySingleton<LaunchReviewService>(

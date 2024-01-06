@@ -21,7 +21,9 @@ final class PreviewCubit extends Cubit<PreviewState> {
     final videos = <VideoMetadata>[];
 
     try {
-      for (final asset in assets ?? <AssetEntity>[]) {
+      assert(assets!.length > 2, 'At least 2 videos are required');
+
+      for (final asset in assets!) {
         final loadedAsset = await _loadAsset(asset);
         videos.add(
           VideoMetadata(
@@ -32,6 +34,7 @@ final class PreviewCubit extends Cubit<PreviewState> {
           ),
         );
       }
+
       emit(PreviewLoaded(metadatas: videos));
     } catch (_) {
       emit(const PreviewError());

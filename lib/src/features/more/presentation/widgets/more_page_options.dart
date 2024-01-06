@@ -15,6 +15,16 @@ class _MorePageOption extends StatelessWidget {
 
   void _onTapOption(BuildContext context) {
     switch (option) {
+      case MorePageOption.theme:
+        showCupertinoModalBottomSheet<void>(
+          context: context,
+          useRootNavigator: true,
+          topRadius: Radius.zero,
+          builder: (_) => BlocProvider.value(
+            value: BlocProvider.of<MoreCubit>(context),
+            child: const Material(child: _ThemeBottomSheet()),
+          ),
+        );
       case MorePageOption.rateUs:
         getIt<LaunchReviewService>()
             .launch()
@@ -115,10 +125,17 @@ class _MorePageOption extends StatelessWidget {
       },
       child: ListTile(
         contentPadding: AppPadding.verticalXSmall,
-        leading: SvgPicture.asset(
-          option.assetPath,
-          width: IconSize.small,
-          fit: BoxFit.fitWidth,
+        leading: Hero(
+          tag: option.name,
+          child: SvgPicture.asset(
+            option.assetPath,
+            width: IconSize.small,
+            fit: BoxFit.fitWidth,
+            colorFilter: ColorFilter.mode(
+              context.theme.iconTheme.color!,
+              BlendMode.srcIn,
+            ),
+          ),
         ),
         title: Text(
           option.title(context),

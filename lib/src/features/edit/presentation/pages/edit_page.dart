@@ -5,9 +5,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get/get.dart';
 import 'package:video_player/video_player.dart';
+import 'package:video_player_service/video_player_service.dart';
+import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/edit/edit.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
@@ -16,14 +18,30 @@ part '../widgets/settings_modal_bottom_sheet.dart';
 part '../widgets/video_player.dart';
 part '../widgets/video_thumbnail.dart';
 
-class EditPage extends StatefulWidget {
+class EditPage extends StatelessWidget {
   const EditPage({super.key});
 
   @override
-  State<EditPage> createState() => _EditPageState();
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => EditCubit(
+        const EditInitial(),
+        firstVideoPlayerService: getIt<VideoPlayerService>(),
+        secondVideoPlayerService: getIt<VideoPlayerService>(),
+      ),
+      child: const _EditView(),
+    );
+  }
 }
 
-class _EditPageState extends State<EditPage> with TickerProviderStateMixin {
+class _EditView extends StatefulWidget {
+  const _EditView();
+
+  @override
+  State<_EditView> createState() => _EditViewState();
+}
+
+class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> _animation;
   late final AnimatedControlButtonController _animatedControlButtonController;
@@ -34,7 +52,7 @@ class _EditPageState extends State<EditPage> with TickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: kEditPageInAnimationDuration,
-    );
+    )..forward();
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animatedControlButtonController = AnimatedControlButtonController();
   }
@@ -61,96 +79,91 @@ class _EditPageState extends State<EditPage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const VMergeAppBar(),
-      body: ColoredBox(
-        color: kPrimaryColorDark,
-        child: Column(
-          children: [
-            Flexible(
-              child: AnimatedBuilder(
-                animation: _animation,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _animation,
-                      curve: const Interval(
-                        0.70,
-                        1,
-                        curve: Curves.easeInOutCubic,
-                      ),
-                    ),
-                    child: child,
-                  );
-                },
-                child: BlocConsumer<EditCubit, EditState>(
-                  listener: (context, state) {
-                    switch (state) {
-                      case EditInitial():
-                        break;
-                      case EditLoading():
-                        break;
-                      case EditLoaded():
-                        if (state.isVideoPlaying) {
-                          _animationController.forward();
-                        } else {
-                          _animationController.reverse();
-                        }
-                      case EditError():
-                        break;
-                    }
-                  },
-                  buildWhen: (previous, current) {
-                    if (previous is EditError) return false;
-                    if (current is EditError) return false;
+    final l10n = context.l10n;
 
-                    return true;
-                  },
-                  builder: (context, state) {
-                    switch (state) {
-                      case EditInitial():
-                        return const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 50),
-                          child: Center(
-                            child: Text(
-                              kSelectVideoText,
-                              style: kSemiBoldTextStyle,
-                              textAlign: TextAlign.justify,
-                            ),
+    return Scaffold(
+      appBar: CustomAppBar(title: l10n.appName),
+      body: Column(
+        children: [
+          Flexible(
+            child: AnimatedBuilder(
+              animation: _animation,
+              builder: (context, child) {
+                return FadeTransition(
+                  opacity: CurvedAnimation(
+                    parent: _animation,
+                    curve: const Interval(
+                      0.70,
+                      1,
+                      curve: Curves.easeInOutCubic,
+                    ),
+                  ),
+                  child: child,
+                );
+              },
+              child: BlocConsumer<EditCubit, EditState>(
+                listener: (context, state) {
+                  switch (state) {
+                    case EditInitial():
+                      break;
+                    case EditLoading():
+                      break;
+                    case EditLoaded():
+                      break;
+                    case EditError():
+                      break;
+                  }
+                },
+                buildWhen: (previous, current) {
+                  if (previous is EditError) return false;
+                  if (current is EditError) return false;
+
+                  return true;
+                },
+                builder: (context, state) {
+                  switch (state) {
+                    case EditInitial():
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 50),
+                        child: Center(
+                          child: Text(
+                            kSelectVideoText,
+                            style: context.textTheme.bodyMedium,
+                            textAlign: TextAlign.justify,
                           ),
-                        );
-                      case EditLoading():
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      case EditLoaded():
-                        return _VideoPlayer(
-                          videoPlayerController: state.videoPlayerController,
-                          animatedControlButtonController:
-                              _animatedControlButtonController,
-                          videoWidth: state.videoWidth,
-                          videoHeight: state.videoHeight,
-                          onTap: () {
-                            if (state.isVideoPlaying) {
-                              context.read<EditCubit>().stopVideo();
-                            } else {
-                              context.read<EditCubit>().playVideo();
-                            }
-                          },
-                        );
-                      case EditError():
-                        return const SizedBox.shrink();
-                    }
-                  },
-                ),
+                        ),
+                      );
+                    case EditLoading():
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    case EditLoaded():
+                      return _VideoPlayer(
+                        videoPlayerController: state.videoPlayerController,
+                        animatedControlButtonController:
+                            _animatedControlButtonController,
+                        videoWidth: state.videoWidth,
+                        videoHeight: state.videoHeight,
+                        onTap: () {
+                          if (state.isVideoPlaying) {
+                            context.read<EditCubit>().stopVideo();
+                          } else {
+                            context.read<EditCubit>().playVideo();
+                          }
+                        },
+                      );
+                    case EditError():
+                      return const SizedBox.shrink();
+                  }
+                },
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 22, right: 22, bottom: 10),
-              child: _buildControlPanel(context),
-            ),
-          ],
-        ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 22, right: 22, bottom: 10),
+            child: _buildControlPanel(context),
+          ),
+        ],
       ),
     );
   }
@@ -160,9 +173,8 @@ class _EditPageState extends State<EditPage> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       children: [
         const Divider(
-          color: kPrimaryColor,
           thickness: 1,
-          height: 0,
+          height: 1,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 12),
@@ -211,9 +223,8 @@ class _EditPageState extends State<EditPage> with TickerProviderStateMixin {
           ),
         ),
         const Divider(
-          color: kPrimaryColor,
           thickness: 1,
-          height: 0,
+          height: 1,
         ),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 12),
@@ -272,9 +283,8 @@ class _EditPageState extends State<EditPage> with TickerProviderStateMixin {
           ),
         ),
         const Divider(
-          color: kPrimaryColor,
           thickness: 1,
-          height: 0,
+          height: 1,
         ),
       ],
     );

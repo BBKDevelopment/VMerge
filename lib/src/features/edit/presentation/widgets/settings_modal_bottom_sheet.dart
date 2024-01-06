@@ -50,30 +50,26 @@ class SettingsModalBottomSheet extends StatelessWidget {
               const SizedBox(height: 32),
               _getSliderTheme(
                 context: context,
-                child: Obx(() {
-                  return Slider(
-                    value: 1, //_editPageController.speedValue,
-                    max: 7,
-                    divisions: 7,
-                    label: '_editPageController.speedValueText',
-                    onChanged: (_) {}, //_editPageController.setSpeed,
-                  );
-                }),
+                child: Slider(
+                  value: 1, //_editPageController.speedValue,
+                  max: 7,
+                  divisions: 7,
+                  label: '_editPageController.speedValueText',
+                  onChanged: (_) {}, //_editPageController.setSpeed,
+                ),
               ),
               const SizedBox(height: 32),
               const Text(kVideoQualityText, style: kRegularTextStyle),
               const SizedBox(height: 32),
               _getSliderTheme(
                 context: context,
-                child: Obx(() {
-                  return Slider(
-                    value: 1, //_editPageController.qualityValue,
-                    max: 6,
-                    divisions: 6,
-                    label: '_editPageController.qualityValueText',
-                    onChanged: (_) {}, //_editPageController.setQuality,
-                  );
-                }),
+                child: Slider(
+                  value: 1, //_editPageController.qualityValue,
+                  max: 6,
+                  divisions: 6,
+                  label: '_editPageController.qualityValueText',
+                  onChanged: (_) {}, //_editPageController.setQuality,
+                ),
               ),
               const SizedBox(height: 20),
             ],

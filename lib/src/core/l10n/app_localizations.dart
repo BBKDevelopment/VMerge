@@ -133,6 +133,12 @@ abstract class AppLocalizations {
   /// **'Copyright © 2023 BBK Development'**
   String get copyrightMessage;
 
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
   /// No description provided for @rateUs.
   ///
   /// In en, this message translates to:
@@ -162,6 +168,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Licenses'**
   String get licenses;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @mainColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Color'**
+  String get mainColor;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

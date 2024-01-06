@@ -63,43 +63,39 @@ class SaveModalBottomSheet extends StatelessWidget {
               SizedBox(
                 height: 120,
                 width: 120,
-                child: Obx(
-                  () => Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      CircularProgressIndicator(
-                        backgroundColor: kPrimaryWhiteColor.withOpacity(0.7),
-                        strokeWidth: 8,
-                        //value: _editPageController.progressPercentage / 100,
-                        valueColor: const AlwaysStoppedAnimation(
-                          kPrimaryWhiteColor,
-                        ),
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    CircularProgressIndicator(
+                      backgroundColor: kPrimaryWhiteColor.withOpacity(0.7),
+                      strokeWidth: 8,
+                      //value: _editPageController.progressPercentage / 100,
+                      valueColor: const AlwaysStoppedAnimation(
+                        kPrimaryWhiteColor,
                       ),
-                      Center(
-                        child: status == SaveModalBottomSheetStatus.saved
-                            ? const Icon(
-                                Icons.check_rounded,
+                    ),
+                    Center(
+                      child: status == SaveModalBottomSheetStatus.saved
+                          ? const Icon(
+                              Icons.check_rounded,
+                              color: kPrimaryWhiteColor,
+                              size: kIconSize,
+                            )
+                          : Text(
+                              '', //'${_editPageController.progressPercentage.round()}%',
+                              textAlign: TextAlign.center,
+                              style: kBoldTextStyle.copyWith(
                                 color: kPrimaryWhiteColor,
-                                size: kIconSize,
-                              )
-                            : Text(
-                                '', //'${_editPageController.progressPercentage.round()}%',
-                                textAlign: TextAlign.center,
-                                style: kBoldTextStyle.copyWith(
-                                  color: kPrimaryWhiteColor,
-                                ),
                               ),
-                      ),
-                    ],
-                  ),
+                            ),
+                    ),
+                  ],
                 ),
               ),
               const SizedBox(height: 32),
-              Obx(
-                () => Text(
-                  status.name,
-                  style: kMediumTextStyle,
-                ),
+              Text(
+                status.name,
+                style: kMediumTextStyle,
               ),
               const SizedBox(height: 20),
             ],

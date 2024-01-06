@@ -6,24 +6,46 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review_service/launch_review_service.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
+import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
+import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/copyright_text.dart';
 part '../widgets/more_page_options.dart';
+part '../widgets/theme_bottom_sheet.dart';
 
-class MorePage extends StatefulWidget {
+class MorePage extends StatelessWidget {
   const MorePage({super.key});
 
   @override
-  State<MorePage> createState() => _MorePageState();
+  Widget build(BuildContext context) {
+    return BlocProvider<MoreCubit>(
+      create: (_) => MoreCubit(
+        MoreState(
+          isDarkModeEnabled:
+              context.read<AppCubit>().state.themeMode == ThemeMode.dark,
+          mainColor: context.read<AppCubit>().state.mainColor,
+        ),
+      ),
+      child: const _MoreView(),
+    );
+  }
 }
 
-class _MorePageState extends State<MorePage>
+class _MoreView extends StatefulWidget {
+  const _MoreView();
+
+  @override
+  State<_MoreView> createState() => _MoreViewState();
+}
+
+class _MoreViewState extends State<_MoreView>
     with SingleTickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> _animation;
@@ -48,50 +70,60 @@ class _MorePageState extends State<MorePage>
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return Scaffold(
-      appBar: CustomAppBar(title: l10n.appName),
-      body: Padding(
-        padding: AppPadding.general,
-        child: Column(
-          children: [
-            Expanded(
-              child: ListView.separated(
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: MorePageOption.values.length + 1,
-                itemBuilder: (context, index) {
-                  return index == MorePageOption.values.length
-                      ? const SizedBox.shrink()
-                      : _MorePageOption(
-                          option: MorePageOption.values[index],
-                          animation: _animation,
-                        );
-                },
-                separatorBuilder: (context, index) {
-                  return AnimatedBuilder(
-                    animation: _animation,
-                    builder: (_, child) {
-                      return FadeTransition(
-                        opacity: CurvedAnimation(
-                          parent: _animation,
-                          curve: Interval(
-                            1 / MorePageOption.values.length,
-                            (index + 1) / MorePageOption.values.length,
-                            curve: Curves.easeOut,
+    return BlocListener<MoreCubit, MoreState>(
+      listener: (context, state) {
+        context.read<AppCubit>()
+          ..toggleThemeMode(
+            themeMode:
+                state.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
+          )
+          ..updateMainColor(mainColor: state.mainColor);
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(title: l10n.appName),
+        body: Padding(
+          padding: AppPadding.general,
+          child: Column(
+            children: [
+              Expanded(
+                child: ListView.separated(
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: MorePageOption.values.length + 1,
+                  itemBuilder: (context, index) {
+                    return index == MorePageOption.values.length
+                        ? const SizedBox.shrink()
+                        : _MorePageOption(
+                            option: MorePageOption.values[index],
+                            animation: _animation,
+                          );
+                  },
+                  separatorBuilder: (context, index) {
+                    return AnimatedBuilder(
+                      animation: _animation,
+                      builder: (_, child) {
+                        return FadeTransition(
+                          opacity: CurvedAnimation(
+                            parent: _animation,
+                            curve: Interval(
+                              1 / MorePageOption.values.length,
+                              (index + 1) / MorePageOption.values.length,
+                              curve: Curves.easeOut,
+                            ),
                           ),
-                        ),
-                        child: child,
-                      );
-                    },
-                    child: const Divider(
-                      thickness: 1,
-                      height: 0,
-                    ),
-                  );
-                },
+                          child: child,
+                        );
+                      },
+                      child: const Divider(
+                        thickness: 1,
+                        height: 0,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            _CopyrightText(animation: _animation),
-          ],
+              _CopyrightText(animation: _animation),
+            ],
+          ),
         ),
       ),
     );
@@ -99,6 +131,7 @@ class _MorePageState extends State<MorePage>
 }
 
 enum MorePageOption {
+  theme,
   rateUs,
   contactUs,
   termsAndConditions,
@@ -107,6 +140,8 @@ enum MorePageOption {
 
   String get assetPath {
     switch (this) {
+      case MorePageOption.theme:
+        return Assets.images.palette.path;
       case MorePageOption.rateUs:
         return Assets.images.star.path;
       case MorePageOption.contactUs:
@@ -124,6 +159,8 @@ enum MorePageOption {
     final l10n = context.l10n;
 
     switch (this) {
+      case MorePageOption.theme:
+        return l10n.theme;
       case MorePageOption.rateUs:
         return l10n.rateUs;
       case MorePageOption.contactUs:
