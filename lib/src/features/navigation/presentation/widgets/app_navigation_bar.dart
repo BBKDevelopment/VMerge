@@ -142,8 +142,8 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
                   title: Text(l10n.video, style: context.textTheme.titleMedium),
                   textAlign: TextAlign.center,
                   icon: Assets.images.video.svg(
-                    height: IconSize.medium,
-                    width: IconSize.medium,
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
                     colorFilter: ColorFilter.mode(
                       context.theme.iconTheme.color!,
                       BlendMode.srcIn,
@@ -155,8 +155,8 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
                   title: Text(l10n.merge, style: context.textTheme.titleMedium),
                   textAlign: TextAlign.center,
                   icon: Assets.images.merge.svg(
-                    height: IconSize.medium,
-                    width: IconSize.medium,
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
                     colorFilter: ColorFilter.mode(
                       context.theme.iconTheme.color!,
                       BlendMode.srcIn,
@@ -168,8 +168,8 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
                   title: Text(l10n.more, style: context.textTheme.titleMedium),
                   textAlign: TextAlign.center,
                   icon: Assets.images.more.svg(
-                    height: IconSize.medium,
-                    width: IconSize.medium,
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
                     colorFilter: ColorFilter.mode(
                       context.theme.iconTheme.color!,
                       BlendMode.srcIn,

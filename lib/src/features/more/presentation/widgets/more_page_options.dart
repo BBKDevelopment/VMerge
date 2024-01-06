@@ -76,17 +76,21 @@ class _MorePageOption extends StatelessWidget {
               );
         });
       case MorePageOption.licenses:
-        if (!context.mounted) return;
-
         showLicensePage(
           context: context,
-          applicationName: kAppName,
+          applicationName: context.l10n.appName,
           applicationIcon: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 20),
-            child: SvgPicture.asset(kAppLogoPath, height: kIconSize * 4),
+            padding: AppPadding.verticalLarge,
+            child: Assets.images.vmerge.svg(
+              width: AppIconSize.xxLarge,
+              colorFilter: ColorFilter.mode(
+                context.theme.iconTheme.color!,
+                BlendMode.srcIn,
+              ),
+            ),
           ),
           applicationVersion: '_packageInfo.version',
-          applicationLegalese: kCopyrightText,
+          applicationLegalese: context.l10n.copyrightMessage,
         );
     }
   }
@@ -129,7 +133,7 @@ class _MorePageOption extends StatelessWidget {
           tag: option.name,
           child: SvgPicture.asset(
             option.assetPath,
-            width: IconSize.small,
+            width: AppIconSize.small,
             fit: BoxFit.fitWidth,
             colorFilter: ColorFilter.mode(
               context.theme.iconTheme.color!,

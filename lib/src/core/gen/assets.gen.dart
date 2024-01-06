@@ -20,14 +20,6 @@ class $AssetsFontsGen {
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/application_logo.svg
-  SvgGenImage get applicationLogo =>
-      const SvgGenImage('assets/images/application_logo.svg');
-
-  /// File path: assets/images/bbk_logo.png
-  AssetGenImage get bbkLogo =>
-      const AssetGenImage('assets/images/bbk_logo.png');
-
   /// File path: assets/images/branding.png
   AssetGenImage get branding =>
       const AssetGenImage('assets/images/branding.png');
@@ -78,10 +70,11 @@ class $AssetsImagesGen {
   /// File path: assets/images/video.svg
   SvgGenImage get video => const SvgGenImage('assets/images/video.svg');
 
+  /// File path: assets/images/vmerge.svg
+  SvgGenImage get vmerge => const SvgGenImage('assets/images/vmerge.svg');
+
   /// List of all assets
   List<dynamic> get values => [
-        applicationLogo,
-        bbkLogo,
         branding,
         close,
         description,
@@ -97,7 +90,8 @@ class $AssetsImagesGen {
         save,
         setting,
         star,
-        video
+        video,
+        vmerge
       ];
 }
 

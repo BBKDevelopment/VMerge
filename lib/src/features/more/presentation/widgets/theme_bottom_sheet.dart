@@ -5,8 +5,6 @@ class _ThemeBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return DecoratedBox(
       decoration: BoxDecoration(
         border: Border(
@@ -22,28 +20,31 @@ class _ThemeBottomSheet extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(width: IconSize.medium),
+                const SizedBox(width: AppButtonSize.small),
                 Hero(
                   tag: MorePageOption.theme.name,
                   child: Assets.images.palette.svg(
-                    height: IconSize.xLarge,
+                    height: AppIconSize.xLarge,
                     colorFilter: ColorFilter.mode(
                       context.theme.iconTheme.color!,
                       BlendMode.srcIn,
                     ),
                   ),
                 ),
-                InkWell(
-                  onTap: Navigator.of(context).pop,
-                  overlayColor: MaterialStateProperty.all(
-                    Colors.transparent,
-                  ),
-                  highlightColor: Colors.transparent,
-                  child: Assets.images.close.svg(
-                    height: IconSize.medium,
-                    colorFilter: ColorFilter.mode(
-                      context.theme.iconTheme.color!,
-                      BlendMode.srcIn,
+                SizedBox.square(
+                  dimension: AppButtonSize.small,
+                  child: ElevatedButton(
+                    onPressed: Navigator.of(context).pop,
+                    style: ElevatedButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      shape: const CircleBorder(),
+                    ),
+                    child: Assets.images.close.svg(
+                      height: AppIconSize.xSmall,
+                      colorFilter: ColorFilter.mode(
+                        context.theme.iconTheme.color!,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
                 ),
@@ -51,7 +52,7 @@ class _ThemeBottomSheet extends StatelessWidget {
             ),
             const SizedBox(height: AppPadding.medium),
             Text(
-              l10n.theme,
+              context.l10n.theme,
               style: context.textTheme.titleLarge,
             ),
             const SizedBox(height: AppPadding.xxLarge),
@@ -70,26 +71,37 @@ class _ModeSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          context.l10n.darkMode,
-          style: context.textTheme.bodyMedium,
-        ),
-        BlocBuilder<MoreCubit, MoreState>(
-          builder: (context, state) {
-            return Switch(
+    return BlocBuilder<MoreCubit, MoreState>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.darkMode,
+                  style: context.textTheme.bodyMedium,
+                ),
+                Text(
+                  state.isDarkModeEnabled ? context.l10n.on : context.l10n.off,
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.theme.hintColor,
+                  ),
+                ),
+              ],
+            ),
+            Switch(
               value: state.isDarkModeEnabled,
               onChanged: (value) {
                 context
                     .read<MoreCubit>()
                     .toggleDarkMode(isDarkModeEnabled: value);
               },
-            );
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -99,25 +111,36 @@ class _MainColorSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Text(
-          context.l10n.mainColor,
-          style: context.textTheme.bodyMedium,
-        ),
-        BlocBuilder<MoreCubit, MoreState>(
-          builder: (context, state) {
-            return DropdownButton(
+    return BlocBuilder<MoreCubit, MoreState>(
+      builder: (context, state) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  context.l10n.mainColor,
+                  style: context.textTheme.bodyMedium,
+                ),
+                Text(
+                  state.mainColor.name(context),
+                  style: context.textTheme.bodySmall?.copyWith(
+                    color: context.theme.hintColor,
+                  ),
+                ),
+              ],
+            ),
+            DropdownButton(
               items: [
                 for (final color in AppColor.values)
                   DropdownMenuItem(
-                    value: color.value,
+                    value: color,
                     alignment: Alignment.center,
                     child: Icon(
                       Icons.circle,
                       color: color.value,
-                      size: IconSize.medium,
+                      size: AppIconSize.medium,
                     ),
                   ),
               ],
@@ -128,10 +151,10 @@ class _MainColorSelector extends StatelessWidget {
                 context.read<MoreCubit>().updateMainColor(mainColor: color);
               },
               underline: const SizedBox.shrink(),
-            );
-          },
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }

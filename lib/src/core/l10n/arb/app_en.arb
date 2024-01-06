@@ -14,5 +14,19 @@
     "privacyPolicy": "Privacy Policy",
     "licenses": "Licenses",
     "darkMode": "Dark Mode",
-    "mainColor": "Main Color"
+    "mainColor": "Main Color",
+    "on": "On",
+    "off": "Off",
+    "red": "Red",
+    "pink": "Pink",
+    "purple": "Purple",
+    "indigo": "Indigo",
+    "blue": "Blue",
+    "cyan": "Cyan",
+    "teal": "Teal",
+    "green": "Green",
+    "lime": "Lime",
+    "yellow": "Yellow",
+    "orange": "Orange",
+    "brown": "Brown"
 }

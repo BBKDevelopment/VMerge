@@ -1,6 +1,4 @@
-final class IconSize {
-  const IconSize._();
-
+abstract final class AppIconSize {
   static const xSmall = 16.0;
   static const small = 24.0;
   static const medium = 32.0;

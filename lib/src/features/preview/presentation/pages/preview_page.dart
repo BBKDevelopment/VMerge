@@ -61,10 +61,8 @@ class _PreviewViewState extends State<_PreviewView> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return Scaffold(
-      appBar: CustomAppBar(title: l10n.appName),
+      appBar: CustomAppBar(title: context.l10n.appName),
       body: BlocConsumer<PreviewCubit, PreviewState>(
         listener: (context, state) {
           switch (state) {
@@ -82,10 +80,8 @@ class _PreviewViewState extends State<_PreviewView> {
           switch (state) {
             case PreviewLoading():
               return Center(
-                child: SizedBox.fromSize(
-                  size: Size.square(
-                    context.screenWidth / 4 / 3,
-                  ),
+                child: SizedBox.square(
+                  dimension: context.screenWidth / 4 / 3,
                   child: CircularProgressIndicator(
                     valueColor: AlwaysStoppedAnimation<Color>(
                       context.theme.iconTheme.color!,
@@ -103,7 +99,7 @@ class _PreviewViewState extends State<_PreviewView> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Assets.images.error.svg(
-                      height: IconSize.large,
+                      height: AppIconSize.large,
                       colorFilter: ColorFilter.mode(
                         context.colorScheme.error,
                         BlendMode.srcIn,
@@ -111,14 +107,14 @@ class _PreviewViewState extends State<_PreviewView> {
                     ),
                     const SizedBox(height: AppPadding.xLarge),
                     Text(
-                      l10n.selectTwoVideosMessage,
+                      context.l10n.selectTwoVideosMessage,
                       textAlign: TextAlign.center,
                       style: context.textTheme.bodyMedium,
                     ),
                     const SizedBox(height: AppPadding.large),
                     OutlinedButton(
                       onPressed: _openAssetsPicker,
-                      child: Text(l10n.openPicker),
+                      child: Text(context.l10n.openPicker),
                     ),
                   ],
                 ),

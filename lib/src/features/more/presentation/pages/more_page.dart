@@ -68,8 +68,6 @@ class _MoreViewState extends State<_MoreView>
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return BlocListener<MoreCubit, MoreState>(
       listener: (context, state) {
         context.read<AppCubit>()
@@ -80,7 +78,7 @@ class _MoreViewState extends State<_MoreView>
           ..updateMainColor(mainColor: state.mainColor);
       },
       child: Scaffold(
-        appBar: CustomAppBar(title: l10n.appName),
+        appBar: CustomAppBar(title: context.l10n.appName),
         body: Padding(
           padding: AppPadding.general,
           child: Column(

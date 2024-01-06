@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       create: (_) => AppCubit(
         const AppState(
           themeMode: ThemeMode.dark,
-          mainColor: Colors.red,
+          mainColor: AppColor.indigo,
         ),
       ),
       child: const _AppView(),
@@ -39,11 +39,11 @@ class _AppView extends StatelessWidget {
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
           theme: getIt<AppTheme>(
-            param1: state.mainColor,
+            param1: state.mainColor.value,
             instanceName: '$LightAppTheme',
           ).data,
           darkTheme: getIt<AppTheme>(
-            param1: state.mainColor,
+            param1: state.mainColor.value,
             instanceName: '$DarkAppTheme',
           ).data,
           themeMode: state.themeMode,

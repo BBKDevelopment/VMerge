@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:vmerge/src/core/core.dart';
 
 final class AppState extends Equatable {
   const AppState({
@@ -8,11 +9,11 @@ final class AppState extends Equatable {
   });
 
   final ThemeMode themeMode;
-  final Color mainColor;
+  final AppColor mainColor;
 
   AppState copyWith({
     ThemeMode? themeMode,
-    Color? mainColor,
+    AppColor? mainColor,
   }) {
     return AppState(
       themeMode: themeMode ?? this.themeMode,

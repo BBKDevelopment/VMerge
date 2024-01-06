@@ -1,5 +1,5 @@
-import 'package:flutter/painting.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/more/more.dart';
 
 final class MoreCubit extends Cubit<MoreState> {
@@ -9,7 +9,7 @@ final class MoreCubit extends Cubit<MoreState> {
     emit(state.copyWith(isDarkModeEnabled: isDarkModeEnabled));
   }
 
-  void updateMainColor({required Color mainColor}) {
+  void updateMainColor({required AppColor mainColor}) {
     emit(state.copyWith(mainColor: mainColor));
   }
 }

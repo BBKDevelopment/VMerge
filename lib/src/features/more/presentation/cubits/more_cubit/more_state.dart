@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:flutter/painting.dart';
+import 'package:vmerge/src/core/core.dart';
 
 final class MoreState extends Equatable {
   const MoreState({
@@ -8,11 +8,11 @@ final class MoreState extends Equatable {
   });
 
   final bool isDarkModeEnabled;
-  final Color mainColor;
+  final AppColor mainColor;
 
   MoreState copyWith({
     bool? isDarkModeEnabled,
-    Color? mainColor,
+    AppColor? mainColor,
   }) {
     return MoreState(
       isDarkModeEnabled: isDarkModeEnabled ?? this.isDarkModeEnabled,

@@ -11,8 +11,6 @@ class _CopyrightText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return AnimatedBuilder(
       animation: animation,
       builder: (_, child) {
@@ -44,7 +42,7 @@ class _CopyrightText extends StatelessWidget {
         );
       },
       child: Text(
-        l10n.copyrightMessage,
+        context.l10n.copyrightMessage,
         style: context.textTheme.labelSmall,
         textAlign: TextAlign.center,
       ),

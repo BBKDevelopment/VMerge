@@ -180,6 +180,90 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Main Color'**
   String get mainColor;
+
+  /// No description provided for @on.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get on;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get off;
+
+  /// No description provided for @red.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get red;
+
+  /// No description provided for @pink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get pink;
+
+  /// No description provided for @purple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get purple;
+
+  /// No description provided for @indigo.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigo'**
+  String get indigo;
+
+  /// No description provided for @blue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get blue;
+
+  /// No description provided for @cyan.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get cyan;
+
+  /// No description provided for @teal.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get teal;
+
+  /// No description provided for @green.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get green;
+
+  /// No description provided for @lime.
+  ///
+  /// In en, this message translates to:
+  /// **'Lime'**
+  String get lime;
+
+  /// No description provided for @yellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get yellow;
+
+  /// No description provided for @orange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get orange;
+
+  /// No description provided for @brown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get brown;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
