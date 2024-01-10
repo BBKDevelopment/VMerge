@@ -79,10 +79,8 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
     return Scaffold(
-      appBar: CustomAppBar(title: l10n.appName),
+      appBar: CustomAppBar(title: context.l10n.appName),
       body: Column(
         children: [
           Flexible(

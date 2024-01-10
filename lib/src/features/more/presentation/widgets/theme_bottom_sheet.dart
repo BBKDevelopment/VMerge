@@ -33,13 +33,9 @@ class _ThemeBottomSheet extends StatelessWidget {
                 ),
                 SizedBox.square(
                   dimension: AppButtonSize.small,
-                  child: ElevatedButton(
+                  child: IconButton.filledTonal(
                     onPressed: Navigator.of(context).pop,
-                    style: ElevatedButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      shape: const CircleBorder(),
-                    ),
-                    child: Assets.images.close.svg(
+                    icon: Assets.images.close.svg(
                       height: AppIconSize.xSmall,
                       colorFilter: ColorFilter.mode(
                         context.theme.iconTheme.color!,
