@@ -5,6 +5,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vmerge/components/components.dart';
+import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/src/features/preview/preview.dart';
@@ -92,32 +93,8 @@ class _PreviewViewState extends State<_PreviewView> {
             case PreviewLoaded():
               return const SizedBox.shrink();
             case PreviewError():
-              return Container(
-                padding: AppPadding.horizontalMedium,
-                alignment: Alignment.center,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Assets.images.error.svg(
-                      height: AppIconSize.large,
-                      colorFilter: ColorFilter.mode(
-                        context.colorScheme.error,
-                        BlendMode.srcIn,
-                      ),
-                    ),
-                    const SizedBox(height: AppPadding.xLarge),
-                    Text(
-                      context.l10n.selectTwoVideosMessage,
-                      textAlign: TextAlign.center,
-                      style: context.textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: AppPadding.large),
-                    OutlinedButton(
-                      onPressed: _openAssetsPicker,
-                      child: Text(context.l10n.openPicker),
-                    ),
-                  ],
-                ),
+              return NoVideoWarning(
+                onOpenPicker: _openAssetsPicker,
               );
           }
         },

@@ -167,7 +167,7 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const SizedBox(height: AppPadding.medium),
+        const SizedBox(height: AppPadding.xSmall),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -176,7 +176,7 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                 onPressed: context.read<EditCubit>().state is EditLoaded
                     ? _onTapSettings
                     : null,
-                label: const Text('Settings'),
+                label: Text(context.l10n.settings),
                 icon: Assets.images.settings.svg(
                   height: AppIconSize.xSmall,
                   colorFilter: ColorFilter.mode(
@@ -194,7 +194,7 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                 onPressed: context.read<EditCubit>().state is EditLoaded
                     ? _onTapSettings
                     : null,
-                label: const Text('Save Video'),
+                label: Text(context.l10n.saveVideo),
                 icon: Assets.images.save.svg(
                   height: AppIconSize.xSmall,
                   colorFilter: ColorFilter.mode(
@@ -209,55 +209,36 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
         const SizedBox(height: AppPadding.medium),
         SizedBox(
           height: 120,
-          child: AnimatedBuilder(
-            animation: _animation,
-            builder: (context, child) {
-              return ScaleTransition(
-                scale: CurvedAnimation(
-                  parent: _animation,
-                  curve: const Interval(
-                    0.40,
-                    0.70,
-                    curve: Curves.easeInOutCubic,
-                  ),
-                ),
-                child: child,
-              );
+          child: BlocBuilder<EditCubit, EditState>(
+            builder: (context, state) {
+              switch (state) {
+                case EditInitial():
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.zero,
+                    shrinkWrap: true,
+                    itemCount: 4,
+                    itemBuilder: (_, __) {
+                      return const VideoThumbnail();
+                    },
+                    separatorBuilder: (_, __) {
+                      return const SizedBox(width: AppPadding.medium);
+                    },
+                  );
+                case EditLoading():
+                  return const SizedBox.shrink();
+                case EditLoaded():
+                  return ListView(
+                    scrollDirection: Axis.horizontal,
+                    children: [
+                      for (final metadata in state.metadatas)
+                        VideoThumbnail(metadata: metadata),
+                    ],
+                  );
+                case EditError():
+                  return const SizedBox.shrink();
+              }
             },
-            child: BlocSelector<EditCubit, EditState, List<VideoMetadata>>(
-              selector: (state) {
-                if (state is! EditLoaded) return [];
-
-                return state.metadatas;
-              },
-              builder: (context, state) {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Stack(
-                      children: [
-                        if (state.isNotEmpty)
-                          VideoThumbnail(metadata: state.first)
-                        else
-                          const VideoThumbnail(),
-                      ],
-                    ),
-                    const SizedBox(
-                      width: 30,
-                    ),
-                    Stack(
-                      children: [
-                        if (state.isNotEmpty)
-                          VideoThumbnail(metadata: state.last)
-                        else
-                          const VideoThumbnail(),
-                      ],
-                    ),
-                  ],
-                );
-              },
-            ),
           ),
         ),
       ],
