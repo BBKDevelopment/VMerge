@@ -61,8 +61,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/save.svg
   SvgGenImage get save => const SvgGenImage('assets/images/save.svg');
 
-  /// File path: assets/images/setting.svg
-  SvgGenImage get setting => const SvgGenImage('assets/images/setting.svg');
+  /// File path: assets/images/settings.svg
+  SvgGenImage get settings => const SvgGenImage('assets/images/settings.svg');
 
   /// File path: assets/images/star.svg
   SvgGenImage get star => const SvgGenImage('assets/images/star.svg');
@@ -88,7 +88,7 @@ class $AssetsImagesGen {
         play,
         privacy,
         save,
-        setting,
+        settings,
         star,
         video,
         vmerge

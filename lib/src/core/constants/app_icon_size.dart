@@ -1,5 +1,6 @@
 abstract final class AppIconSize {
-  static const xSmall = 16.0;
+  static const xxSmall = 16.0;
+  static const xSmall = 20.0;
   static const small = 24.0;
   static const medium = 32.0;
   static const large = 48.0;

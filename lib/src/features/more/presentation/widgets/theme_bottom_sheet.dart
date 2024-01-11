@@ -36,9 +36,9 @@ class _ThemeBottomSheet extends StatelessWidget {
                   child: IconButton.filledTonal(
                     onPressed: Navigator.of(context).pop,
                     icon: Assets.images.close.svg(
-                      height: AppIconSize.xSmall,
+                      height: AppIconSize.xxSmall,
                       colorFilter: ColorFilter.mode(
-                        context.theme.iconTheme.color!,
+                        context.colorScheme.onSecondaryContainer,
                         BlendMode.srcIn,
                       ),
                     ),
