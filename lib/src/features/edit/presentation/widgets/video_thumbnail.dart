@@ -11,39 +11,28 @@ class VideoThumbnail extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(kGridViewItemsBorderRadius),
-      child: SizedBox(
-        height: 120,
-        width: 120,
+    return SizedBox.square(
+      dimension: 120,
+      child: Card(
+        margin: const EdgeInsets.symmetric(vertical: AppPadding.xSmall),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Expanded(
-              child: ColoredBox(
-                color:
-                    metadata != null ? kPrimaryColorDark : kPrimaryWhiteColor,
-                child: metadata != null
-                    ? Image.memory(metadata!.thumbnail!, fit: BoxFit.cover)
-                    : const Icon(
-                        Icons.video_library_rounded,
-                        color: kPrimaryColor,
-                        size: 60,
-                      ),
-              ),
+              child: metadata != null
+                  ? Image.memory(metadata!.thumbnail!, fit: BoxFit.cover)
+                  : const Icon(
+                      Icons.video_library_rounded,
+                      size: AppIconSize.xLarge,
+                    ),
             ),
-            Container(
-              height: 18,
-              color: kPrimaryColor,
-              alignment: Alignment.center,
-              child: Text(
-                metadata != null
-                    ? TimeFormatter.format(
-                        duration: Duration(seconds: metadata!.duration!),
-                      )
-                    : 'NON',
-                style: kRegularTextStyle,
-              ),
+            Text(
+              metadata != null
+                  ? TimeFormatter.format(
+                      duration: Duration(seconds: metadata!.duration!),
+                    )
+                  : 'NON',
+              textAlign: TextAlign.center,
             ),
           ],
         ),
