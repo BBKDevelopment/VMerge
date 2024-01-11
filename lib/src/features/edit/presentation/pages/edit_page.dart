@@ -9,8 +9,10 @@ import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
+import 'package:vmerge/src/components/no_video_warning.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/save_modal_bottom_sheet.dart';
@@ -123,12 +125,12 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                   builder: (context, state) {
                     switch (state) {
                       case EditInitial():
-                        return Center(
-                          child: Text(
-                            kSelectVideoText,
-                            style: context.textTheme.bodyMedium,
-                            textAlign: TextAlign.justify,
-                          ),
+                        return NoVideoWarning(
+                          onOpenPicker: () {
+                            context
+                                .read<NavigationCubit>()
+                                .updatePage(NavigationBarPage.preview);
+                          },
                         );
                       case EditLoading():
                         return const Center(

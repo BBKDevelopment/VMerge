@@ -110,6 +110,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
           listener: (context, state) async {
             switch (state.page) {
               case NavigationBarPage.preview:
+                _pageController.jumpToPage(state.page.index);
               case NavigationBarPage.edit:
                 break;
               case NavigationBarPage.more:
