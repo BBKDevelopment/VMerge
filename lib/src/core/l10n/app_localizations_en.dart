@@ -90,4 +90,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get brown => 'Brown';
+
+  @override
+  String get settings => 'Settings';
+
+  @override
+  String get saveVideo => 'Save Video';
 }

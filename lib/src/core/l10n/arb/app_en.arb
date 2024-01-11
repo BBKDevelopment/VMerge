@@ -28,5 +28,7 @@
     "lime": "Lime",
     "yellow": "Yellow",
     "orange": "Orange",
-    "brown": "Brown"
+    "brown": "Brown",
+    "settings": "Settings",
+    "saveVideo": "Save Video"
 }

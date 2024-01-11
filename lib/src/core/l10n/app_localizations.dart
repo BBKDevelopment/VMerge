@@ -264,6 +264,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Brown'**
   String get brown;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @saveVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Video'**
+  String get saveVideo;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
