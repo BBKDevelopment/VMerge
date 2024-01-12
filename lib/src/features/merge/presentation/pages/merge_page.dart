@@ -11,7 +11,7 @@ import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/no_video_warning.dart';
 import 'package:vmerge/src/core/core.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
@@ -21,30 +21,30 @@ part '../widgets/settings_modal_bottom_sheet.dart';
 part '../widgets/video_player.dart';
 part '../widgets/video_thumbnail.dart';
 
-class EditPage extends StatelessWidget {
-  const EditPage({super.key});
+class MergePage extends StatelessWidget {
+  const MergePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => EditCubit(
-        const EditInitial(),
+      create: (_) => MergeCubit(
+        const MergeInitial(),
         firstVideoPlayerService: getIt<VideoPlayerService>(),
         secondVideoPlayerService: getIt<VideoPlayerService>(),
       ),
-      child: const _EditView(),
+      child: const _MergeView(),
     );
   }
 }
 
-class _EditView extends StatefulWidget {
-  const _EditView();
+class _MergeView extends StatefulWidget {
+  const _MergeView();
 
   @override
-  State<_EditView> createState() => _EditViewState();
+  State<_MergeView> createState() => _MergeViewState();
 }
 
-class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
+class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
   late final AnimationController _animationController;
   late final Animation<double> _animation;
   late final AnimatedControlButtonController _animatedControlButtonController;
@@ -90,28 +90,28 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                     child: child,
                   );
                 },
-                child: BlocConsumer<EditCubit, EditState>(
+                child: BlocConsumer<MergeCubit, MergeState>(
                   listener: (context, state) {
                     switch (state) {
-                      case EditInitial():
+                      case MergeInitial():
                         break;
-                      case EditLoading():
+                      case MergeLoading():
                         break;
-                      case EditLoaded():
+                      case MergeLoaded():
                         break;
-                      case EditError():
+                      case MergeError():
                         break;
                     }
                   },
                   buildWhen: (previous, current) {
-                    if (previous is EditError) return false;
-                    if (current is EditError) return false;
+                    if (previous is MergeError) return false;
+                    if (current is MergeError) return false;
 
                     return true;
                   },
                   builder: (context, state) {
                     switch (state) {
-                      case EditInitial():
+                      case MergeInitial():
                         return NoVideoWarning(
                           onOpenPicker: () {
                             context
@@ -119,11 +119,11 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                                 .updatePage(NavigationBarPage.preview);
                           },
                         );
-                      case EditLoading():
+                      case MergeLoading():
                         return const Center(
                           child: CircularProgressIndicator(),
                         );
-                      case EditLoaded():
+                      case MergeLoaded():
                         return _VideoPlayer(
                           videoPlayerController: state.videoPlayerController,
                           animatedControlButtonController:
@@ -132,13 +132,13 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                           videoHeight: state.videoHeight,
                           onTap: () {
                             if (state.isVideoPlaying) {
-                              context.read<EditCubit>().stopVideo();
+                              context.read<MergeCubit>().stopVideo();
                             } else {
-                              context.read<EditCubit>().playVideo();
+                              context.read<MergeCubit>().playVideo();
                             }
                           },
                         );
-                      case EditError():
+                      case MergeError():
                         return const SizedBox.shrink();
                     }
                   },
@@ -161,10 +161,10 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
         const SizedBox(height: AppPadding.medium),
         SizedBox(
           height: 120,
-          child: BlocBuilder<EditCubit, EditState>(
+          child: BlocBuilder<MergeCubit, MergeState>(
             builder: (context, state) {
               switch (state) {
-                case EditInitial():
+                case MergeInitial():
                   return ListView.separated(
                     scrollDirection: Axis.horizontal,
                     padding: EdgeInsets.zero,
@@ -177,11 +177,11 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                       return const SizedBox(width: AppPadding.medium);
                     },
                   );
-                case EditLoading():
+                case MergeLoading():
                   return const Center(
                     child: CircularProgressIndicator(),
                   );
-                case EditLoaded():
+                case MergeLoaded():
                   return ListView(
                     scrollDirection: Axis.horizontal,
                     children: [
@@ -189,7 +189,7 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                         VideoThumbnail(metadata: metadata),
                     ],
                   );
-                case EditError():
+                case MergeError():
                   return const SizedBox.shrink();
               }
             },

@@ -1,12 +1,12 @@
-part of '../pages/edit_page.dart';
+part of '../pages/merge_page.dart';
 
 class _ControlButtons extends StatelessWidget {
   const _ControlButtons();
 
   void _onTapSettings(BuildContext context) {
-    if (context.read<EditCubit>().state is! EditLoaded) return;
+    if (context.read<MergeCubit>().state is! MergeLoaded) return;
 
-    context.read<EditCubit>().stopVideo();
+    context.read<MergeCubit>().stopVideo();
 
     showModalBottomSheet<void>(
       backgroundColor: Colors.transparent,
@@ -24,7 +24,7 @@ class _ControlButtons extends StatelessWidget {
       children: [
         Expanded(
           child: FilledButton.tonalIcon(
-            onPressed: context.read<EditCubit>().state is EditLoaded
+            onPressed: context.read<MergeCubit>().state is MergeLoaded
                 ? () => _onTapSettings(context)
                 : null,
             label: Text(context.l10n.settings),

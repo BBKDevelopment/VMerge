@@ -7,10 +7,10 @@ import 'dart:developer';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player_service/video_player_service.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 
-final class EditCubit extends Cubit<EditState> {
-  EditCubit(
+final class MergeCubit extends Cubit<MergeState> {
+  MergeCubit(
     super.initialState, {
     required VideoPlayerService firstVideoPlayerService,
     required VideoPlayerService secondVideoPlayerService,
@@ -21,7 +21,7 @@ final class EditCubit extends Cubit<EditState> {
   final VideoPlayerService _secondVideoPlayerService;
 
   VoidCallback get _firstVideoPlayerListener => () {
-        if (state is! EditLoaded) return;
+        if (state is! MergeLoaded) return;
         if (_firstVideoPlayerService.position.inSeconds !=
             _firstVideoPlayerService.duration.inSeconds) return;
 
@@ -30,7 +30,7 @@ final class EditCubit extends Cubit<EditState> {
           ..pause();
 
         emit(
-          (state as EditLoaded).copyWith(
+          (state as MergeLoaded).copyWith(
             activeVideoIndex: ActiveVideoIndex.two,
             videoPlayerController: _secondVideoPlayerService.controller,
             videoHeight: _secondVideoPlayerService.height,
@@ -43,7 +43,7 @@ final class EditCubit extends Cubit<EditState> {
       };
 
   VoidCallback get _secondVideoPlayerListener => () {
-        if (state is! EditLoaded) return;
+        if (state is! MergeLoaded) return;
         if (_secondVideoPlayerService.position.inSeconds !=
             _secondVideoPlayerService.duration.inSeconds) return;
 
@@ -52,7 +52,7 @@ final class EditCubit extends Cubit<EditState> {
           ..pause();
 
         emit(
-          (state as EditLoaded).copyWith(
+          (state as MergeLoaded).copyWith(
             activeVideoIndex: ActiveVideoIndex.one,
             videoPlayerController: _firstVideoPlayerService.controller,
             videoHeight: _firstVideoPlayerService.height,
@@ -64,11 +64,11 @@ final class EditCubit extends Cubit<EditState> {
 
   Future<void> loadVideoMetadatas(List<VideoMetadata> metadatas) async {
     if (metadatas.length != 2) {
-      emit(const EditError());
+      emit(const MergeError());
       return;
     }
 
-    emit(const EditLoading());
+    emit(const MergeLoading());
 
     try {
       await Future.wait([
@@ -82,7 +82,7 @@ final class EditCubit extends Cubit<EditState> {
       }
 
       emit(
-        EditLoaded(
+        MergeLoaded(
           metadatas: metadatas,
           activeVideoIndex: ActiveVideoIndex.one,
           videoPlayerController: _firstVideoPlayerService.controller!,
@@ -97,19 +97,19 @@ final class EditCubit extends Cubit<EditState> {
     } on LoadVideoException catch (error, stackTrace) {
       log(
         'Could not initialize video player!',
-        name: '$EditCubit',
+        name: '$MergeCubit',
         error: error,
         stackTrace: stackTrace,
       );
 
-      emit(const EditError());
+      emit(const MergeError());
     }
   }
 
   Future<void> playVideo() async {
-    if (state is! EditLoaded) return;
+    if (state is! MergeLoaded) return;
 
-    final loadedState = state as EditLoaded;
+    final loadedState = state as MergeLoaded;
 
     _addVideoPlayerListeners();
 
@@ -125,14 +125,14 @@ final class EditCubit extends Cubit<EditState> {
     } on PlayVideoException catch (error, stackTrace) {
       log(
         'Could not play video!',
-        name: '$EditCubit',
+        name: '$MergeCubit',
         error: error,
         stackTrace: stackTrace,
       );
 
       _removeVideoPlayerListeners();
 
-      emit(const EditError());
+      emit(const MergeError());
 
       // Restores last success state.
       emit(loadedState);
@@ -140,9 +140,9 @@ final class EditCubit extends Cubit<EditState> {
   }
 
   Future<void> stopVideo() async {
-    if (state is! EditLoaded) return;
+    if (state is! MergeLoaded) return;
 
-    final loadedState = state as EditLoaded;
+    final loadedState = state as MergeLoaded;
 
     _removeVideoPlayerListeners();
 
@@ -158,12 +158,12 @@ final class EditCubit extends Cubit<EditState> {
     } on PauseVideoException catch (error, stackTrace) {
       log(
         'Could not stop video!',
-        name: '$EditCubit',
+        name: '$MergeCubit',
         error: error,
         stackTrace: stackTrace,
       );
 
-      emit(const EditError());
+      emit(const MergeError());
 
       // Restores last success state.
       emit(loadedState);
@@ -171,9 +171,9 @@ final class EditCubit extends Cubit<EditState> {
   }
 
   Future<void> setPlaybackSpeed(PlaybackSpeed speed) async {
-    if (state is! EditLoaded) return;
+    if (state is! MergeLoaded) return;
 
-    final loadedState = state as EditLoaded;
+    final loadedState = state as MergeLoaded;
 
     try {
       await Future.wait([
@@ -194,19 +194,19 @@ final class EditCubit extends Cubit<EditState> {
     } on SetVideoPlaybackSpeedException catch (error, stackTrace) {
       log(
         'Could not change the playback speed of the video!',
-        name: '$EditCubit',
+        name: '$MergeCubit',
         error: error,
         stackTrace: stackTrace,
       );
 
-      emit(const EditError());
+      emit(const MergeError());
 
       // Restores last success state.
       emit(loadedState);
     } on SeekVideoPositionException catch (error, stackTrace) {
       log(
         'Could not reset the video!',
-        name: '$EditCubit',
+        name: '$MergeCubit',
         error: error,
         stackTrace: stackTrace,
       );
@@ -223,9 +223,9 @@ final class EditCubit extends Cubit<EditState> {
   }
 
   Future<void> setVideoQuality(VideoQuality quality) async {
-    if (state is! EditLoaded) return;
+    if (state is! MergeLoaded) return;
 
-    (state as EditLoaded).copyWith(videoQuality: quality);
+    (state as MergeLoaded).copyWith(videoQuality: quality);
   }
 
   void _addVideoPlayerListeners() {

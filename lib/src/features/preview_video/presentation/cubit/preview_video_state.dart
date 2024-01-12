@@ -3,7 +3,7 @@
 // in the LICENSE file.
 
 import 'package:equatable/equatable.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 
 sealed class PreviewVideoState extends Equatable {
   const PreviewVideoState();

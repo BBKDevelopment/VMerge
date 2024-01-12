@@ -7,10 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:vmerge/src/core/core.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview_video/preview.dart';
+import 'package:vmerge/src/features/preview_video/preview_video.dart';
 
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({super.key});
@@ -93,7 +93,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
         },
         children: const [
           PreviewVideoPage(),
-          EditPage(),
+          MergePage(),
           MorePage(),
         ],
       ),

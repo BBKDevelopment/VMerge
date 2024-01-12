@@ -4,28 +4,28 @@
 
 import 'package:equatable/equatable.dart';
 import 'package:video_player/video_player.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 
-sealed class EditState extends Equatable {
-  const EditState();
+sealed class MergeState extends Equatable {
+  const MergeState();
 }
 
-final class EditInitial extends EditState {
-  const EditInitial();
+final class MergeInitial extends MergeState {
+  const MergeInitial();
 
   @override
   List<Object> get props => [];
 }
 
-final class EditLoading extends EditState {
-  const EditLoading();
+final class MergeLoading extends MergeState {
+  const MergeLoading();
 
   @override
   List<Object> get props => [];
 }
 
-final class EditLoaded extends EditState {
-  const EditLoaded({
+final class MergeLoaded extends MergeState {
+  const MergeLoaded({
     required this.metadatas,
     required this.activeVideoIndex,
     required this.videoPlayerController,
@@ -47,7 +47,7 @@ final class EditLoaded extends EditState {
   final VideoQuality videoQuality;
   final SaveModalBottomSheetStatus saveModalBottomSheetStatus;
 
-  EditLoaded copyWith({
+  MergeLoaded copyWith({
     List<VideoMetadata>? metadatas,
     ActiveVideoIndex? activeVideoIndex,
     VideoPlayerController? videoPlayerController,
@@ -58,7 +58,7 @@ final class EditLoaded extends EditState {
     VideoQuality? videoQuality,
     SaveModalBottomSheetStatus? saveModalBottomSheetStatus,
   }) {
-    return EditLoaded(
+    return MergeLoaded(
       metadatas: metadatas ?? this.metadatas,
       activeVideoIndex: activeVideoIndex ?? this.activeVideoIndex,
       videoPlayerController:
@@ -86,8 +86,8 @@ final class EditLoaded extends EditState {
       ];
 }
 
-final class EditError extends EditState {
-  const EditError();
+final class MergeError extends MergeState {
+  const MergeError();
 
   @override
   List<Object> get props => [];

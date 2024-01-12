@@ -8,7 +8,7 @@ import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview_video/preview.dart';
+import 'package:vmerge/src/features/preview_video/preview_video.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PreviewVideoPage extends StatelessWidget {
@@ -18,19 +18,19 @@ class PreviewVideoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<PreviewVideoCubit>(
       create: (_) => PreviewVideoCubit(const PreviewVideoLoading()),
-      child: const _PreviewView(),
+      child: const _PreviewVideoView(),
     );
   }
 }
 
-class _PreviewView extends StatefulWidget {
-  const _PreviewView();
+class _PreviewVideoView extends StatefulWidget {
+  const _PreviewVideoView();
 
   @override
-  State<_PreviewView> createState() => _PreviewViewState();
+  State<_PreviewVideoView> createState() => _PreviewVideoViewState();
 }
 
-class _PreviewViewState extends State<_PreviewView> {
+class _PreviewVideoViewState extends State<_PreviewVideoView> {
   @override
   void initState() {
     super.initState();

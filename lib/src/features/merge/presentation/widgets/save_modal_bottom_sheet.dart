@@ -2,18 +2,18 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
-part of '../pages/edit_page.dart';
+part of '../pages/merge_page.dart';
 
 class SaveModalBottomSheet extends StatelessWidget {
   const SaveModalBottomSheet({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final status = context.select<EditCubit, SaveModalBottomSheetStatus>(
+    final status = context.select<MergeCubit, SaveModalBottomSheetStatus>(
       (cubit) {
-        if (cubit.state is! EditLoaded) return SaveModalBottomSheetStatus.idle;
+        if (cubit.state is! MergeLoaded) return SaveModalBottomSheetStatus.idle;
 
-        return (cubit.state as EditLoaded).saveModalBottomSheetStatus;
+        return (cubit.state as MergeLoaded).saveModalBottomSheetStatus;
       },
     );
 

@@ -2,7 +2,7 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
-part of '../pages/edit_page.dart';
+part of '../pages/merge_page.dart';
 
 class SettingsModalBottomSheet extends StatelessWidget {
   const SettingsModalBottomSheet({super.key});

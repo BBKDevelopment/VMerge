@@ -6,8 +6,8 @@ import 'dart:io';
 
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
-import 'package:vmerge/src/features/preview_video/preview.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
+import 'package:vmerge/src/features/preview_video/preview_video.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 final class PreviewVideoCubit extends Cubit<PreviewVideoState> {

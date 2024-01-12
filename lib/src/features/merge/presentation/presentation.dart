@@ -3,4 +3,4 @@
 // in the LICENSE file.
 
 export 'cubits/cubits.dart';
-export 'pages/edit_page.dart';
+export 'pages/merge_page.dart';

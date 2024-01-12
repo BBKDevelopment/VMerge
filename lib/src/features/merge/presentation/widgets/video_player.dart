@@ -2,7 +2,7 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
-part of '../pages/edit_page.dart';
+part of '../pages/merge_page.dart';
 
 class _VideoPlayer extends StatelessWidget {
   const _VideoPlayer({
@@ -35,9 +35,9 @@ class _VideoPlayer extends StatelessWidget {
             ),
           ),
         ),
-        BlocSelector<EditCubit, EditState, bool>(
+        BlocSelector<MergeCubit, MergeState, bool>(
           selector: (state) {
-            if (state is! EditLoaded) return false;
+            if (state is! MergeLoaded) return false;
 
             return state.isVideoPlaying;
           },
