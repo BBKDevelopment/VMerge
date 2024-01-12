@@ -8,16 +8,16 @@ import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview/preview.dart';
+import 'package:vmerge/src/features/preview_video/preview.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-class PreviewPage extends StatelessWidget {
-  const PreviewPage({super.key});
+class PreviewVideoPage extends StatelessWidget {
+  const PreviewVideoPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PreviewCubit>(
-      create: (_) => PreviewCubit(const PreviewLoading()),
+    return BlocProvider<PreviewVideoCubit>(
+      create: (_) => PreviewVideoCubit(const PreviewVideoLoading()),
       child: const _PreviewView(),
     );
   }
@@ -57,29 +57,29 @@ class _PreviewViewState extends State<_PreviewView> {
 
     if (!context.mounted) return;
 
-    await context.read<PreviewCubit>().updateVideos(assets);
+    await context.read<PreviewVideoCubit>().updateVideos(assets);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: context.l10n.appName),
-      body: BlocConsumer<PreviewCubit, PreviewState>(
+      body: BlocConsumer<PreviewVideoCubit, PreviewVideoState>(
         listener: (context, state) {
           switch (state) {
-            case PreviewLoading():
+            case PreviewVideoLoading():
               _openAssetsPicker();
-            case PreviewLoaded():
+            case PreviewVideoLoaded():
               context
                   .read<NavigationCubit>()
                   .updatePage(NavigationBarPage.edit);
-            case PreviewError():
+            case PreviewVideoError():
               break;
           }
         },
         builder: (context, state) {
           switch (state) {
-            case PreviewLoading():
+            case PreviewVideoLoading():
               return Center(
                 child: SizedBox.square(
                   dimension: context.screenWidth / 4 / 3,
@@ -90,9 +90,9 @@ class _PreviewViewState extends State<_PreviewView> {
                   ),
                 ),
               );
-            case PreviewLoaded():
+            case PreviewVideoLoaded():
               return const SizedBox.shrink();
-            case PreviewError():
+            case PreviewVideoError():
               return NoVideoWarning(
                 onOpenPicker: _openAssetsPicker,
               );

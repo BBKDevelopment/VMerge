@@ -10,7 +10,7 @@ import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/edit/edit.dart';
 import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview/preview.dart';
+import 'package:vmerge/src/features/preview_video/preview.dart';
 
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({super.key});
@@ -92,7 +92,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
           // }
         },
         children: const [
-          PreviewPage(),
+          PreviewVideoPage(),
           EditPage(),
           MorePage(),
         ],

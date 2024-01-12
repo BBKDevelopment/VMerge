@@ -7,14 +7,14 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vmerge/src/features/edit/edit.dart';
-import 'package:vmerge/src/features/preview/preview.dart';
+import 'package:vmerge/src/features/preview_video/preview.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-final class PreviewCubit extends Cubit<PreviewState> {
-  PreviewCubit(super.initialState);
+final class PreviewVideoCubit extends Cubit<PreviewVideoState> {
+  PreviewVideoCubit(super.initialState);
 
   void resetVideos() {
-    emit(const PreviewLoading());
+    emit(const PreviewVideoLoading());
   }
 
   Future<void> updateVideos(List<AssetEntity>? assets) async {
@@ -35,9 +35,9 @@ final class PreviewCubit extends Cubit<PreviewState> {
         );
       }
 
-      emit(PreviewLoaded(metadatas: videos));
+      emit(PreviewVideoLoaded(metadatas: videos));
     } catch (_) {
-      emit(const PreviewError());
+      emit(const PreviewVideoError());
     }
   }
 

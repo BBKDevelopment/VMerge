@@ -5,19 +5,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:vmerge/src/features/edit/edit.dart';
 
-sealed class PreviewState extends Equatable {
-  const PreviewState();
+sealed class PreviewVideoState extends Equatable {
+  const PreviewVideoState();
 }
 
-final class PreviewLoading extends PreviewState {
-  const PreviewLoading();
+final class PreviewVideoLoading extends PreviewVideoState {
+  const PreviewVideoLoading();
 
   @override
   List<Object?> get props => [];
 }
 
-final class PreviewLoaded extends PreviewState {
-  const PreviewLoaded({required this.metadatas});
+final class PreviewVideoLoaded extends PreviewVideoState {
+  const PreviewVideoLoaded({required this.metadatas});
 
   final List<VideoMetadata> metadatas;
 
@@ -25,8 +25,8 @@ final class PreviewLoaded extends PreviewState {
   List<Object?> get props => [metadatas];
 }
 
-final class PreviewError extends PreviewState {
-  const PreviewError();
+final class PreviewVideoError extends PreviewVideoState {
+  const PreviewVideoError();
 
   @override
   List<Object?> get props => [];
