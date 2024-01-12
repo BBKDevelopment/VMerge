@@ -15,6 +15,7 @@ import 'package:vmerge/src/features/edit/edit.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
+part '../widgets/control_buttons.dart';
 part '../widgets/save_modal_bottom_sheet.dart';
 part '../widgets/settings_modal_bottom_sheet.dart';
 part '../widgets/video_player.dart';
@@ -65,20 +66,6 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
     super.dispose();
   }
 
-  void _onTapSettings() {
-    if (context.read<EditCubit>().state is! EditLoaded) return;
-
-    context.read<EditCubit>().stopVideo();
-
-    showModalBottomSheet<void>(
-      backgroundColor: Colors.transparent,
-      context: context,
-      useRootNavigator: true,
-      elevation: 4,
-      builder: (_) => const SettingsModalBottomSheet(),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,7 +82,7 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                     opacity: CurvedAnimation(
                       parent: _animation,
                       curve: const Interval(
-                        0.70,
+                        0,
                         1,
                         curve: Curves.easeInOutCubic,
                       ),
@@ -170,44 +157,7 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
       mainAxisSize: MainAxisSize.min,
       children: [
         const SizedBox(height: AppPadding.xSmall),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: FilledButton.tonalIcon(
-                onPressed: context.read<EditCubit>().state is EditLoaded
-                    ? _onTapSettings
-                    : null,
-                label: Text(context.l10n.settings),
-                icon: Assets.images.settings.svg(
-                  height: AppIconSize.xSmall,
-                  colorFilter: ColorFilter.mode(
-                    context.colorScheme.onSecondaryContainer,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: AppPadding.large,
-            ),
-            Expanded(
-              child: OutlinedButton.icon(
-                onPressed: context.read<EditCubit>().state is EditLoaded
-                    ? _onTapSettings
-                    : null,
-                label: Text(context.l10n.saveVideo),
-                icon: Assets.images.save.svg(
-                  height: AppIconSize.xSmall,
-                  colorFilter: ColorFilter.mode(
-                    context.colorScheme.onSecondaryContainer,
-                    BlendMode.srcIn,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
+        const _ControlButtons(),
         const SizedBox(height: AppPadding.medium),
         SizedBox(
           height: 120,
@@ -228,7 +178,9 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
                     },
                   );
                 case EditLoading():
-                  return const SizedBox.shrink();
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
                 case EditLoaded():
                   return ListView(
                     scrollDirection: Axis.horizontal,
@@ -244,28 +196,6 @@ class _EditViewState extends State<_EditView> with TickerProviderStateMixin {
           ),
         ),
       ],
-    );
-  }
-
-  SlideTransition _buildSlideTransition(
-    Widget? child, {
-    required Offset beginOffset,
-  }) {
-    return SlideTransition(
-      position: Tween<Offset>(
-        begin: beginOffset,
-        end: Offset.zero,
-      ).animate(
-        CurvedAnimation(
-          parent: _animation,
-          curve: const Interval(
-            0,
-            0.40,
-            curve: Curves.easeInOutCubic,
-          ),
-        ),
-      ),
-      child: child,
     );
   }
 }
