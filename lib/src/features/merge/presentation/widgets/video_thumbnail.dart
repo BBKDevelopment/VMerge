@@ -51,12 +51,16 @@ class _VideoThumbnail extends StatelessWidget {
         dimension: 120,
         child: Card(
           margin: const EdgeInsets.symmetric(vertical: AppPadding.xSmall),
+          clipBehavior: Clip.antiAlias,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
                 child: metadata != null
-                    ? Image.memory(metadata!.thumbnail!, fit: BoxFit.cover)
+                    ? Image.memory(
+                        metadata!.thumbnail!,
+                        fit: BoxFit.cover,
+                      )
                     : const Icon(
                         Icons.video_library_rounded,
                         size: AppIconSize.xLarge,

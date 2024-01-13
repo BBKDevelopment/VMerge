@@ -59,6 +59,14 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     )..forward();
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animatedControlButtonController = AnimatedControlButtonController();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final videoMetadatas = context.read<NavigationCubit>().state.arguments;
+      if (videoMetadatas == null) return;
+      if (videoMetadatas is! List<VideoMetadata>) return;
+
+      context.read<MergeCubit>().loadVideoMetadatas(videoMetadatas);
+    });
   }
 
   @override
@@ -74,6 +82,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
       body: Padding(
         padding: AppPadding.general,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
               child: AnimatedBuilder(
@@ -112,9 +121,9 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
                       case MergeInitial():
                         break;
                       case MergeLoading():
-                        break;
+                        _animationController.reset();
                       case MergeLoaded():
-                        break;
+                        _animationController.forward();
                       case MergeError():
                         break;
                     }
@@ -129,11 +138,9 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
                     switch (state) {
                       case MergeInitial():
                         return NoVideoWarning(
-                          onPressed: () {
-                            context
-                                .read<NavigationCubit>()
-                                .updatePage(NavigationBarPage.previewVideo);
-                          },
+                          onPressed: () => context
+                              .read<NavigationCubit>()
+                              .updatePage(NavigationBarPage.previewVideo),
                         );
                       case MergeLoading():
                         return const Center(

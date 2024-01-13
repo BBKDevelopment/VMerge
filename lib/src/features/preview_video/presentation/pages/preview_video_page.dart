@@ -90,9 +90,10 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                 _openAssetsPicker();
                 _animationController.reset();
               case PreviewVideoLoaded():
-                context
-                    .read<NavigationCubit>()
-                    .updatePage(NavigationBarPage.merge);
+                context.read<NavigationCubit>().updatePage(
+                      NavigationBarPage.merge,
+                      arguments: state.metadatas,
+                    );
               case PreviewVideoError():
                 _animationController.forward();
             }
@@ -144,8 +145,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                     );
                   },
                   child: NoVideoWarning(
-                    onPressed: () =>
-                        context.read<PreviewVideoCubit>().resetVideos(),
+                    onPressed: context.read<PreviewVideoCubit>().resetVideos,
                   ),
                 );
             }

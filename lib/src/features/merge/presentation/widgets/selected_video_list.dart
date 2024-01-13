@@ -33,14 +33,20 @@ class _SelectedVideoList extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             case MergeLoaded():
-              return ListView.builder(
+              return ListView.separated(
                 scrollDirection: Axis.horizontal,
+                padding: EdgeInsets.zero,
+                shrinkWrap: true,
+                itemCount: state.metadatas.length,
                 itemBuilder: (_, index) {
                   return _VideoThumbnail(
                     animation: animation,
                     index: index,
                     metadata: state.metadatas[index],
                   );
+                },
+                separatorBuilder: (_, __) {
+                  return const SizedBox(width: AppPadding.medium);
                 },
               );
             case MergeError():

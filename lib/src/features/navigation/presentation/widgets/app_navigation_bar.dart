@@ -108,9 +108,11 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
         ),
         child: BlocConsumer<NavigationCubit, NavigationState>(
           listener: (context, state) async {
+            _pageController.jumpToPage(state.page.index);
+
             switch (state.page) {
               case NavigationBarPage.previewVideo:
-                _pageController.jumpToPage(state.page.index);
+                break;
               case NavigationBarPage.merge:
                 break;
               case NavigationBarPage.more:

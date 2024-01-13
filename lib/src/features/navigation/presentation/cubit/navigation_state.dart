@@ -5,9 +5,10 @@
 import 'package:equatable/equatable.dart';
 
 final class NavigationState extends Equatable {
-  const NavigationState({required this.page});
+  const NavigationState({required this.page, this.arguments});
 
   final NavigationBarPage page;
+  final Object? arguments;
 
   @override
   List<Object?> get props => [page];

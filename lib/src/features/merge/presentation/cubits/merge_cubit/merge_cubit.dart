@@ -237,4 +237,12 @@ final class MergeCubit extends Cubit<MergeState> {
     _firstVideoPlayerService.removeListener(_firstVideoPlayerListener);
     _secondVideoPlayerService.removeListener(_secondVideoPlayerListener);
   }
+
+  @override
+  Future<void> close() {
+    _removeVideoPlayerListeners();
+    _firstVideoPlayerService.dispose();
+    _secondVideoPlayerService.dispose();
+    return super.close();
+  }
 }

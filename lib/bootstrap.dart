@@ -89,7 +89,7 @@ Future<void> setup() async {
     ..registerLazySingleton<UrlLauncherService>(
       () => const UrlLauncherService(),
     )
-    ..registerLazySingleton<VideoPlayerService>(
+    ..registerFactory<VideoPlayerService>(
       () => VideoPlayerService(options: VideoPlayerOptions()),
     );
 }
