@@ -19,7 +19,7 @@ class AppNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => NavigationCubit(
-        const NavigationState(page: NavigationBarPage.preview),
+        const NavigationState(page: NavigationBarPage.previewVideo),
       ),
       child: const _AppNavigationBarView(),
     );
@@ -66,9 +66,9 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
           context.read<NavigationCubit>().updatePage(page);
 
           switch (page) {
-            case NavigationBarPage.preview:
+            case NavigationBarPage.previewVideo:
               break;
-            case NavigationBarPage.edit:
+            case NavigationBarPage.merge:
               break;
             case NavigationBarPage.more:
               break;
@@ -109,9 +109,9 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
         child: BlocConsumer<NavigationCubit, NavigationState>(
           listener: (context, state) async {
             switch (state.page) {
-              case NavigationBarPage.preview:
+              case NavigationBarPage.previewVideo:
                 _pageController.jumpToPage(state.page.index);
-              case NavigationBarPage.edit:
+              case NavigationBarPage.merge:
                 break;
               case NavigationBarPage.more:
                 break;

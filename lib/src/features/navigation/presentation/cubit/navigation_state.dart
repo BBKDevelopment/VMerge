@@ -14,7 +14,7 @@ final class NavigationState extends Equatable {
 }
 
 enum NavigationBarPage {
-  preview,
-  edit,
+  previewVideo,
+  merge,
   more,
 }

@@ -9,6 +9,7 @@ import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/src/features/preview_video/preview_video.dart';
+import 'package:vmerge/utilities/utilities.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PreviewVideoPage extends StatelessWidget {
@@ -30,13 +31,29 @@ class _PreviewVideoView extends StatefulWidget {
   State<_PreviewVideoView> createState() => _PreviewVideoViewState();
 }
 
-class _PreviewVideoViewState extends State<_PreviewVideoView> {
+class _PreviewVideoViewState extends State<_PreviewVideoView>
+    with TickerProviderStateMixin {
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
+
   @override
   void initState() {
     super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: kEditPageInAnimationDuration,
+    );
+    _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _openAssetsPicker();
     });
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   Future<void> _openAssetsPicker() async {
@@ -71,12 +88,13 @@ class _PreviewVideoViewState extends State<_PreviewVideoView> {
             switch (state) {
               case PreviewVideoLoading():
                 _openAssetsPicker();
+                _animationController.reset();
               case PreviewVideoLoaded():
                 context
                     .read<NavigationCubit>()
-                    .updatePage(NavigationBarPage.edit);
+                    .updatePage(NavigationBarPage.merge);
               case PreviewVideoError():
-                break;
+                _animationController.forward();
             }
           },
           builder: (context, state) {
@@ -95,8 +113,40 @@ class _PreviewVideoViewState extends State<_PreviewVideoView> {
               case PreviewVideoLoaded():
                 return const SizedBox.shrink();
               case PreviewVideoError():
-                return NoVideoWarning(
-                  onOpenPicker: _openAssetsPicker,
+                return AnimatedBuilder(
+                  animation: _animation,
+                  builder: (context, child) {
+                    return FadeTransition(
+                      opacity: CurvedAnimation(
+                        parent: _animation,
+                        curve: const Interval(
+                          0,
+                          1,
+                          curve: Curves.easeOut,
+                        ),
+                      ),
+                      child: SlideTransition(
+                        position: Tween(
+                          begin: const Offset(0, -0.05),
+                          end: Offset.zero,
+                        ).animate(
+                          CurvedAnimation(
+                            parent: _animation,
+                            curve: const Interval(
+                              0,
+                              1,
+                              curve: Curves.easeOut,
+                            ),
+                          ),
+                        ),
+                        child: child,
+                      ),
+                    );
+                  },
+                  child: NoVideoWarning(
+                    onPressed: () =>
+                        context.read<PreviewVideoCubit>().resetVideos(),
+                  ),
                 );
             }
           },

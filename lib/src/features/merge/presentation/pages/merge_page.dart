@@ -129,10 +129,10 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
                     switch (state) {
                       case MergeInitial():
                         return NoVideoWarning(
-                          onOpenPicker: () {
+                          onPressed: () {
                             context
                                 .read<NavigationCubit>()
-                                .updatePage(NavigationBarPage.preview);
+                                .updatePage(NavigationBarPage.previewVideo);
                           },
                         );
                       case MergeLoading():

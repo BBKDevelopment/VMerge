@@ -4,10 +4,10 @@ import 'package:vmerge/src/core/core.dart';
 class NoVideoWarning extends StatelessWidget {
   const NoVideoWarning({
     super.key,
-    this.onOpenPicker,
+    this.onPressed,
   });
 
-  final VoidCallback? onOpenPicker;
+  final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
@@ -32,7 +32,7 @@ class NoVideoWarning extends StatelessWidget {
           ),
           const SizedBox(height: AppPadding.large),
           OutlinedButton(
-            onPressed: onOpenPicker,
+            onPressed: onPressed,
             child: Text(context.l10n.openPicker),
           ),
         ],
