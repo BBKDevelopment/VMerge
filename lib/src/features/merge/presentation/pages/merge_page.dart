@@ -15,7 +15,7 @@ import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
-part '../widgets/control_buttons.dart';
+part '../widgets/control_button_row.dart';
 part '../widgets/save_modal_bottom_sheet.dart';
 part '../widgets/selected_video_list.dart';
 part '../widgets/settings_modal_bottom_sheet.dart';
@@ -84,11 +84,26 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
                       parent: _animation,
                       curve: const Interval(
                         0,
-                        1,
-                        curve: Curves.easeInOutCubic,
+                        0.3,
+                        curve: Curves.easeOut,
                       ),
                     ),
-                    child: child,
+                    child: SlideTransition(
+                      position: Tween(
+                        begin: const Offset(0, -0.05),
+                        end: Offset.zero,
+                      ).animate(
+                        CurvedAnimation(
+                          parent: _animation,
+                          curve: const Interval(
+                            0,
+                            0.3,
+                            curve: Curves.easeOut,
+                          ),
+                        ),
+                      ),
+                      child: child,
+                    ),
                   );
                 },
                 child: BlocConsumer<MergeCubit, MergeState>(
@@ -146,10 +161,18 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            const SizedBox(height: AppPadding.xSmall),
-            const _ControlButtons(),
-            const SizedBox(height: AppPadding.medium),
-            const _SelectedVideoList(),
+            const SizedBox(
+              height: AppPadding.xSmall,
+            ),
+            _ControlButtonRow(
+              animation: _animation,
+            ),
+            const SizedBox(
+              height: AppPadding.medium,
+            ),
+            _SelectedVideoList(
+              animation: _animation,
+            ),
           ],
         ),
       ),

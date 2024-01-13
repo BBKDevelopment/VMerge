@@ -17,7 +17,7 @@ import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/copyright_text.dart';
-part '../widgets/more_page_options.dart';
+part '../widgets/more_page_option.dart';
 part '../widgets/theme_bottom_sheet.dart';
 
 class MorePage extends StatelessWidget {

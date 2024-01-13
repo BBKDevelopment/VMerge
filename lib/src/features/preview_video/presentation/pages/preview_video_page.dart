@@ -64,40 +64,43 @@ class _PreviewVideoViewState extends State<_PreviewVideoView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(title: context.l10n.appName),
-      body: BlocConsumer<PreviewVideoCubit, PreviewVideoState>(
-        listener: (context, state) {
-          switch (state) {
-            case PreviewVideoLoading():
-              _openAssetsPicker();
-            case PreviewVideoLoaded():
-              context
-                  .read<NavigationCubit>()
-                  .updatePage(NavigationBarPage.edit);
-            case PreviewVideoError():
-              break;
-          }
-        },
-        builder: (context, state) {
-          switch (state) {
-            case PreviewVideoLoading():
-              return Center(
-                child: SizedBox.square(
-                  dimension: context.screenWidth / 4 / 3,
-                  child: CircularProgressIndicator(
-                    valueColor: AlwaysStoppedAnimation<Color>(
-                      context.theme.iconTheme.color!,
+      body: Padding(
+        padding: AppPadding.general,
+        child: BlocConsumer<PreviewVideoCubit, PreviewVideoState>(
+          listener: (context, state) {
+            switch (state) {
+              case PreviewVideoLoading():
+                _openAssetsPicker();
+              case PreviewVideoLoaded():
+                context
+                    .read<NavigationCubit>()
+                    .updatePage(NavigationBarPage.edit);
+              case PreviewVideoError():
+                break;
+            }
+          },
+          builder: (context, state) {
+            switch (state) {
+              case PreviewVideoLoading():
+                return Center(
+                  child: SizedBox.square(
+                    dimension: context.screenWidth / 4 / 3,
+                    child: CircularProgressIndicator(
+                      valueColor: AlwaysStoppedAnimation<Color>(
+                        context.theme.iconTheme.color!,
+                      ),
                     ),
                   ),
-                ),
-              );
-            case PreviewVideoLoaded():
-              return const SizedBox.shrink();
-            case PreviewVideoError():
-              return NoVideoWarning(
-                onOpenPicker: _openAssetsPicker,
-              );
-          }
-        },
+                );
+              case PreviewVideoLoaded():
+                return const SizedBox.shrink();
+              case PreviewVideoError():
+                return NoVideoWarning(
+                  onOpenPicker: _openAssetsPicker,
+                );
+            }
+          },
+        ),
       ),
     );
   }

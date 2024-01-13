@@ -1,7 +1,9 @@
 part of '../pages/merge_page.dart';
 
 class _SelectedVideoList extends StatelessWidget {
-  const _SelectedVideoList();
+  const _SelectedVideoList({required this.animation});
+
+  final Animation<double> animation;
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +18,11 @@ class _SelectedVideoList extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
                 itemCount: 4,
-                itemBuilder: (_, __) {
-                  return const VideoThumbnail();
+                itemBuilder: (_, index) {
+                  return _VideoThumbnail(
+                    animation: animation,
+                    index: index,
+                  );
                 },
                 separatorBuilder: (_, __) {
                   return const SizedBox(width: AppPadding.medium);
@@ -28,12 +33,15 @@ class _SelectedVideoList extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             case MergeLoaded():
-              return ListView(
+              return ListView.builder(
                 scrollDirection: Axis.horizontal,
-                children: [
-                  for (final metadata in state.metadatas)
-                    VideoThumbnail(metadata: metadata),
-                ],
+                itemBuilder: (_, index) {
+                  return _VideoThumbnail(
+                    animation: animation,
+                    index: index,
+                    metadata: state.metadatas[index],
+                  );
+                },
               );
             case MergeError():
               return const SizedBox.shrink();

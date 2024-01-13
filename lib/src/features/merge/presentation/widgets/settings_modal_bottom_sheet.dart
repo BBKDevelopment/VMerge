@@ -4,8 +4,8 @@
 
 part of '../pages/merge_page.dart';
 
-class SettingsModalBottomSheet extends StatelessWidget {
-  const SettingsModalBottomSheet({super.key});
+class _SettingsModalBottomSheet extends StatelessWidget {
+  const _SettingsModalBottomSheet();
 
   @override
   Widget build(BuildContext context) {
