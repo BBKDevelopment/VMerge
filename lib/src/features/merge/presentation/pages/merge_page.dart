@@ -17,6 +17,7 @@ import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/control_buttons.dart';
 part '../widgets/save_modal_bottom_sheet.dart';
+part '../widgets/selected_video_list.dart';
 part '../widgets/settings_modal_bottom_sheet.dart';
 part '../widgets/video_player.dart';
 part '../widgets/video_thumbnail.dart';
@@ -74,7 +75,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
         padding: AppPadding.general,
         child: Column(
           children: [
-            Flexible(
+            Expanded(
               child: AnimatedBuilder(
                 animation: _animation,
                 builder: (context, child) {
@@ -145,57 +146,13 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            _buildControlPanel(context),
+            const SizedBox(height: AppPadding.xSmall),
+            const _ControlButtons(),
+            const SizedBox(height: AppPadding.medium),
+            const _SelectedVideoList(),
           ],
         ),
       ),
-    );
-  }
-
-  Column _buildControlPanel(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        const SizedBox(height: AppPadding.xSmall),
-        const _ControlButtons(),
-        const SizedBox(height: AppPadding.medium),
-        SizedBox(
-          height: 120,
-          child: BlocBuilder<MergeCubit, MergeState>(
-            builder: (context, state) {
-              switch (state) {
-                case MergeInitial():
-                  return ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.zero,
-                    shrinkWrap: true,
-                    itemCount: 4,
-                    itemBuilder: (_, __) {
-                      return const VideoThumbnail();
-                    },
-                    separatorBuilder: (_, __) {
-                      return const SizedBox(width: AppPadding.medium);
-                    },
-                  );
-                case MergeLoading():
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                case MergeLoaded():
-                  return ListView(
-                    scrollDirection: Axis.horizontal,
-                    children: [
-                      for (final metadata in state.metadatas)
-                        VideoThumbnail(metadata: metadata),
-                    ],
-                  );
-                case MergeError():
-                  return const SizedBox.shrink();
-              }
-            },
-          ),
-        ),
-      ],
     );
   }
 }
