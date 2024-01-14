@@ -78,110 +78,47 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: context.l10n.appName),
-      body: Padding(
-        padding: AppPadding.general,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: AnimatedBuilder(
-                animation: _animation,
-                builder: (context, child) {
-                  return FadeTransition(
-                    opacity: CurvedAnimation(
-                      parent: _animation,
-                      curve: const Interval(
-                        0,
-                        0.3,
-                        curve: Curves.easeOut,
-                      ),
-                    ),
-                    child: SlideTransition(
-                      position: Tween(
-                        begin: const Offset(0, -0.05),
-                        end: Offset.zero,
-                      ).animate(
-                        CurvedAnimation(
-                          parent: _animation,
-                          curve: const Interval(
-                            0,
-                            0.3,
-                            curve: Curves.easeOut,
-                          ),
-                        ),
-                      ),
-                      child: child,
-                    ),
-                  );
-                },
-                child: BlocConsumer<MergeCubit, MergeState>(
-                  listener: (context, state) {
-                    switch (state) {
-                      case MergeInitial():
-                        break;
-                      case MergeLoading():
-                        _animationController.reset();
-                      case MergeLoaded():
-                        _animationController.forward();
-                      case MergeError():
-                        break;
-                    }
-                  },
-                  buildWhen: (previous, current) {
-                    if (previous is MergeError) return false;
-                    if (current is MergeError) return false;
-
-                    return true;
-                  },
-                  builder: (context, state) {
-                    switch (state) {
-                      case MergeInitial():
-                        return NoVideoWarning(
-                          onPressed: () => context
-                              .read<NavigationCubit>()
-                              .updatePage(NavigationBarPage.previewVideo),
-                        );
-                      case MergeLoading():
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      case MergeLoaded():
-                        return _VideoPlayer(
-                          videoPlayerController: state.videoPlayerController,
-                          animatedControlButtonController:
-                              _animatedControlButtonController,
-                          videoWidth: state.videoWidth,
-                          videoHeight: state.videoHeight,
-                          onTap: () {
-                            if (state.isVideoPlaying) {
-                              context.read<MergeCubit>().stopVideo();
-                            } else {
-                              context.read<MergeCubit>().playVideo();
-                            }
-                          },
-                        );
-                      case MergeError():
-                        return const SizedBox.shrink();
-                    }
-                  },
+    return BlocListener<MergeCubit, MergeState>(
+      listener: (context, state) {
+        switch (state) {
+          case MergeInitial():
+            break;
+          case MergeLoading():
+            _animationController.reset();
+          case MergeLoaded():
+            _animationController.forward();
+          case MergeError():
+            break;
+        }
+      },
+      child: Scaffold(
+        appBar: CustomAppBar(title: context.l10n.appName),
+        body: Padding(
+          padding: AppPadding.general,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: _VideoPlayer(
+                  animation: _animation,
+                  animatedControlButtonController:
+                      _animatedControlButtonController,
                 ),
               ),
-            ),
-            const SizedBox(
-              height: AppPadding.medium,
-            ),
-            _ControlButtonRow(
-              animation: _animation,
-            ),
-            const SizedBox(
-              height: AppPadding.medium,
-            ),
-            _SelectedVideoList(
-              animation: _animation,
-            ),
-          ],
+              const SizedBox(
+                height: AppPadding.medium,
+              ),
+              _ControlButtonRow(
+                animation: _animation,
+              ),
+              const SizedBox(
+                height: AppPadding.medium,
+              ),
+              _SelectedVideoList(
+                animation: _animation,
+              ),
+            ],
+          ),
         ),
       ),
     );

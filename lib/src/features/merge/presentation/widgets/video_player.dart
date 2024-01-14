@@ -6,59 +6,116 @@ part of '../pages/merge_page.dart';
 
 class _VideoPlayer extends StatelessWidget {
   const _VideoPlayer({
-    required this.videoPlayerController,
+    required this.animation,
     required this.animatedControlButtonController,
-    required this.videoWidth,
-    required this.videoHeight,
-    required this.onTap,
   });
 
-  final VideoPlayerController videoPlayerController;
+  final Animation<double> animation;
   final AnimatedControlButtonController animatedControlButtonController;
-  final double videoWidth;
-  final double videoHeight;
-  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Positioned.fill(
-          child: FittedBox(
-            child: SizedBox(
-              width: videoWidth,
-              height: videoHeight,
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(4),
-                child: VideoPlayer(videoPlayerController),
-              ),
+    return AnimatedBuilder(
+      animation: animation,
+      builder: (context, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(
+            parent: animation,
+            curve: const Interval(
+              0,
+              0.3,
+              curve: Curves.easeOut,
             ),
           ),
-        ),
-        BlocSelector<MergeCubit, MergeState, bool>(
-          selector: (state) {
-            if (state is! MergeLoaded) return false;
-
-            return state.isVideoPlaying;
-          },
-          builder: (context, state) {
-            return GestureDetector(
-              onTap: onTap,
-              child: Container(
-                alignment: Alignment.center,
-                color: Colors.transparent,
-                child: AnimatedOpacity(
-                  duration: const Duration(milliseconds: 500),
-                  opacity: state ? 0.0 : 1.0,
-                  child: AnimatedControlButton(
-                    controller: animatedControlButtonController,
-                  ),
+          child: SlideTransition(
+            position: Tween(
+              begin: const Offset(0, -0.05),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: const Interval(
+                  0,
+                  0.3,
+                  curve: Curves.easeOut,
                 ),
               ),
-            );
-          },
-        ),
-      ],
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: BlocBuilder<MergeCubit, MergeState>(
+        buildWhen: (previous, current) {
+          if (previous is MergeError) return false;
+          if (current is MergeError) return false;
+
+          return true;
+        },
+        builder: (context, state) {
+          switch (state) {
+            case MergeInitial():
+              return NoVideoWarning(
+                onPressed: () => context
+                    .read<NavigationCubit>()
+                    .updatePage(NavigationBarPage.previewVideo),
+              );
+            case MergeLoading():
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            case MergeLoaded():
+              return Stack(
+                children: [
+                  Positioned.fill(
+                    child: FittedBox(
+                      child: SizedBox(
+                        width: state.videoWidth,
+                        height: state.videoHeight,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(4),
+                          child: VideoPlayer(state.videoPlayerController),
+                        ),
+                      ),
+                    ),
+                  ),
+                  BlocSelector<MergeCubit, MergeState, bool>(
+                    selector: (state) {
+                      if (state is! MergeLoaded) return false;
+
+                      return state.isVideoPlaying;
+                    },
+                    builder: (context, isVideoPlaying) {
+                      return GestureDetector(
+                        onTap: () {
+                          if (isVideoPlaying) {
+                            context.read<MergeCubit>().stopVideo();
+                          } else {
+                            context.read<MergeCubit>().playVideo();
+                          }
+                        },
+                        child: Container(
+                          alignment: Alignment.center,
+                          color: Colors.transparent,
+                          child: AnimatedOpacity(
+                            duration: const Duration(milliseconds: 500),
+                            opacity: isVideoPlaying ? 0.0 : 1.0,
+                            child: AnimatedControlButton(
+                              controller: animatedControlButtonController,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ],
+              );
+
+            case MergeError():
+              return const SizedBox.shrink();
+          }
+        },
+      ),
     );
   }
 }
