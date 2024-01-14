@@ -48,9 +48,12 @@ class _VideoThumbnail extends StatelessWidget {
         );
       },
       child: SizedBox.square(
-        dimension: 120,
+        dimension: context.screenWidth / 4,
         child: Card(
           margin: const EdgeInsets.symmetric(vertical: AppPadding.xSmall),
+          shape: RoundedRectangleBorder(
+            borderRadius: AppBorderRadius.circularXSmall,
+          ),
           clipBehavior: Clip.antiAlias,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,

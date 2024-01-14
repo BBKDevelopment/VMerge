@@ -1,12 +1,7 @@
 import 'package:flutter/widgets.dart';
 
-/// {@template app_padding}
 /// A class that provides constant padding values to use app-wide.
-/// {@endtemplate}
 abstract final class AppPadding {
-  /// {@macro app_padding}
-  const AppPadding();
-
   /// Returns value of `4.0` as [double].
   static const xSmall = 4.0;
 
