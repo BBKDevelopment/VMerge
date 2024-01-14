@@ -50,7 +50,7 @@ class _VideoThumbnail extends StatelessWidget {
       child: SizedBox.square(
         dimension: context.screenWidth / 4,
         child: Card(
-          margin: const EdgeInsets.symmetric(vertical: AppPadding.xSmall),
+          margin: EdgeInsets.zero,
           shape: RoundedRectangleBorder(
             borderRadius: AppBorderRadius.circularXSmall,
           ),

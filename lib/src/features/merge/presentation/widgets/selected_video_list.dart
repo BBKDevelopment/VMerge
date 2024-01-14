@@ -8,7 +8,7 @@ class _SelectedVideoList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 120,
+      height: context.screenWidth / 4,
       child: BlocBuilder<MergeCubit, MergeState>(
         builder: (context, state) {
           switch (state) {

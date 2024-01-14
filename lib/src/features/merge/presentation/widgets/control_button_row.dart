@@ -58,7 +58,7 @@ class _ControlButtonRow extends StatelessWidget {
               );
             },
             child: FilledButton.tonalIcon(
-              onPressed: context.read<MergeCubit>().state is MergeLoaded
+              onPressed: context.watch<MergeCubit>().state is MergeLoaded
                   ? () => _onTapSettings(context)
                   : null,
               label: Text(context.l10n.settings),

@@ -170,7 +170,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
               ),
             ),
             const SizedBox(
-              height: AppPadding.xSmall,
+              height: AppPadding.medium,
             ),
             _ControlButtonRow(
               animation: _animation,
