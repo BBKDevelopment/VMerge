@@ -96,7 +96,6 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
         body: Padding(
           padding: AppPadding.general,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Expanded(
                 child: _VideoPlayer(

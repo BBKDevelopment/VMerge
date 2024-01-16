@@ -73,7 +73,7 @@ class _VideoPlayer extends StatelessWidget {
                         width: state.videoWidth,
                         height: state.videoHeight,
                         child: ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: AppBorderRadius.circularXSmall,
                           child: VideoPlayer(state.videoPlayerController),
                         ),
                       ),
@@ -89,8 +89,10 @@ class _VideoPlayer extends StatelessWidget {
                       return GestureDetector(
                         onTap: () {
                           if (isVideoPlaying) {
+                            animatedControlButtonController.reverse();
                             context.read<MergeCubit>().stopVideo();
                           } else {
+                            animatedControlButtonController.forward();
                             context.read<MergeCubit>().playVideo();
                           }
                         },
