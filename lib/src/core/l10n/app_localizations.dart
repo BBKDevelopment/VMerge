@@ -276,6 +276,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Save Video'**
   String get saveVideo;
+
+  /// No description provided for @sound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get sound;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

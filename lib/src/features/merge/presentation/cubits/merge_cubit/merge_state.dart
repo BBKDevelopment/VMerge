@@ -32,6 +32,7 @@ final class MergeLoaded extends MergeState {
     required this.videoHeight,
     required this.videoWidth,
     required this.isVideoPlaying,
+    required this.isSoundOn,
     required this.playbackSpeed,
     required this.videoQuality,
     required this.saveModalBottomSheetStatus,
@@ -43,6 +44,7 @@ final class MergeLoaded extends MergeState {
   final double videoWidth;
   final double videoHeight;
   final bool isVideoPlaying;
+  final bool isSoundOn;
   final PlaybackSpeed playbackSpeed;
   final VideoQuality videoQuality;
   final SaveModalBottomSheetStatus saveModalBottomSheetStatus;
@@ -54,6 +56,7 @@ final class MergeLoaded extends MergeState {
     double? videoWidth,
     double? videoHeight,
     bool? isVideoPlaying,
+    bool? isSoundOn,
     PlaybackSpeed? playbackSpeed,
     VideoQuality? videoQuality,
     SaveModalBottomSheetStatus? saveModalBottomSheetStatus,
@@ -66,6 +69,7 @@ final class MergeLoaded extends MergeState {
       videoWidth: videoWidth ?? this.videoWidth,
       videoHeight: videoHeight ?? this.videoHeight,
       isVideoPlaying: isVideoPlaying ?? this.isVideoPlaying,
+      isSoundOn: isSoundOn ?? this.isSoundOn,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       videoQuality: videoQuality ?? this.videoQuality,
       saveModalBottomSheetStatus:
@@ -81,6 +85,7 @@ final class MergeLoaded extends MergeState {
         videoWidth,
         videoHeight,
         isVideoPlaying,
+        isSoundOn,
         playbackSpeed,
         videoQuality,
       ];

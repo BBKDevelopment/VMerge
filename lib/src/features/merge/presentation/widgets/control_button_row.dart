@@ -12,12 +12,14 @@ class _ControlButtonRow extends StatelessWidget {
 
     context.read<MergeCubit>().stopVideo();
 
-    showModalBottomSheet<void>(
-      backgroundColor: Colors.transparent,
+    showCupertinoModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
-      elevation: 4,
-      builder: (_) => const _SettingsModalBottomSheet(),
+      topRadius: Radius.zero,
+      builder: (_) => BlocProvider.value(
+        value: BlocProvider.of<MergeCubit>(context),
+        child: const Material(child: _SettingsModalBottomSheet()),
+      ),
     );
   }
 
@@ -62,11 +64,14 @@ class _ControlButtonRow extends StatelessWidget {
                   ? () => _onTapSettings(context)
                   : null,
               label: Text(context.l10n.settings),
-              icon: Assets.images.settings.svg(
-                height: AppIconSize.xSmall,
-                colorFilter: ColorFilter.mode(
-                  context.colorScheme.onSecondaryContainer,
-                  BlendMode.srcIn,
+              icon: Hero(
+                tag: 'settings',
+                child: Assets.images.settings.svg(
+                  height: AppIconSize.xSmall,
+                  colorFilter: ColorFilter.mode(
+                    context.colorScheme.onSecondaryContainer,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),

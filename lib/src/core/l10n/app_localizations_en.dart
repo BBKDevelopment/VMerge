@@ -96,4 +96,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get saveVideo => 'Save Video';
+
+  @override
+  String get sound => 'Sound';
 }

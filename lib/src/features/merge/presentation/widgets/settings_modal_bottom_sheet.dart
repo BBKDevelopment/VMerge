@@ -9,99 +9,165 @@ class _SettingsModalBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
-      child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 22),
-        decoration: const BoxDecoration(
-          color: kPrimaryColor,
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(22),
-            topRight: Radius.circular(22),
-          ),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        border: Border(
+          top: BorderSide(color: context.theme.dividerColor),
         ),
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const SizedBox(width: kIconSize),
-                  const Text(
-                    kSettingsText,
-                    style: kBoldTextStyle,
-                  ),
-                  InkWell(
-                    onTap: Navigator.of(context).pop,
-                    overlayColor: MaterialStateProperty.all(Colors.transparent),
-                    highlightColor: Colors.transparent,
-                    child: SvgPicture.asset(
-                      kCloseIconPath,
-                      width: kIconSize,
+      ),
+      child: Padding(
+        padding: AppPadding.general,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(width: AppButtonSize.small),
+                Hero(
+                  tag: 'settings',
+                  child: Assets.images.settings.svg(
+                    height: AppIconSize.xLarge,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
                     ),
                   ),
-                ],
-              ),
-              const SizedBox(height: 32),
-              const Text(kVideoSpeedText, style: kRegularTextStyle),
-              const SizedBox(height: 32),
-              _getSliderTheme(
-                context: context,
-                child: Slider(
-                  value: 1, //_editPageController.speedValue,
-                  max: 7,
-                  divisions: 7,
-                  label: '_editPageController.speedValueText',
-                  onChanged: (_) {}, //_editPageController.setSpeed,
                 ),
-              ),
-              const SizedBox(height: 32),
-              const Text(kVideoQualityText, style: kRegularTextStyle),
-              const SizedBox(height: 32),
-              _getSliderTheme(
-                context: context,
-                child: Slider(
-                  value: 1, //_editPageController.qualityValue,
-                  max: 6,
-                  divisions: 6,
-                  label: '_editPageController.qualityValueText',
-                  onChanged: (_) {}, //_editPageController.setQuality,
+                SizedBox.square(
+                  dimension: AppButtonSize.small,
+                  child: IconButton.filledTonal(
+                    onPressed: Navigator.of(context).pop,
+                    icon: Assets.images.close.svg(
+                      height: AppIconSize.xxSmall,
+                      colorFilter: ColorFilter.mode(
+                        context.colorScheme.onSecondaryContainer,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 20),
-            ],
-          ),
+              ],
+            ),
+            const SizedBox(height: AppPadding.medium),
+            Text(
+              context.l10n.settings,
+              style: context.textTheme.titleLarge,
+            ),
+            const SizedBox(height: AppPadding.xxLarge),
+            const _SoundSelector(),
+            const Divider(height: AppPadding.large),
+            const _ResolutionSelector(),
+          ],
         ),
       ),
     );
   }
+}
 
-  SliderTheme _getSliderTheme({
-    required BuildContext context,
-    required Widget child,
-  }) {
-    return SliderTheme(
-      data: SliderTheme.of(context).copyWith(
-        activeTrackColor: kPrimaryWhiteColor,
-        inactiveTrackColor: kPrimaryWhiteColor,
-        trackShape: const RoundedRectSliderTrackShape(),
-        trackHeight: 2,
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
-        thumbColor: kPrimaryWhiteColor,
-        overlayColor: kPrimaryWhiteColor.withOpacity(0.3),
-        overlayShape: const RoundSliderOverlayShape(overlayRadius: 28),
-        tickMarkShape: const RoundSliderTickMarkShape(),
-        activeTickMarkColor: kPrimaryWhiteColor,
-        inactiveTickMarkColor: kPrimaryWhiteColor,
-        valueIndicatorShape: const PaddleSliderValueIndicatorShape(),
-        valueIndicatorColor: kPrimaryWhiteColor,
-        valueIndicatorTextStyle:
-            kSmallTextStyle.copyWith(color: kPrimaryColorDark),
-      ),
-      child: child,
+class _SoundSelector extends StatelessWidget {
+  const _SoundSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    final isSoundOn = context.select<MergeCubit, bool>((cubit) {
+      final state = cubit.state;
+
+      if (state is MergeLoaded) return state.isSoundOn;
+
+      return false;
+    });
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.l10n.sound,
+              style: context.textTheme.bodyMedium,
+            ),
+            Text(
+              context.l10n.on,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.theme.hintColor,
+              ),
+            ),
+          ],
+        ),
+        Switch(
+          value: isSoundOn,
+          onChanged: (isSoundOn) {
+            context.read<MergeCubit>().toggleSound(isSoundOn: isSoundOn);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _ResolutionSelector extends StatelessWidget {
+  const _ResolutionSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              'Resolution',
+              style: context.textTheme.bodyMedium,
+            ),
+            Text(
+              context.l10n.on,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.theme.hintColor,
+              ),
+            ),
+          ],
+        ),
+        Switch(
+          value: true,
+          onChanged: (value) {},
+        ),
+      ],
+    );
+  }
+}
+
+class _SpeedSelector extends StatelessWidget {
+  const _SpeedSelector();
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.l10n.sound,
+              style: context.textTheme.bodyMedium,
+            ),
+            Text(
+              context.l10n.on,
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.theme.hintColor,
+              ),
+            ),
+          ],
+        ),
+        Switch(
+          value: true,
+          onChanged: (value) {},
+        ),
+      ],
     );
   }
 }
