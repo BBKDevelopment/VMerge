@@ -34,7 +34,7 @@ final class MergeLoaded extends MergeState {
     required this.isVideoPlaying,
     required this.isSoundOn,
     required this.playbackSpeed,
-    required this.videoQuality,
+    required this.resolution,
     required this.saveModalBottomSheetStatus,
   });
 
@@ -46,7 +46,7 @@ final class MergeLoaded extends MergeState {
   final bool isVideoPlaying;
   final bool isSoundOn;
   final PlaybackSpeed playbackSpeed;
-  final VideoQuality videoQuality;
+  final Resolution resolution;
   final SaveModalBottomSheetStatus saveModalBottomSheetStatus;
 
   MergeLoaded copyWith({
@@ -58,7 +58,7 @@ final class MergeLoaded extends MergeState {
     bool? isVideoPlaying,
     bool? isSoundOn,
     PlaybackSpeed? playbackSpeed,
-    VideoQuality? videoQuality,
+    Resolution? resolution,
     SaveModalBottomSheetStatus? saveModalBottomSheetStatus,
   }) {
     return MergeLoaded(
@@ -71,7 +71,7 @@ final class MergeLoaded extends MergeState {
       isVideoPlaying: isVideoPlaying ?? this.isVideoPlaying,
       isSoundOn: isSoundOn ?? this.isSoundOn,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
-      videoQuality: videoQuality ?? this.videoQuality,
+      resolution: resolution ?? this.resolution,
       saveModalBottomSheetStatus:
           saveModalBottomSheetStatus ?? this.saveModalBottomSheetStatus,
     );
@@ -87,7 +87,7 @@ final class MergeLoaded extends MergeState {
         isVideoPlaying,
         isSoundOn,
         playbackSpeed,
-        videoQuality,
+        resolution,
       ];
 }
 
@@ -118,18 +118,20 @@ enum PlaybackSpeed {
   final double value;
 }
 
-enum VideoQuality {
-  veryLow(0),
-  low(1),
-  medium(2),
-  high(3),
-  veryHigh(4),
-  ultraHigh(5),
-  original(6);
+enum Resolution {
+  veryLow('240p', 240, 426),
+  low('360p', 360, 480),
+  medium('480p', 480, 640),
+  high('720p', 720, 1280),
+  veryHigh('1080p', 1080, 1920),
+  ultraHigh('1440p', 1440, 2560),
+  original('Original', null, null);
 
-  const VideoQuality(this.value);
+  const Resolution(this.value, this.height, this.width);
 
-  final int value;
+  final String value;
+  final double? height;
+  final double? width;
 }
 
 enum SaveModalBottomSheetStatus {

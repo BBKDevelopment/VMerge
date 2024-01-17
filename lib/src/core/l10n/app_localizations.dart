@@ -282,6 +282,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Sound'**
   String get sound;
+
+  /// No description provided for @original.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get original;
+
+  /// No description provided for @resolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution'**
+  String get resolution;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

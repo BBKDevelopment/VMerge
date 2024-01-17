@@ -99,4 +99,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get sound => 'Sound';
+
+  @override
+  String get original => 'Original';
+
+  @override
+  String get resolution => 'Resolution';
 }

@@ -31,5 +31,7 @@
     "brown": "Brown",
     "settings": "Settings",
     "saveVideo": "Save Video",
-    "sound": "Sound"
+    "sound": "Sound",
+    "original": "Original",
+    "resolution": "Resolution"
 }

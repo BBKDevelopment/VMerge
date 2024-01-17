@@ -73,7 +73,6 @@ class _SoundSelector extends StatelessWidget {
   Widget build(BuildContext context) {
     final isSoundOn = context.select<MergeCubit, bool>((cubit) {
       final state = cubit.state;
-
       if (state is MergeLoaded) return state.isSoundOn;
 
       return false;
@@ -111,8 +110,26 @@ class _SoundSelector extends StatelessWidget {
 class _ResolutionSelector extends StatelessWidget {
   const _ResolutionSelector();
 
+  String getSubtitle(BuildContext context, Resolution? resolution) {
+    if (resolution == null) return '';
+
+    final width = resolution.width?.toInt();
+    final height = resolution.height?.toInt();
+
+    if (width == null || height == null) return context.l10n.original;
+
+    return '${width}x$height';
+  }
+
   @override
   Widget build(BuildContext context) {
+    final resolution = context.select<MergeCubit, Resolution?>((cubit) {
+      final state = cubit.state;
+      if (state is MergeLoaded) return state.resolution;
+
+      return null;
+    });
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -120,20 +137,37 @@ class _ResolutionSelector extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Resolution',
+              context.l10n.resolution,
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              context.l10n.on,
+              getSubtitle(context, resolution),
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
             ),
           ],
         ),
-        Switch(
-          value: true,
-          onChanged: (value) {},
+        DropdownButton(
+          items: [
+            for (final resolution in Resolution.values)
+              DropdownMenuItem(
+                value: resolution,
+                alignment: Alignment.center,
+                child: Text(
+                  resolution == Resolution.original
+                      ? context.l10n.original
+                      : resolution.value,
+                ),
+              ),
+          ],
+          value: resolution,
+          onChanged: (resolution) {
+            if (resolution == null) return;
+
+            context.read<MergeCubit>().changeResolution(resolution);
+          },
+          underline: const SizedBox.shrink(),
         ),
       ],
     );

@@ -47,9 +47,7 @@ class _VideoPlayer extends StatelessWidget {
       },
       child: BlocBuilder<MergeCubit, MergeState>(
         buildWhen: (previous, current) {
-          if (previous is MergeError) return false;
           if (current is MergeError) return false;
-          if (previous is MergeLoaded) return false;
 
           return true;
         },
