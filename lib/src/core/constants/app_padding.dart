@@ -2,6 +2,9 @@ import 'package:flutter/widgets.dart';
 
 /// A class that provides constant padding values to use app-wide.
 abstract final class AppPadding {
+  /// Returns value of `2.0` as [double].
+  static const xxSmall = 2.0;
+
   /// Returns value of `4.0` as [double].
   static const xSmall = 4.0;
 
@@ -36,6 +39,9 @@ abstract final class AppPadding {
   static EdgeInsets get general =>
       const EdgeInsets.symmetric(horizontal: large, vertical: medium);
 
+  /// Returns [EdgeInsets] in which all edge insets are `2.0`.
+  static EdgeInsets get allXXSmall => const EdgeInsets.all(xxSmall);
+
   /// Returns [EdgeInsets] in which all edge insets are `4.0`.
   static EdgeInsets get allXSmall => const EdgeInsets.all(xSmall);
 
@@ -56,6 +62,10 @@ abstract final class AppPadding {
 
   /// Returns [EdgeInsets] in which all edge insets are `52.0`.
   static EdgeInsets get allXXXLarge => const EdgeInsets.all(xxxLarge);
+
+  /// Returns [EdgeInsets] in which the horizontal insets are `2.0`.
+  static EdgeInsets get horizontalXXSmall =>
+      const EdgeInsets.symmetric(horizontal: xxSmall);
 
   /// Returns [EdgeInsets] in which the horizontal insets are `4.0`.
   static EdgeInsets get horizontalXSmall =>
@@ -85,6 +95,10 @@ abstract final class AppPadding {
   static EdgeInsets get horizontalXXXLarge =>
       const EdgeInsets.symmetric(horizontal: xxxLarge);
 
+  /// Returns [EdgeInsets] in which the vertical insets are `2.0`.
+  static EdgeInsets get verticalXXSmall =>
+      const EdgeInsets.symmetric(vertical: xxSmall);
+
   /// Returns [EdgeInsets] in which the vertical insets are `4.0`.
   static EdgeInsets get verticalXSmall =>
       const EdgeInsets.symmetric(vertical: xSmall);
@@ -113,6 +127,9 @@ abstract final class AppPadding {
   static EdgeInsets get verticalXXXLarge =>
       const EdgeInsets.symmetric(vertical: xxxLarge);
 
+  /// Returns [EdgeInsets] in which the top inset is `2.0`.
+  static EdgeInsets get topXXSmall => const EdgeInsets.only(top: xxSmall);
+
   /// Returns [EdgeInsets] in which the top inset is `4.0`.
   static EdgeInsets get topXSmall => const EdgeInsets.only(top: xSmall);
 
@@ -133,6 +150,9 @@ abstract final class AppPadding {
 
   /// Returns [EdgeInsets] in which the top inset is `52.0`.
   static EdgeInsets get topXXXLarge => const EdgeInsets.only(top: xxxLarge);
+
+  /// Returns [EdgeInsets] in which the bottom inset is `2.0`.
+  static EdgeInsets get bottomXXSmall => const EdgeInsets.only(bottom: xxSmall);
 
   /// Returns [EdgeInsets] in which the bottom inset is `4.0`.
   static EdgeInsets get bottomXSmall => const EdgeInsets.only(bottom: xSmall);
@@ -156,6 +176,9 @@ abstract final class AppPadding {
   static EdgeInsets get bottomXXXLarge =>
       const EdgeInsets.only(bottom: xxxLarge);
 
+  /// Returns [EdgeInsets] in which the left inset is `2.0`.
+  static EdgeInsets get leftXXSmall => const EdgeInsets.only(left: xxSmall);
+
   /// Returns [EdgeInsets] in which the left inset is `4.0`.
   static EdgeInsets get leftXSmall => const EdgeInsets.only(left: xSmall);
 
@@ -176,6 +199,9 @@ abstract final class AppPadding {
 
   /// Returns [EdgeInsets] in which the left inset is `52.0`.
   static EdgeInsets get leftXXXLarge => const EdgeInsets.only(left: xxxLarge);
+
+  /// Returns [EdgeInsets] in which the right inset is `2.0`.
+  static EdgeInsets get rightXXSmall => const EdgeInsets.only(right: xxSmall);
 
   /// Returns [EdgeInsets] in which the right inset is `4.0`.
   static EdgeInsets get rightXSmall => const EdgeInsets.only(right: xSmall);

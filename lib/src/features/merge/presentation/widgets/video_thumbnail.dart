@@ -50,7 +50,7 @@ class _VideoThumbnail extends StatelessWidget {
       child: SizedBox.square(
         dimension: context.screenWidth / 4,
         child: Card(
-          margin: EdgeInsets.zero,
+          margin: AppPadding.bottomXXSmall,
           shape: RoundedRectangleBorder(
             borderRadius: AppBorderRadius.circularXSmall,
           ),
@@ -59,7 +59,7 @@ class _VideoThumbnail extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Expanded(
-                child: metadata != null
+                child: metadata?.thumbnail != null
                     ? Image.memory(
                         metadata!.thumbnail!,
                         fit: BoxFit.cover,
