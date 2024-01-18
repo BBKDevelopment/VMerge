@@ -65,49 +65,32 @@ class _VideoPlayer extends StatelessWidget {
               );
             case MergeLoaded():
               return Stack(
+                alignment: Alignment.center,
                 children: [
-                  Positioned.fill(
-                    child: FittedBox(
-                      child: SizedBox(
-                        width: state.videoWidth,
-                        height: state.videoHeight,
-                        child: ClipRRect(
-                          borderRadius: AppBorderRadius.circularXSmall,
-                          child: VideoPlayer(state.videoPlayerController),
-                        ),
+                  GestureDetector(
+                    onTap: () {
+                      if (state.isVideoPlaying) {
+                        animatedControlButtonController.reverse();
+                        context.read<MergeCubit>().stopVideo();
+                      } else {
+                        animatedControlButtonController.forward();
+                        context.read<MergeCubit>().playVideo();
+                      }
+                    },
+                    child: AspectRatio(
+                      aspectRatio: state.videoWidth / state.videoHeight,
+                      child: ClipRRect(
+                        borderRadius: AppBorderRadius.circularXSmall,
+                        child: VideoPlayer(state.videoPlayerController),
                       ),
                     ),
                   ),
-                  BlocSelector<MergeCubit, MergeState, bool>(
-                    selector: (state) {
-                      if (state is! MergeLoaded) return false;
-
-                      return state.isVideoPlaying;
-                    },
-                    builder: (context, isVideoPlaying) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (isVideoPlaying) {
-                            animatedControlButtonController.reverse();
-                            context.read<MergeCubit>().stopVideo();
-                          } else {
-                            animatedControlButtonController.forward();
-                            context.read<MergeCubit>().playVideo();
-                          }
-                        },
-                        child: Container(
-                          alignment: Alignment.center,
-                          color: Colors.transparent,
-                          child: AnimatedOpacity(
-                            duration: const Duration(milliseconds: 500),
-                            opacity: isVideoPlaying ? 0.0 : 1.0,
-                            child: AnimatedControlButton(
-                              controller: animatedControlButtonController,
-                            ),
-                          ),
-                        ),
-                      );
-                    },
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 500),
+                    opacity: state.isVideoPlaying ? 0.0 : 1.0,
+                    child: AnimatedControlButton(
+                      controller: animatedControlButtonController,
+                    ),
                   ),
                 ],
               );

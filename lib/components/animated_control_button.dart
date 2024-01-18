@@ -64,18 +64,18 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
     return GestureDetector(
       onTap: widget.onTap,
       child: Container(
-        height: MediaQuery.of(context).size.width * 0.12,
-        width: MediaQuery.of(context).size.width * 0.12,
+        height: widget.size * 1.4,
+        width: widget.size * 1.4,
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Theme.of(context).focusColor,
+          color: Theme.of(context).colorScheme.secondaryContainer,
         ),
-        child: Center(
-          child: AnimatedIcon(
-            icon: AnimatedIcons.play_pause,
-            progress: controller,
-            size: widget.size,
-          ),
+        alignment: Alignment.center,
+        child: AnimatedIcon(
+          icon: AnimatedIcons.play_pause,
+          color: Theme.of(context).colorScheme.onSecondaryContainer,
+          progress: controller,
+          size: widget.size,
         ),
       ),
     );
