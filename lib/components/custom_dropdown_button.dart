@@ -2,13 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:vmerge/src/core/core.dart';
 
 class CustomDropdownButton<T> extends StatelessWidget {
-  const CustomDropdownButton({
+  CustomDropdownButton({
     required this.items,
     this.value,
     this.tooltip,
     this.onChanged,
     super.key,
-  });
+  }) : assert(
+          items.isEmpty ||
+              value == null ||
+              items.where((item) => item.value == value).length == 1,
+          'There should be exactly one item with [CustomDropdownButton]s value:'
+          ' $value. \n'
+          'Either zero or 2 or more [DropdownMenuItem]s were detected with the '
+          'same value',
+        );
 
   final List<DropdownMenuItem<T>> items;
   final T? value;
