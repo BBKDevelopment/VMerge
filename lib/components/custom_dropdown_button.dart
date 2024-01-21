@@ -6,6 +6,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
     required this.items,
     this.value,
     this.tooltip,
+    this.padding,
     this.onChanged,
     super.key,
   }) : assert(
@@ -21,6 +22,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
   final List<DropdownMenuItem<T>> items;
   final T? value;
   final String? tooltip;
+  final EdgeInsetsGeometry? padding;
   final void Function(T?)? onChanged;
 
   @override
@@ -52,16 +54,26 @@ class CustomDropdownButton<T> extends StatelessWidget {
       },
       onSelected: (ratio) => onChanged?.call(ratio),
       tooltip: tooltip ?? '',
+      padding: padding ?? const EdgeInsets.all(8),
+      offset: Offset(
+        0,
+        -(items.length - 1) * kMinInteractiveDimension -
+            (padding?.vertical ?? 8),
+      ),
       child: SizedBox(
         height: kMinInteractiveDimension,
         child: Row(
           children: [
-            items
-                .firstWhere(
-                  (item) => item.value == value,
-                  orElse: () => items.first,
-                )
-                .child,
+            DefaultTextStyle(
+              style:
+                  Theme.of(context).textTheme.titleMedium ?? const TextStyle(),
+              child: items
+                  .firstWhere(
+                    (item) => item.value == value,
+                    orElse: () => items.first,
+                  )
+                  .child,
+            ),
             Icon(
               Icons.arrow_drop_down,
               color: context.colorScheme.onSurface,
