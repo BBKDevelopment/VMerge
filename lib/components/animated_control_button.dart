@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 
 class AnimatedControlButtonController {
-  late void Function() forward;
-  late void Function() reverse;
+  late Future<void> Function() forward;
+  late Future<void> Function() reverse;
 }
 
 class AnimatedControlButton extends StatefulWidget {
@@ -27,55 +27,91 @@ class AnimatedControlButton extends StatefulWidget {
 
 class _AnimatedControlButtonState extends State<AnimatedControlButton>
     with TickerProviderStateMixin {
-  late final AnimationController controller;
+  late final AnimationController _animatedIconcontroller;
+  late final AnimationController _animationController;
+  late final Animation<double> _scaleAnimation;
+  late final Animation<double> _fadeAnimation;
 
   @override
   void initState() {
     super.initState();
-    controller = AnimationController(
+    _animatedIconcontroller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
+    _animationController = AnimationController(
+      duration: const Duration(milliseconds: 500),
+      vsync: this,
+    );
+    _scaleAnimation =
+        Tween<double>(begin: 0.5, end: 1).animate(_animationController);
+    _fadeAnimation =
+        Tween<double>(begin: 1, end: 0).animate(_animationController);
     initController();
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    _animatedIconcontroller.dispose();
+    _animationController.dispose();
     super.dispose();
   }
 
   void initController() {
     widget.controller.forward = () async {
-      if (mounted) {
-        await controller.forward();
-      }
+      if (!mounted) return;
+
+      await Future.wait([
+        _animatedIconcontroller.forward(),
+        _animationController.forward(from: 0),
+      ]);
     };
 
     widget.controller.reverse = () async {
-      if (mounted) {
-        await controller.reverse();
-      }
+      if (!mounted) return;
+
+      await Future.wait([
+        _animatedIconcontroller.reverse(),
+        _animationController.forward(from: 0),
+      ]);
     };
   }
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
-      child: Container(
-        height: widget.size * 1.4,
-        width: widget.size * 1.4,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Theme.of(context).colorScheme.secondaryContainer,
-        ),
-        alignment: Alignment.center,
-        child: AnimatedIcon(
-          icon: AnimatedIcons.play_pause,
-          color: Theme.of(context).colorScheme.onSecondaryContainer,
-          progress: controller,
-          size: widget.size,
+    return AnimatedBuilder(
+      animation: _animationController,
+      builder: (context, child) {
+        return FadeTransition(
+          opacity: CurvedAnimation(
+            parent: _fadeAnimation,
+            curve: Curves.easeOut,
+          ),
+          child: ScaleTransition(
+            scale: CurvedAnimation(
+              parent: _scaleAnimation,
+              curve: Curves.easeOut,
+            ),
+            child: child,
+          ),
+        );
+      },
+      child: GestureDetector(
+        onTap: widget.onTap,
+        child: Container(
+          height: widget.size * 3,
+          width: widget.size * 3,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: Theme.of(context).colorScheme.secondaryContainer,
+          ),
+          alignment: Alignment.center,
+          child: AnimatedIcon(
+            icon: AnimatedIcons.play_pause,
+            color: Theme.of(context).colorScheme.onSecondaryContainer,
+            progress: _animatedIconcontroller,
+            size: widget.size * 2,
+          ),
         ),
       ),
     );
