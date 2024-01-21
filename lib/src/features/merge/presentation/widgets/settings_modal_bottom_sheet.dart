@@ -59,6 +59,8 @@ class _SettingsModalBottomSheet extends StatelessWidget {
             const _SoundSelector(),
             const Divider(height: AppPadding.large),
             const _ResolutionSelector(),
+            const SizedBox(height: AppPadding.large),
+            const _AspectRatioSelector(),
           ],
         ),
       ),
@@ -110,7 +112,7 @@ class _SoundSelector extends StatelessWidget {
 class _ResolutionSelector extends StatelessWidget {
   const _ResolutionSelector();
 
-  String getSubtitle(BuildContext context, Resolution? resolution) {
+  String getSubtitle(BuildContext context, VideoResolution? resolution) {
     if (resolution == null) return '';
 
     final width = resolution.width?.toInt();
@@ -123,15 +125,14 @@ class _ResolutionSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolution = context.select<MergeCubit, Resolution?>((cubit) {
+    final resolution = context.select<MergeCubit, VideoResolution?>((cubit) {
       final state = cubit.state;
-      if (state is MergeLoaded) return state.resolution;
+      if (state is MergeLoaded) return state.videoResolution;
 
       return null;
     });
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -148,26 +149,140 @@ class _ResolutionSelector extends StatelessWidget {
             ),
           ],
         ),
-        DropdownButton(
+        const Spacer(),
+        if (resolution == VideoResolution.original)
+          Tooltip(
+            message: context.l10n.originalResolutionTooltip,
+            triggerMode: TooltipTriggerMode.tap,
+            child: Icon(
+              Icons.info_outline,
+              size: AppIconSize.small,
+              color: context.colorScheme.onSurfaceVariant,
+            ),
+          ),
+        const SizedBox(width: AppPadding.small),
+        CustomDropdownButton(
           items: [
-            for (final resolution in Resolution.values)
+            for (final resolution in VideoResolution.values)
               DropdownMenuItem(
                 value: resolution,
                 alignment: Alignment.center,
                 child: Text(
-                  resolution == Resolution.original
+                  resolution == VideoResolution.original
                       ? context.l10n.original
                       : resolution.value,
                 ),
               ),
           ],
           value: resolution,
+          tooltip: getSubtitle(context, resolution),
           onChanged: (resolution) {
             if (resolution == null) return;
 
-            context.read<MergeCubit>().changeResolution(resolution);
+            context.read<MergeCubit>().changeVideoResolution(resolution);
           },
-          underline: const SizedBox.shrink(),
+        ),
+      ],
+    );
+  }
+}
+
+class _AspectRatioSelector extends StatelessWidget {
+  const _AspectRatioSelector();
+
+  String getSubtitle(BuildContext context, VideoAspectRatio? ratio) {
+    if (ratio == null) return '';
+
+    String getAutoSubtitle() {
+      final state = context.watch<MergeCubit>().state;
+      if (state is! MergeLoaded) return '';
+
+      return state.videoResolution.aspectRatio ?? '';
+    }
+
+    return switch (ratio) {
+      VideoAspectRatio.independent => context.l10n.independent,
+      VideoAspectRatio.firstVideo => context.l10n.firstVideo,
+      VideoAspectRatio.auto => getAutoSubtitle(),
+    };
+  }
+
+  String getTooltip(BuildContext context, VideoAspectRatio? ratio) {
+    if (ratio == null) return '';
+
+    return switch (ratio) {
+      VideoAspectRatio.independent =>
+        context.l10n.independentAspectRatioTooltip,
+      VideoAspectRatio.firstVideo => context.l10n.firstAspectRatioTooltip,
+      VideoAspectRatio.auto => context.l10n.autoAspectRatioTooltip,
+    };
+  }
+
+  String getDropdownLabel(BuildContext context, VideoAspectRatio? ratio) {
+    if (ratio == null) return '';
+
+    return switch (ratio) {
+      VideoAspectRatio.independent => context.l10n.independent,
+      VideoAspectRatio.firstVideo => context.l10n.firstVideo,
+      VideoAspectRatio.auto => context.l10n.auto,
+    };
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ratio = context.select<MergeCubit, VideoAspectRatio?>((cubit) {
+      final state = cubit.state;
+      if (state is MergeLoaded) return state.videoAspectRatio;
+
+      return null;
+    });
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              context.l10n.aspectRatio,
+              style: context.textTheme.bodyMedium,
+            ),
+            Text(
+              getSubtitle(context, ratio),
+              style: context.textTheme.bodySmall?.copyWith(
+                color: context.theme.hintColor,
+              ),
+            ),
+          ],
+        ),
+        const Spacer(),
+        Tooltip(
+          message: getTooltip(context, ratio),
+          triggerMode: TooltipTriggerMode.tap,
+          child: Icon(
+            Icons.info_outline,
+            size: AppIconSize.small,
+            color: context.colorScheme.onSurface,
+          ),
+        ),
+        const SizedBox(width: AppPadding.small),
+        CustomDropdownButton(
+          items: [
+            for (final ratio in VideoAspectRatio.values)
+              DropdownMenuItem(
+                value: ratio,
+                enabled: ratio != VideoAspectRatio.auto,
+                child: Text(getDropdownLabel(context, ratio)),
+              ),
+          ],
+          value: ratio,
+          enabled: ratio != VideoAspectRatio.auto,
+          tooltip: getTooltip(context, ratio),
+          onChanged: (ratio) {
+            if (ratio == null) return;
+
+            context.read<MergeCubit>().changeVideoAspectRatio(ratio);
+          },
         ),
       ],
     );

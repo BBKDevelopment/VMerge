@@ -33,5 +33,13 @@
     "saveVideo": "Save Video",
     "sound": "Sound",
     "original": "Original",
-    "resolution": "Resolution"
+    "resolution": "Resolution",
+    "originalResolutionTooltip": "Videos will keep their original resolution.",
+    "independentAspectRatioTooltip": "Videos will keep their original aspect ratio.",
+    "firstAspectRatioTooltip": "Videos will use the aspect ratio of the first video.",
+    "autoAspectRatioTooltip": "Videos will use the aspect ratio of the selected resolution.",
+    "independent": "Independent",
+    "firstVideo": "First video",
+    "auto": "Auto",
+    "aspectRatio": "Aspect Ratio"
 }

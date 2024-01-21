@@ -91,7 +91,8 @@ final class MergeCubit extends Cubit<MergeState> {
           isVideoPlaying: _firstVideoPlayerService.isPlaying,
           isSoundOn: true,
           playbackSpeed: PlaybackSpeed.one,
-          resolution: Resolution.original,
+          videoResolution: VideoResolution.original,
+          videoAspectRatio: VideoAspectRatio.independent,
           saveModalBottomSheetStatus: SaveModalBottomSheetStatus.idle,
         ),
       );
@@ -237,24 +238,35 @@ final class MergeCubit extends Cubit<MergeState> {
     emit(loadedState.copyWith(isSoundOn: isSoundOn));
   }
 
-  void changeResolution(Resolution resolution) {
+  void changeVideoResolution(VideoResolution resolution) {
     if (state is! MergeLoaded) return;
 
     final loadedState = state as MergeLoaded;
 
     emit(
       loadedState.copyWith(
-        resolution: resolution,
+        videoResolution: resolution,
         videoHeight: resolution.height ?? _firstVideoPlayerService.height,
         videoWidth: resolution.width ?? _firstVideoPlayerService.width,
+        videoAspectRatio: resolution.aspectRatio != null
+            ? VideoAspectRatio.auto
+            : VideoAspectRatio.independent,
       ),
     );
   }
 
-  Future<void> setVideoQuality(Resolution quality) async {
+  void changeVideoAspectRatio(VideoAspectRatio ratio) {
     if (state is! MergeLoaded) return;
 
-    (state as MergeLoaded).copyWith(resolution: quality);
+    final loadedState = state as MergeLoaded;
+
+    emit(loadedState.copyWith(videoAspectRatio: ratio));
+  }
+
+  Future<void> setVideoQuality(VideoResolution quality) async {
+    if (state is! MergeLoaded) return;
+
+    (state as MergeLoaded).copyWith(videoResolution: quality);
   }
 
   void _addVideoPlayerListeners() {

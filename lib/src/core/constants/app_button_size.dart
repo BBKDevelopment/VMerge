@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 abstract final class AppButtonSize {
-  static const small = 40.0;
+  static const small = kMinInteractiveDimension;
 }

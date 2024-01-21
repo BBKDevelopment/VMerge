@@ -294,6 +294,54 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resolution'**
   String get resolution;
+
+  /// No description provided for @originalResolutionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will keep their original resolution.'**
+  String get originalResolutionTooltip;
+
+  /// No description provided for @independentAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will keep their original aspect ratio.'**
+  String get independentAspectRatioTooltip;
+
+  /// No description provided for @firstAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will use the aspect ratio of the first video.'**
+  String get firstAspectRatioTooltip;
+
+  /// No description provided for @autoAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will use the aspect ratio of the selected resolution.'**
+  String get autoAspectRatioTooltip;
+
+  /// No description provided for @independent.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent'**
+  String get independent;
+
+  /// No description provided for @firstVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'First video'**
+  String get firstVideo;
+
+  /// No description provided for @auto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get auto;
+
+  /// No description provided for @aspectRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Aspect Ratio'**
+  String get aspectRatio;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {

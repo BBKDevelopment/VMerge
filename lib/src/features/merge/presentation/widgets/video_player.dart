@@ -48,23 +48,25 @@ class _VideoPlayer extends StatelessWidget {
       child: BlocBuilder<MergeCubit, MergeState>(
         buildWhen: (previous, current) {
           if (current is MergeError) return false;
+          if (previous is MergeLoaded && current is MergeLoaded) {
+            return previous.isVideoPlaying != current.isVideoPlaying ||
+                previous.videoHeight != current.videoHeight ||
+                previous.videoWidth != current.videoWidth;
+          }
 
           return true;
         },
         builder: (context, state) {
-          switch (state) {
-            case MergeInitial():
-              return NoVideoWarning(
+          return switch (state) {
+            MergeInitial() => NoVideoWarning(
                 onPressed: () => context
                     .read<NavigationCubit>()
                     .updatePage(NavigationBarPage.previewVideo),
-              );
-            case MergeLoading():
-              return const Center(
+              ),
+            MergeLoading() => const Center(
                 child: CircularProgressIndicator(),
-              );
-            case MergeLoaded():
-              return Stack(
+              ),
+            MergeLoaded() => Stack(
                 alignment: Alignment.center,
                 children: [
                   GestureDetector(
@@ -93,11 +95,9 @@ class _VideoPlayer extends StatelessWidget {
                     ),
                   ),
                 ],
-              );
-
-            case MergeError():
-              return const SizedBox.shrink();
-          }
+              ),
+            MergeError() => const SizedBox.shrink(),
+          };
         },
       ),
     );

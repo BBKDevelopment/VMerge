@@ -105,4 +105,28 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resolution => 'Resolution';
+
+  @override
+  String get originalResolutionTooltip => 'Videos will keep their original resolution.';
+
+  @override
+  String get independentAspectRatioTooltip => 'Videos will keep their original aspect ratio.';
+
+  @override
+  String get firstAspectRatioTooltip => 'Videos will use the aspect ratio of the first video.';
+
+  @override
+  String get autoAspectRatioTooltip => 'Videos will use the aspect ratio of the selected resolution.';
+
+  @override
+  String get independent => 'Independent';
+
+  @override
+  String get firstVideo => 'First video';
+
+  @override
+  String get auto => 'Auto';
+
+  @override
+  String get aspectRatio => 'Aspect Ratio';
 }

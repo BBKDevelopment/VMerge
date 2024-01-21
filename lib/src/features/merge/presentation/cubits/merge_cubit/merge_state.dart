@@ -34,7 +34,8 @@ final class MergeLoaded extends MergeState {
     required this.isVideoPlaying,
     required this.isSoundOn,
     required this.playbackSpeed,
-    required this.resolution,
+    required this.videoResolution,
+    required this.videoAspectRatio,
     required this.saveModalBottomSheetStatus,
   });
 
@@ -46,7 +47,8 @@ final class MergeLoaded extends MergeState {
   final bool isVideoPlaying;
   final bool isSoundOn;
   final PlaybackSpeed playbackSpeed;
-  final Resolution resolution;
+  final VideoResolution videoResolution;
+  final VideoAspectRatio videoAspectRatio;
   final SaveModalBottomSheetStatus saveModalBottomSheetStatus;
 
   MergeLoaded copyWith({
@@ -58,7 +60,8 @@ final class MergeLoaded extends MergeState {
     bool? isVideoPlaying,
     bool? isSoundOn,
     PlaybackSpeed? playbackSpeed,
-    Resolution? resolution,
+    VideoResolution? videoResolution,
+    VideoAspectRatio? videoAspectRatio,
     SaveModalBottomSheetStatus? saveModalBottomSheetStatus,
   }) {
     return MergeLoaded(
@@ -71,7 +74,8 @@ final class MergeLoaded extends MergeState {
       isVideoPlaying: isVideoPlaying ?? this.isVideoPlaying,
       isSoundOn: isSoundOn ?? this.isSoundOn,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
-      resolution: resolution ?? this.resolution,
+      videoResolution: videoResolution ?? this.videoResolution,
+      videoAspectRatio: videoAspectRatio ?? this.videoAspectRatio,
       saveModalBottomSheetStatus:
           saveModalBottomSheetStatus ?? this.saveModalBottomSheetStatus,
     );
@@ -87,7 +91,9 @@ final class MergeLoaded extends MergeState {
         isVideoPlaying,
         isSoundOn,
         playbackSpeed,
-        resolution,
+        videoResolution,
+        videoAspectRatio,
+        saveModalBottomSheetStatus,
       ];
 }
 
@@ -118,20 +124,27 @@ enum PlaybackSpeed {
   final double value;
 }
 
-enum Resolution {
-  veryLow('240p', 240, 426),
-  low('360p', 360, 480),
-  medium('480p', 480, 640),
-  high('720p', 720, 1280),
-  veryHigh('1080p', 1080, 1920),
-  ultraHigh('1440p', 1440, 2560),
-  original('Original', null, null);
+enum VideoResolution {
+  veryLow('240p', 426, 240, '16:9'),
+  low('360p', 480, 360, '4:3'),
+  medium('480p', 640, 480, '4:3'),
+  high('720p', 1280, 720, '16:9'),
+  veryHigh('1080p', 1920, 1080, '16:9'),
+  ultraHigh('1440p', 2560, 1440, '16:9'),
+  original('Original', null, null, null);
 
-  const Resolution(this.value, this.height, this.width);
+  const VideoResolution(this.value, this.width, this.height, this.aspectRatio);
 
   final String value;
-  final double? height;
   final double? width;
+  final double? height;
+  final String? aspectRatio;
+}
+
+enum VideoAspectRatio {
+  independent,
+  firstVideo,
+  auto,
 }
 
 enum SaveModalBottomSheetStatus {

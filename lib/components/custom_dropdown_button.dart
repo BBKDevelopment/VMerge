@@ -5,6 +5,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
   CustomDropdownButton({
     required this.items,
     this.value,
+    this.enabled = true,
     this.tooltip,
     this.padding,
     this.onChanged,
@@ -21,6 +22,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
 
   final List<DropdownMenuItem<T>> items;
   final T? value;
+  final bool enabled;
   final String? tooltip;
   final EdgeInsetsGeometry? padding;
   final void Function(T?)? onChanged;
@@ -52,6 +54,7 @@ class CustomDropdownButton<T> extends StatelessWidget {
             ),
         ];
       },
+      enabled: enabled,
       onSelected: (ratio) => onChanged?.call(ratio),
       tooltip: tooltip ?? '',
       padding: padding ?? const EdgeInsets.all(8),
@@ -65,8 +68,10 @@ class CustomDropdownButton<T> extends StatelessWidget {
         child: Row(
           children: [
             DefaultTextStyle(
-              style:
-                  Theme.of(context).textTheme.titleMedium ?? const TextStyle(),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: enabled ? null : context.theme.disabledColor,
+                      ) ??
+                  const TextStyle(),
               child: items
                   .firstWhere(
                     (item) => item.value == value,
@@ -76,7 +81,9 @@ class CustomDropdownButton<T> extends StatelessWidget {
             ),
             Icon(
               Icons.arrow_drop_down,
-              color: context.colorScheme.onSurface,
+              color: enabled
+                  ? context.colorScheme.onSurface
+                  : context.theme.disabledColor,
             ),
           ],
         ),
