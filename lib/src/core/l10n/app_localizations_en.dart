@@ -129,4 +129,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get aspectRatio => 'Aspect Ratio';
+
+  @override
+  String get playbackSpeed => 'Playback Speed';
 }

@@ -110,18 +110,22 @@ enum ActiveVideoIndex {
 }
 
 enum PlaybackSpeed {
-  zeroPointTwoFive(0.25),
   zeroPointFive(0.5),
-  zeroPointSevenFive(0.75),
   one(1),
-  onePointTwoFive(1.25),
   onePointFive(1.5),
-  onePointSevenFive(1.75),
   two(2);
 
   const PlaybackSpeed(this.value);
 
   final double value;
+
+  static PlaybackSpeed? fromValue(double value) {
+    for (final speed in PlaybackSpeed.values) {
+      if (speed.value == value) return speed;
+    }
+
+    return null;
+  }
 }
 
 enum VideoResolution {

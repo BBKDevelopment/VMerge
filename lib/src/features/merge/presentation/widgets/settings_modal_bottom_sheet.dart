@@ -61,6 +61,8 @@ class _SettingsModalBottomSheet extends StatelessWidget {
             const _ResolutionSelector(),
             const SizedBox(height: AppPadding.large),
             const _AspectRatioSelector(),
+            const Divider(height: AppPadding.large),
+            const _SpeedSelector(),
           ],
         ),
       ),
@@ -294,6 +296,13 @@ class _SpeedSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final speed = context.select<MergeCubit, PlaybackSpeed?>((cubit) {
+      final state = cubit.state;
+      if (state is MergeLoaded) return state.playbackSpeed;
+
+      return null;
+    });
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -301,20 +310,31 @@ class _SpeedSelector extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.sound,
+              context.l10n.playbackSpeed,
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              context.l10n.on,
+              '${speed?.value ?? PlaybackSpeed.one.value}x',
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
             ),
           ],
         ),
-        Switch(
-          value: true,
-          onChanged: (value) {},
+        SliderTheme(
+          data: SliderThemeData(overlayShape: SliderComponentShape.noOverlay),
+          child: Slider(
+            value: speed?.value ?? PlaybackSpeed.one.value,
+            onChanged: (value) {
+              final speed = PlaybackSpeed.fromValue(value);
+              if (speed == null) return;
+
+              context.read<MergeCubit>().changePlaybackSpeed(speed);
+            },
+            min: PlaybackSpeed.zeroPointFive.value,
+            max: PlaybackSpeed.two.value,
+            divisions: PlaybackSpeed.values.length - 1,
+          ),
         ),
       ],
     );

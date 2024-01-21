@@ -172,10 +172,12 @@ final class MergeCubit extends Cubit<MergeState> {
     }
   }
 
-  Future<void> setPlaybackSpeed(PlaybackSpeed speed) async {
+  Future<void> changePlaybackSpeed(PlaybackSpeed speed) async {
     if (state is! MergeLoaded) return;
 
     final loadedState = state as MergeLoaded;
+
+    if (loadedState.playbackSpeed == speed) return;
 
     try {
       await Future.wait([
@@ -188,6 +190,7 @@ final class MergeCubit extends Cubit<MergeState> {
       emit(
         loadedState.copyWith(
           activeVideoIndex: ActiveVideoIndex.one,
+          playbackSpeed: speed,
           videoPlayerController: _firstVideoPlayerService.controller,
           videoHeight: _firstVideoPlayerService.height,
           videoWidth: _firstVideoPlayerService.width,

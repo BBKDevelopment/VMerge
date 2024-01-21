@@ -66,35 +66,31 @@ class _VideoPlayer extends StatelessWidget {
             MergeLoading() => const Center(
                 child: CircularProgressIndicator(),
               ),
-            MergeLoaded() => Stack(
-                alignment: Alignment.center,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      if (state.isVideoPlaying) {
-                        animatedControlButtonController.reverse();
-                        context.read<MergeCubit>().stopVideo();
-                      } else {
-                        animatedControlButtonController.forward();
-                        context.read<MergeCubit>().playVideo();
-                      }
-                    },
-                    child: AspectRatio(
+            MergeLoaded() => GestureDetector(
+                onTap: () {
+                  if (state.isVideoPlaying) {
+                    animatedControlButtonController.reverse();
+                    context.read<MergeCubit>().stopVideo();
+                  } else {
+                    animatedControlButtonController.forward();
+                    context.read<MergeCubit>().playVideo();
+                  }
+                },
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    AspectRatio(
                       aspectRatio: state.videoWidth / state.videoHeight,
                       child: ClipRRect(
                         borderRadius: AppBorderRadius.circularXSmall,
                         child: VideoPlayer(state.videoPlayerController),
                       ),
                     ),
-                  ),
-                  AnimatedOpacity(
-                    duration: const Duration(milliseconds: 500),
-                    opacity: state.isVideoPlaying ? 0.0 : 1.0,
-                    child: AnimatedControlButton(
+                    AnimatedControlButton(
                       controller: animatedControlButtonController,
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             MergeError() => const SizedBox.shrink(),
           };

@@ -41,5 +41,6 @@
     "independent": "Independent",
     "firstVideo": "First video",
     "auto": "Auto",
-    "aspectRatio": "Aspect Ratio"
+    "aspectRatio": "Aspect Ratio",
+    "playbackSpeed": "Playback Speed"
 }

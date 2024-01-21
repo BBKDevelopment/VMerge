@@ -342,6 +342,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Aspect Ratio'**
   String get aspectRatio;
+
+  /// No description provided for @playbackSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Speed'**
+  String get playbackSpeed;
 }
 
 class _AppLocalizationsDelegate extends LocalizationsDelegate<AppLocalizations> {
