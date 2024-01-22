@@ -58,11 +58,13 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     _animationController = AnimationController(
       vsync: this,
       duration: kEditPageInAnimationDuration,
-    )..forward();
+    );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animatedControlButtonController = AnimatedControlButtonController();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animationController.forward();
+
       final videoMetadatas = context.read<NavigationCubit>().state.arguments;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;

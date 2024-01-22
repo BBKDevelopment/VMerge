@@ -56,8 +56,12 @@ class _MoreViewState extends State<_MoreView>
     _animationController = AnimationController(
       vsync: this,
       duration: kMorePageInAnimationDuration,
-    )..forward();
+    );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _animationController.forward();
+    });
   }
 
   @override

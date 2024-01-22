@@ -95,7 +95,9 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                       arguments: state.metadatas,
                     );
               case PreviewVideoError():
-                _animationController.forward();
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  _animationController.forward();
+                });
             }
           },
           builder: (context, state) {
