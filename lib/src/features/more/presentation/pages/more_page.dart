@@ -55,7 +55,7 @@ class _MoreViewState extends State<_MoreView>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: kMorePageInAnimationDuration,
+      duration: AppAnimationDuration.long,
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
 

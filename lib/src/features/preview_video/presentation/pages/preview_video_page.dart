@@ -9,7 +9,6 @@ import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/src/features/preview_video/preview_video.dart';
-import 'package:vmerge/utilities/utilities.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 class PreviewVideoPage extends StatelessWidget {
@@ -41,7 +40,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: kEditPageInAnimationDuration,
+      duration: AppAnimationDuration.short,
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
 

@@ -69,12 +69,6 @@ const double kGridViewItemsBorderRadius = 2;
 const double kVerticalVideoBorderRadius = 8;
 const double kGeneralBorderRadius = 2;
 
-//animation durations
-const Duration kEditPageInAnimationDuration = Duration(milliseconds: 1000);
-const Duration kEditPageOutAnimationDuration = Duration(milliseconds: 300);
-const Duration kMorePageInAnimationDuration = Duration(milliseconds: 1000);
-const Duration kMorePageOutAnimationDuration = Duration(milliseconds: 300);
-
 //styles
 const TextStyle kBoldTextStyle = TextStyle(
   fontSize: 18,

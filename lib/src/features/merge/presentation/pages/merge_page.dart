@@ -11,7 +11,6 @@ import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/no_video_warning.dart';
-import 'package:vmerge/src/core/constants/app_border_radius.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
@@ -57,7 +56,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     super.initState();
     _animationController = AnimationController(
       vsync: this,
-      duration: kEditPageInAnimationDuration,
+      duration: AppAnimationDuration.long,
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animatedControlButtonController = AnimatedControlButtonController();
