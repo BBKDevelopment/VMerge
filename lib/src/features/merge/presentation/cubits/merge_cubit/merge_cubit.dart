@@ -179,6 +179,16 @@ final class MergeCubit extends Cubit<MergeState> {
 
     if (loadedState.playbackSpeed == speed) return;
 
+    emit(
+      loadedState.copyWith(
+        activeVideoIndex: ActiveVideoIndex.one,
+        playbackSpeed: speed,
+        videoPlayerController: _firstVideoPlayerService.controller,
+        videoHeight: _firstVideoPlayerService.height,
+        videoWidth: _firstVideoPlayerService.width,
+      ),
+    );
+
     try {
       await Future.wait([
         _firstVideoPlayerService.setPlaybackSpeed(speed.value),
@@ -186,16 +196,6 @@ final class MergeCubit extends Cubit<MergeState> {
         _firstVideoPlayerService.seekTo(Duration.zero),
         _secondVideoPlayerService.seekTo(Duration.zero),
       ]);
-
-      emit(
-        loadedState.copyWith(
-          activeVideoIndex: ActiveVideoIndex.one,
-          playbackSpeed: speed,
-          videoPlayerController: _firstVideoPlayerService.controller,
-          videoHeight: _firstVideoPlayerService.height,
-          videoWidth: _firstVideoPlayerService.width,
-        ),
-      );
     } on SetVideoPlaybackSpeedException catch (error, stackTrace) {
       log(
         'Could not change the playback speed of the video!',
@@ -224,6 +224,9 @@ final class MergeCubit extends Cubit<MergeState> {
           videoWidth: _firstVideoPlayerService.width,
         ),
       );
+
+      // Restores last success state.
+      emit(loadedState);
     }
   }
 

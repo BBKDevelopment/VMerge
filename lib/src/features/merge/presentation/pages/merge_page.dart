@@ -87,7 +87,9 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
           case MergeLoading():
             _animationController.reset();
           case MergeLoaded():
-            _animationController.forward();
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              _animationController.forward();
+            });
           case MergeError():
             break;
         }
