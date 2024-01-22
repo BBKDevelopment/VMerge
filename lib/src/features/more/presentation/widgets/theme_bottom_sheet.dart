@@ -127,16 +127,17 @@ class _MainColorSelector extends StatelessWidget {
                 ),
               ],
             ),
-            DropdownButton(
+            CustomDropdownButton(
               items: [
                 for (final color in AppColor.values)
                   DropdownMenuItem(
                     value: color,
-                    alignment: Alignment.center,
-                    child: Icon(
-                      Icons.circle,
-                      color: color.value,
-                      size: AppIconSize.medium,
+                    child: Center(
+                      child: Icon(
+                        Icons.circle,
+                        color: color.value,
+                        size: AppIconSize.medium,
+                      ),
                     ),
                   ),
               ],
@@ -146,7 +147,6 @@ class _MainColorSelector extends StatelessWidget {
 
                 context.read<MoreCubit>().updateMainColor(mainColor: color);
               },
-              underline: const SizedBox.shrink(),
             ),
           ],
         );
