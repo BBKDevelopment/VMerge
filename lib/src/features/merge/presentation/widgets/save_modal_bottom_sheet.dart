@@ -11,9 +11,12 @@ class _SaveModalBottomSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final status = context.select<MergeCubit, SaveModalBottomSheetStatus>(
       (cubit) {
-        if (cubit.state is! MergeLoaded) return SaveModalBottomSheetStatus.idle;
-
-        return (cubit.state as MergeLoaded).saveModalBottomSheetStatus;
+        switch (cubit.state) {
+          case final MergeLoaded state:
+            return state.saveModalBottomSheetStatus;
+          default:
+            return SaveModalBottomSheetStatus.idle;
+        }
       },
     );
 

@@ -6,8 +6,11 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:path/path.dart' as path;
+import 'package:path_provider/path_provider.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
+import 'package:vmerge/src/features/merge/presentation/cubits/ffmpeg_service.dart';
 
 final class MergeCubit extends Cubit<MergeState> {
   MergeCubit(
@@ -19,47 +22,62 @@ final class MergeCubit extends Cubit<MergeState> {
 
   final VideoPlayerService _firstVideoPlayerService;
   final VideoPlayerService _secondVideoPlayerService;
+  final FFmpegService _ffmpegService = FFmpegService();
 
   VoidCallback get _firstVideoPlayerListener => () {
-        if (state is! MergeLoaded) return;
-        if (_firstVideoPlayerService.position.inSeconds !=
-            _firstVideoPlayerService.duration.inSeconds) return;
+        switch (state) {
+          case final MergeLoaded state:
+            if (_firstVideoPlayerService.position.inSeconds !=
+                _firstVideoPlayerService.duration.inSeconds) return;
 
-        _firstVideoPlayerService
-          ..seekTo(Duration.zero)
-          ..pause();
+            _firstVideoPlayerService
+              ..seekTo(Duration.zero)
+              ..pause();
 
-        emit(
-          (state as MergeLoaded).copyWith(
-            activeVideoIndex: ActiveVideoIndex.two,
-            videoPlayerController: _secondVideoPlayerService.controller,
-            videoHeight: _secondVideoPlayerService.height,
-            videoWidth: _secondVideoPlayerService.width,
-            isVideoPlaying: true,
-          ),
-        );
+            emit(
+              state.copyWith(
+                activeVideoIndex: ActiveVideoIndex.two,
+                videoPlayerController: _secondVideoPlayerService.controller,
+                videoWidth:
+                    state.videoAspectRatio == VideoAspectRatio.firstVideo
+                        ? _firstVideoPlayerService.width
+                        : _secondVideoPlayerService.width,
+                videoHeight:
+                    state.videoAspectRatio == VideoAspectRatio.firstVideo
+                        ? _firstVideoPlayerService.height
+                        : _secondVideoPlayerService.height,
+                isVideoPlaying: true,
+              ),
+            );
 
-        _secondVideoPlayerService.play();
+            _secondVideoPlayerService.play();
+          default:
+            return;
+        }
       };
 
   VoidCallback get _secondVideoPlayerListener => () {
-        if (state is! MergeLoaded) return;
-        if (_secondVideoPlayerService.position.inSeconds !=
-            _secondVideoPlayerService.duration.inSeconds) return;
+        switch (state) {
+          case final MergeLoaded state:
+            if (_secondVideoPlayerService.position.inSeconds !=
+                _secondVideoPlayerService.duration.inSeconds) return;
 
-        _secondVideoPlayerService
-          ..seekTo(Duration.zero)
-          ..pause();
+            _secondVideoPlayerService
+              ..seekTo(Duration.zero)
+              ..pause();
 
-        emit(
-          (state as MergeLoaded).copyWith(
-            activeVideoIndex: ActiveVideoIndex.one,
-            videoPlayerController: _firstVideoPlayerService.controller,
-            videoHeight: _firstVideoPlayerService.height,
-            videoWidth: _firstVideoPlayerService.width,
-            isVideoPlaying: false,
-          ),
-        );
+            emit(
+              state.copyWith(
+                activeVideoIndex: ActiveVideoIndex.one,
+                videoPlayerController: _firstVideoPlayerService.controller,
+                videoHeight: _firstVideoPlayerService.height,
+                videoWidth: _firstVideoPlayerService.width,
+                isVideoPlaying: false,
+              ),
+            );
+          default:
+            return;
+        }
       };
 
   Future<void> loadVideoMetadatas(List<VideoMetadata> metadatas) async {
@@ -109,170 +127,193 @@ final class MergeCubit extends Cubit<MergeState> {
   }
 
   Future<void> playVideo() async {
-    if (state is! MergeLoaded) return;
+    switch (state) {
+      case final MergeLoaded state:
+        _addVideoPlayerListeners();
 
-    final loadedState = state as MergeLoaded;
+        try {
+          switch (state.activeVideoIndex) {
+            case ActiveVideoIndex.one:
+              await _firstVideoPlayerService.play();
+            case ActiveVideoIndex.two:
+              await _secondVideoPlayerService.play();
+          }
 
-    _addVideoPlayerListeners();
+          emit(state.copyWith(isVideoPlaying: true));
+        } on PlayVideoException catch (error, stackTrace) {
+          log(
+            'Could not play video!',
+            name: '$MergeCubit',
+            error: error,
+            stackTrace: stackTrace,
+          );
 
-    try {
-      switch (loadedState.activeVideoIndex) {
-        case ActiveVideoIndex.one:
-          await _firstVideoPlayerService.play();
-        case ActiveVideoIndex.two:
-          await _secondVideoPlayerService.play();
-      }
+          _removeVideoPlayerListeners();
 
-      emit(loadedState.copyWith(isVideoPlaying: true));
-    } on PlayVideoException catch (error, stackTrace) {
-      log(
-        'Could not play video!',
-        name: '$MergeCubit',
-        error: error,
-        stackTrace: stackTrace,
-      );
+          emit(const MergeError());
 
-      _removeVideoPlayerListeners();
-
-      emit(const MergeError());
-
-      // Restores last success state.
-      emit(loadedState);
+          // Restores last success state.
+          emit(state);
+        }
+      default:
+        return;
     }
   }
 
   Future<void> stopVideo() async {
-    if (state is! MergeLoaded) return;
+    switch (state) {
+      case final MergeLoaded state:
+        _removeVideoPlayerListeners();
 
-    final loadedState = state as MergeLoaded;
+        try {
+          switch (state.activeVideoIndex) {
+            case ActiveVideoIndex.one:
+              await _firstVideoPlayerService.pause();
+            case ActiveVideoIndex.two:
+              await _secondVideoPlayerService.pause();
+          }
 
-    _removeVideoPlayerListeners();
+          emit(state.copyWith(isVideoPlaying: false));
+        } on PauseVideoException catch (error, stackTrace) {
+          log(
+            'Could not stop video!',
+            name: '$MergeCubit',
+            error: error,
+            stackTrace: stackTrace,
+          );
 
-    try {
-      switch (loadedState.activeVideoIndex) {
-        case ActiveVideoIndex.one:
-          await _firstVideoPlayerService.pause();
-        case ActiveVideoIndex.two:
-          await _secondVideoPlayerService.pause();
-      }
+          emit(const MergeError());
 
-      emit(loadedState.copyWith(isVideoPlaying: false));
-    } on PauseVideoException catch (error, stackTrace) {
-      log(
-        'Could not stop video!',
-        name: '$MergeCubit',
-        error: error,
-        stackTrace: stackTrace,
-      );
-
-      emit(const MergeError());
-
-      // Restores last success state.
-      emit(loadedState);
+          // Restores last success state.
+          emit(state);
+        }
+      default:
+        return;
     }
   }
 
   Future<void> changePlaybackSpeed(PlaybackSpeed speed) async {
-    if (state is! MergeLoaded) return;
+    switch (state) {
+      case final MergeLoaded state:
+        if (state.playbackSpeed == speed) return;
 
-    final loadedState = state as MergeLoaded;
+        emit(
+          state.copyWith(
+            activeVideoIndex: ActiveVideoIndex.one,
+            playbackSpeed: speed,
+            videoPlayerController: _firstVideoPlayerService.controller,
+            videoHeight: _firstVideoPlayerService.height,
+            videoWidth: _firstVideoPlayerService.width,
+          ),
+        );
 
-    if (loadedState.playbackSpeed == speed) return;
+        try {
+          await Future.wait([
+            _firstVideoPlayerService.setPlaybackSpeed(speed.value),
+            _secondVideoPlayerService.setPlaybackSpeed(speed.value),
+            _firstVideoPlayerService.seekTo(Duration.zero),
+            _secondVideoPlayerService.seekTo(Duration.zero),
+          ]);
+        } on SetVideoPlaybackSpeedException catch (error, stackTrace) {
+          log(
+            'Could not change the playback speed of the video!',
+            name: '$MergeCubit',
+            error: error,
+            stackTrace: stackTrace,
+          );
 
-    emit(
-      loadedState.copyWith(
-        activeVideoIndex: ActiveVideoIndex.one,
-        playbackSpeed: speed,
-        videoPlayerController: _firstVideoPlayerService.controller,
-        videoHeight: _firstVideoPlayerService.height,
-        videoWidth: _firstVideoPlayerService.width,
-      ),
-    );
+          emit(const MergeError());
 
-    try {
-      await Future.wait([
-        _firstVideoPlayerService.setPlaybackSpeed(speed.value),
-        _secondVideoPlayerService.setPlaybackSpeed(speed.value),
-        _firstVideoPlayerService.seekTo(Duration.zero),
-        _secondVideoPlayerService.seekTo(Duration.zero),
-      ]);
-    } on SetVideoPlaybackSpeedException catch (error, stackTrace) {
-      log(
-        'Could not change the playback speed of the video!',
-        name: '$MergeCubit',
-        error: error,
-        stackTrace: stackTrace,
-      );
+          // Restores last success state.
+          emit(state);
+        } on SeekVideoPositionException catch (error, stackTrace) {
+          log(
+            'Could not reset the video!',
+            name: '$MergeCubit',
+            error: error,
+            stackTrace: stackTrace,
+          );
 
-      emit(const MergeError());
+          emit(
+            state.copyWith(
+              activeVideoIndex: ActiveVideoIndex.one,
+              videoPlayerController: _firstVideoPlayerService.controller,
+              videoHeight: _firstVideoPlayerService.height,
+              videoWidth: _firstVideoPlayerService.width,
+            ),
+          );
 
-      // Restores last success state.
-      emit(loadedState);
-    } on SeekVideoPositionException catch (error, stackTrace) {
-      log(
-        'Could not reset the video!',
-        name: '$MergeCubit',
-        error: error,
-        stackTrace: stackTrace,
-      );
-
-      emit(
-        loadedState.copyWith(
-          activeVideoIndex: ActiveVideoIndex.one,
-          videoPlayerController: _firstVideoPlayerService.controller,
-          videoHeight: _firstVideoPlayerService.height,
-          videoWidth: _firstVideoPlayerService.width,
-        ),
-      );
-
-      // Restores last success state.
-      emit(loadedState);
+          // Restores last success state.
+          emit(state);
+        }
+      default:
+        return;
     }
   }
 
   Future<void> toggleSound({required bool isSoundOn}) async {
-    if (state is! MergeLoaded) return;
+    switch (state) {
+      case final MergeLoaded state:
+        // TODO(BBarisKilic): Add this feature to package.
+        // await Future.wait([
+        //   _firstVideoPlayerService.setVolume(loadedState.isSoundOn ? 0 : 1),
+        //   _secondVideoPlayerService.setVolume(loadedState.isSoundOn ? 0 : 1),
+        // ]);
 
-    final loadedState = state as MergeLoaded;
-
-    // TODO(BBarisKilic): Add this feature to package.
-    // await Future.wait([
-    //   _firstVideoPlayerService.setVolume(loadedState.isSoundOn ? 0 : 1),
-    //   _secondVideoPlayerService.setVolume(loadedState.isSoundOn ? 0 : 1),
-    // ]);
-
-    emit(loadedState.copyWith(isSoundOn: isSoundOn));
+        emit(state.copyWith(isSoundOn: isSoundOn));
+      default:
+        return;
+    }
   }
 
   void changeVideoResolution(VideoResolution resolution) {
-    if (state is! MergeLoaded) return;
-
-    final loadedState = state as MergeLoaded;
-
-    emit(
-      loadedState.copyWith(
-        videoResolution: resolution,
-        videoHeight: resolution.height ?? _firstVideoPlayerService.height,
-        videoWidth: resolution.width ?? _firstVideoPlayerService.width,
-        videoAspectRatio: resolution.aspectRatio != null
-            ? VideoAspectRatio.auto
-            : VideoAspectRatio.independent,
-      ),
-    );
+    switch (state) {
+      case final MergeLoaded state:
+        emit(
+          state.copyWith(
+            videoResolution: resolution,
+            videoAspectRatio: resolution.aspectRatio != null
+                ? VideoAspectRatio.auto
+                : VideoAspectRatio.independent,
+          ),
+        );
+      default:
+        return;
+    }
   }
 
   void changeVideoAspectRatio(VideoAspectRatio ratio) {
-    if (state is! MergeLoaded) return;
-
-    final loadedState = state as MergeLoaded;
-
-    emit(loadedState.copyWith(videoAspectRatio: ratio));
+    switch (state) {
+      case final MergeLoaded state:
+        emit(state.copyWith(videoAspectRatio: ratio));
+      default:
+        return;
+    }
   }
 
   Future<void> setVideoQuality(VideoResolution quality) async {
-    if (state is! MergeLoaded) return;
+    switch (state) {
+      case final MergeLoaded state:
+        state.copyWith(videoResolution: quality);
+      default:
+        return;
+    }
+  }
 
-    (state as MergeLoaded).copyWith(videoResolution: quality);
+  Future<void> mergeVideos() async {
+    switch (state) {
+      case final MergeLoaded state:
+        final appDocumentsDir = await getApplicationDocumentsDirectory();
+        final outputVideoDir =
+            path.join(appDocumentsDir.path, 'vmerge_output.mp4');
+        final inputVideoDirs =
+            state.metadatas.map((metadata) => metadata.file!.path).toList();
+
+        await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
+        await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
+      default:
+        return;
+    }
   }
 
   void _addVideoPlayerListeners() {

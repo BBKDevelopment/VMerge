@@ -23,6 +23,23 @@ class _ControlButtonRow extends StatelessWidget {
     );
   }
 
+  void _onTapSaveVideo(BuildContext context) {
+    if (context.read<MergeCubit>().state is! MergeLoaded) return;
+
+    context.read<MergeCubit>().stopVideo();
+    context.read<MergeCubit>().mergeVideos();
+
+    showCupertinoModalBottomSheet<void>(
+      context: context,
+      useRootNavigator: true,
+      topRadius: Radius.zero,
+      builder: (_) => BlocProvider.value(
+        value: BlocProvider.of<MergeCubit>(context),
+        child: const Material(child: _SaveModalBottomSheet()),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -112,7 +129,9 @@ class _ControlButtonRow extends StatelessWidget {
               );
             },
             child: OutlinedButton.icon(
-              onPressed: null,
+              onPressed: context.watch<MergeCubit>().state is MergeLoaded
+                  ? () => _onTapSaveVideo(context)
+                  : null,
               label: Text(context.l10n.saveVideo),
               icon: Assets.images.save.svg(
                 height: AppIconSize.xSmall,

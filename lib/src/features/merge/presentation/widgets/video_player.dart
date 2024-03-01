@@ -50,8 +50,8 @@ class _VideoPlayer extends StatelessWidget {
           if (current is MergeError) return false;
           if (previous is MergeLoaded && current is MergeLoaded) {
             return previous.isVideoPlaying != current.isVideoPlaying ||
-                previous.videoHeight != current.videoHeight ||
-                previous.videoWidth != current.videoWidth;
+                previous.videoResolution != current.videoResolution ||
+                previous.videoPlayerController != current.videoPlayerController;
           }
 
           return true;
@@ -80,7 +80,9 @@ class _VideoPlayer extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     AspectRatio(
-                      aspectRatio: state.videoWidth / state.videoHeight,
+                      aspectRatio: (state.videoResolution.width ??
+                              state.videoWidth) /
+                          (state.videoResolution.height ?? state.videoHeight),
                       child: ClipRRect(
                         borderRadius: AppBorderRadius.circularXSmall,
                         child: VideoPlayer(state.videoPlayerController),

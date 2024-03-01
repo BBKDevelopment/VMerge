@@ -36,20 +36,6 @@ class CustomDropdownButton<T> extends StatelessWidget {
             PopupMenuItem<T>(
               value: item.value,
               enabled: item.enabled,
-              labelTextStyle: MaterialStateProperty.resolveWith((states) {
-                if (states.contains(MaterialState.disabled)) {
-                  return Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .onSurface
-                            .withOpacity(0.38),
-                      );
-                }
-
-                return Theme.of(context).textTheme.titleMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface,
-                    );
-              }),
               child: item.child,
             ),
         ];
@@ -67,18 +53,12 @@ class CustomDropdownButton<T> extends StatelessWidget {
         height: kMinInteractiveDimension,
         child: Row(
           children: [
-            DefaultTextStyle(
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: enabled ? null : context.theme.disabledColor,
-                      ) ??
-                  const TextStyle(),
-              child: items
-                  .firstWhere(
-                    (item) => item.value == value,
-                    orElse: () => items.first,
-                  )
-                  .child,
-            ),
+            items
+                .firstWhere(
+                  (item) => item.value == value,
+                  orElse: () => items.first,
+                )
+                .child,
             Icon(
               Icons.arrow_drop_down,
               color: enabled

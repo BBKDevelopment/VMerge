@@ -76,10 +76,12 @@ class _SoundSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isSoundOn = context.select<MergeCubit, bool>((cubit) {
-      final state = cubit.state;
-      if (state is MergeLoaded) return state.isSoundOn;
-
-      return false;
+      switch (cubit.state) {
+        case final MergeLoaded state:
+          return state.isSoundOn;
+        default:
+          return false;
+      }
     });
 
     return Row(
@@ -159,7 +161,7 @@ class _ResolutionSelector extends StatelessWidget {
             child: Icon(
               Icons.info_outline,
               size: AppIconSize.small,
-              color: context.colorScheme.onSurfaceVariant,
+              color: context.colorScheme.onSurface,
             ),
           ),
         const SizedBox(width: AppPadding.small),
