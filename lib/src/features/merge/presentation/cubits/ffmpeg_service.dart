@@ -2,12 +2,13 @@ import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:collection/collection.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffprobe_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
+import 'package:ffmpeg_kit_flutter_full_gpl/stream_information.dart';
 import 'package:flutter/foundation.dart';
-import 'package:get/utils.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path/path.dart' as path;
 import 'package:vmerge/src/features/merge/presentation/cubits/video_information.dart';
@@ -56,10 +57,11 @@ final class FFmpegService {
         .firstWhereOrNull(
           (stream) => stream.getType()?.toUpperCase() == _typeAudio,
         );
+    final resolution = _getResoBasedOnRotation(videoStream);
     final videoInformation = VideoInformation(
       directory: dir,
-      width: videoStream?.getWidth(),
-      height: videoStream?.getHeight(),
+      width: resolution.width,
+      height: resolution.height,
       format: mediaInformationSession.getMediaInformation()?.getFormat(),
       codec: videoStream?.getCodec(),
       frameRate: videoStream?.getRealFrameRate(),
@@ -70,8 +72,37 @@ final class FFmpegService {
     _videoInformations.add(videoInformation);
   }
 
-  /// Analyses the videos to determine if re-encoding is required and if audio
-  /// is available for all videos.
+  // Check if the video is rotated and returns the video width and height based
+  // on the rotation.
+  ({int? height, int? width}) _getResoBasedOnRotation(
+    StreamInformation? videoStream,
+  ) {
+    final width = videoStream?.getWidth();
+    final height = videoStream?.getHeight();
+
+    final sideDataList =
+        videoStream?.getProperty('side_data_list') as List<Object?>?;
+    if (sideDataList == null) return (width: width, height: height);
+
+    final rotation = sideDataList.map((sideData) {
+      return switch (sideData) {
+        {
+          'rotation': final int rotation,
+        } =>
+          rotation,
+        _ => null,
+      };
+    }).firstWhereOrNull((rotation) => rotation != null);
+    if (rotation == null) return (width: width, height: height);
+
+    if (rotation.abs() == 90 || rotation.abs() == 270) {
+      return (width: height, height: width);
+    } else {
+      return (width: width, height: height);
+    }
+  }
+
+  /// Analyses the videos to determine if re-encoding is required.
   void _analyseVideos() {
     // Checks if resolution is the same on all videos.
     _isResolutionSameOnAll = _videoInformations.every(
@@ -198,10 +229,9 @@ final class FFmpegService {
         command.write('[$i:v:0]$scale${fps}setsar=1[v$i]; ');
       }
 
-      final audio = _isAudioSameOnAll!
-          ? ''
-          : 'aformat=sample_fmts=fltp:sample_rates=44100:channel_layouts=stereo'
-              ',aresample=44100';
+      const audio =
+          'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
+          ',aresample=48000:first_pts=0';
 
       for (var i = 0; i < _videoInformations.length; i++) {
         if (_videoInformations[i].hasAudio) {
@@ -216,9 +246,9 @@ final class FFmpegService {
       }
 
       command
-        ..write('concat=n=${_videoInformations.length}:v=1:a=1[outv][outa]; ')
-        ..write('[outv]setsar=1[outv]" -map "[outv]" -map "[outa]" ')
-        ..write('-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p ');
+        ..write('concat=n=${_videoInformations.length}:v=1:a=1[outv][outa]" ')
+        ..write('-map "[outv]" -map "[outa]" ')
+        ..write('-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuvj420p ');
 
       if (!_isFrameRateSameOnAll!) {
         command.write('-fps_mode vfr ');
@@ -246,10 +276,20 @@ final class FFmpegService {
     return command.toString();
   }
 
+  Future<void> _enableStatistics() async {
+    await FFmpegKitConfig.enableStatistics();
+
+    FFmpegKitConfig.enableStatisticsCallback((statistics) {
+      debugPrint(statistics.toString());
+    });
+  }
+
   Future<void> _enableLogOnDebug() async {
     if (!kDebugMode) return;
 
     await FFmpegKitConfig.enableLogs();
+
+    FFmpegKitConfig.enableLogCallback();
 
     FFmpegKitConfig.enableLogCallback((log) {
       debugPrint(log.getMessage());
