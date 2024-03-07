@@ -27,7 +27,7 @@ class _ControlButtonRow extends StatelessWidget {
     if (context.read<MergeCubit>().state is! MergeLoaded) return;
 
     context.read<MergeCubit>().stopVideo();
-    context.read<MergeCubit>().mergeVideos();
+    // context.read<MergeCubit>().mergeVideos();
 
     showCupertinoModalBottomSheet<void>(
       context: context,
@@ -133,11 +133,14 @@ class _ControlButtonRow extends StatelessWidget {
                   ? () => _onTapSaveVideo(context)
                   : null,
               label: Text(context.l10n.saveVideo),
-              icon: Assets.images.save.svg(
-                height: AppIconSize.xSmall,
-                colorFilter: ColorFilter.mode(
-                  context.colorScheme.onSecondaryContainer,
-                  BlendMode.srcIn,
+              icon: Hero(
+                tag: 'save',
+                child: Assets.images.save.svg(
+                  height: AppIconSize.xSmall,
+                  colorFilter: ColorFilter.mode(
+                    context.colorScheme.onSecondaryContainer,
+                    BlendMode.srcIn,
+                  ),
                 ),
               ),
             ),
