@@ -1,7 +1,14 @@
+// Copyright 2024 BBK Development. All rights reserved.
+// Use of this source code is governed by a GPL-style license that can be found
+// in the LICENSE file.
+
 import 'package:flutter/material.dart';
 import 'package:vmerge/src/core/core.dart';
 
-extension AppColorExt on AppMainColor {
+/// An extension that provides additional functionality to the [AppMainColor]
+/// enum.
+extension AppMainColorExt on AppMainColor {
+  /// Returns the name of the color based on the enum value.
   String name(BuildContext context) {
     return switch (this) {
       AppMainColor.red => context.l10n.red,
