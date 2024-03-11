@@ -17,12 +17,12 @@ final class PreviewVideoLoading extends PreviewVideoState {
 }
 
 final class PreviewVideoLoaded extends PreviewVideoState {
-  const PreviewVideoLoaded({required this.metadatas});
+  const PreviewVideoLoaded({required this.metadataList});
 
-  final List<VideoMetadata> metadatas;
+  final List<VideoMetadata> metadataList;
 
   @override
-  List<Object?> get props => [metadatas];
+  List<Object?> get props => [metadataList];
 }
 
 final class PreviewVideoError extends PreviewVideoState {

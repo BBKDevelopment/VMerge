@@ -44,9 +44,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _openAssetsPicker();
-    });
+    WidgetsBinding.instance.addPostFrameCallback((_) => _openAssetsPicker());
   }
 
   @override
@@ -91,7 +89,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
               case PreviewVideoLoaded():
                 context.read<NavigationCubit>().updatePage(
                       NavigationBarPage.merge,
-                      arguments: state.metadatas,
+                      arguments: state.metadataList,
                     );
               case PreviewVideoError():
                 WidgetsBinding.instance.addPostFrameCallback((_) {

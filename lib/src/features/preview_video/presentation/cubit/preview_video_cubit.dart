@@ -18,14 +18,14 @@ final class PreviewVideoCubit extends Cubit<PreviewVideoState> {
   }
 
   Future<void> updateVideos(List<AssetEntity>? assets) async {
-    final videoMetadatas = <VideoMetadata>[];
+    final videoMetadataList = <VideoMetadata>[];
 
     try {
       assert(assets!.length >= 2, 'At least 2 videos are required');
 
       for (final asset in assets!) {
         final loadedAsset = await _loadAsset(asset);
-        videoMetadatas.add(
+        videoMetadataList.add(
           VideoMetadata(
             title: asset.title,
             duration: asset.duration,
@@ -35,7 +35,7 @@ final class PreviewVideoCubit extends Cubit<PreviewVideoState> {
         );
       }
 
-      emit(PreviewVideoLoaded(metadatas: videoMetadatas));
+      emit(PreviewVideoLoaded(metadataList: videoMetadataList));
     } catch (_) {
       emit(const PreviewVideoError());
     }
