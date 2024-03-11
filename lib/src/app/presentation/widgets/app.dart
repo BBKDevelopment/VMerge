@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       create: (_) => AppCubit(
         const AppState(
           themeMode: ThemeMode.dark,
-          mainColor: AppColor.indigo,
+          mainColor: AppMainColor.indigo,
         ),
       ),
       child: const _AppView(),

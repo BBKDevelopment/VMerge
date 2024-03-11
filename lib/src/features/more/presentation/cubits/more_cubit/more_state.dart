@@ -8,11 +8,11 @@ final class MoreState extends Equatable {
   });
 
   final bool isDarkModeEnabled;
-  final AppColor mainColor;
+  final AppMainColor mainColor;
 
   MoreState copyWith({
     bool? isDarkModeEnabled,
-    AppColor? mainColor,
+    AppMainColor? mainColor,
   }) {
     return MoreState(
       isDarkModeEnabled: isDarkModeEnabled ?? this.isDarkModeEnabled,

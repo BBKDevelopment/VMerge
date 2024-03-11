@@ -10,7 +10,7 @@ final class AppCubit extends Cubit<AppState> {
     emit(state.copyWith(themeMode: themeMode));
   }
 
-  void updateMainColor({required AppColor mainColor}) {
+  void updateMainColor({required AppMainColor mainColor}) {
     emit(state.copyWith(mainColor: mainColor));
   }
 }

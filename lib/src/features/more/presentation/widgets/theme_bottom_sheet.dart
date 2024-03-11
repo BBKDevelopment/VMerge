@@ -129,7 +129,7 @@ class _MainColorSelector extends StatelessWidget {
             ),
             CustomDropdownButton(
               items: [
-                for (final color in AppColor.values)
+                for (final color in AppMainColor.values)
                   DropdownMenuItem(
                     value: color,
                     child: Center(

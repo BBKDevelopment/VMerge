@@ -1,3 +1,7 @@
+// Copyright 2021 BBK Development. All rights reserved.
+// Use of this source code is governed by a GPL-style license that can be found
+// in the LICENSE file.
+
 import 'package:flutter/widgets.dart';
 
 /// A class that provides constant padding values to use app-wide.
@@ -34,7 +38,7 @@ abstract final class AppPadding {
         vertical: vertical ?? 0.0,
       );
 
-  /// Returns [EdgeInsets] in which the horizotal insets are `20.0` and the
+  /// Returns [EdgeInsets] in which the horizontal insets are `20.0` and the
   /// vertical insets are `12.0`.
   static EdgeInsets get general =>
       const EdgeInsets.symmetric(horizontal: large, vertical: medium);

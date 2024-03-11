@@ -9,11 +9,11 @@ final class AppState extends Equatable {
   });
 
   final ThemeMode themeMode;
-  final AppColor mainColor;
+  final AppMainColor mainColor;
 
   AppState copyWith({
     ThemeMode? themeMode,
-    AppColor? mainColor,
+    AppMainColor? mainColor,
   }) {
     return AppState(
       themeMode: themeMode ?? this.themeMode,

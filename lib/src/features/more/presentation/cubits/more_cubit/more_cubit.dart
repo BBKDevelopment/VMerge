@@ -9,7 +9,7 @@ final class MoreCubit extends Cubit<MoreState> {
     emit(state.copyWith(isDarkModeEnabled: isDarkModeEnabled));
   }
 
-  void updateMainColor({required AppColor mainColor}) {
+  void updateMainColor({required AppMainColor mainColor}) {
     emit(state.copyWith(mainColor: mainColor));
   }
 }
