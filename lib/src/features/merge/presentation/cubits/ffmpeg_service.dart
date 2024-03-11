@@ -15,14 +15,14 @@ import 'package:vmerge/src/features/merge/presentation/cubits/video_information.
 
 final class FFmpegService {
   FFmpegService()
-      : _videoInformations = List.empty(growable: true),
+      : _videoInfos = List.empty(growable: true),
         _isAudioSameOnAll = null,
         _isReencodingRequired = null;
 
   static const _typeVideo = 'VIDEO';
   static const _typeAudio = 'AUDIO';
 
-  final List<VideoInformation> _videoInformations;
+  final List<VideoInfo> _videoInfos;
   bool? _isResolutionSameOnAll;
   bool? _isFormatSameOnAll;
   bool? _isCodecSameOnAll;
@@ -57,8 +57,8 @@ final class FFmpegService {
         .firstWhereOrNull(
           (stream) => stream.getType()?.toUpperCase() == _typeAudio,
         );
-    final resolution = _getResoBasedOnRotation(videoStream);
-    final videoInformation = VideoInformation(
+    final resolution = _getResolutionBasedOnRotation(videoStream);
+    final videoInformation = VideoInfo(
       directory: dir,
       width: resolution.width,
       height: resolution.height,
@@ -69,12 +69,12 @@ final class FFmpegService {
       audioSampleRate: audioStream?.getSampleRate(),
       audioChannelLayout: audioStream?.getChannelLayout(),
     );
-    _videoInformations.add(videoInformation);
+    _videoInfos.add(videoInformation);
   }
 
   // Check if the video is rotated and returns the video width and height based
   // on the rotation.
-  ({int? height, int? width}) _getResoBasedOnRotation(
+  ({int? height, int? width}) _getResolutionBasedOnRotation(
     StreamInformation? videoStream,
   ) {
     final width = videoStream?.getWidth();
@@ -105,51 +105,51 @@ final class FFmpegService {
   /// Analyses the videos to determine if re-encoding is required.
   void _analyseVideos() {
     // Checks if resolution is the same on all videos.
-    _isResolutionSameOnAll = _videoInformations.every(
+    _isResolutionSameOnAll = _videoInfos.every(
       (videoInformation) {
         if (videoInformation.width == null || videoInformation.height == null) {
           return false;
         }
 
-        return videoInformation.width == _videoInformations.first.width &&
-            videoInformation.height == _videoInformations.first.height;
+        return videoInformation.width == _videoInfos.first.width &&
+            videoInformation.height == _videoInfos.first.height;
       },
     );
 
     // Checks if format is the same on all videos.
-    _isFormatSameOnAll = _videoInformations.every(
+    _isFormatSameOnAll = _videoInfos.every(
       (videoInformation) {
         if (videoInformation.format == null) return false;
 
-        return videoInformation.format == _videoInformations.first.format;
+        return videoInformation.format == _videoInfos.first.format;
       },
     );
 
     // Checks if codec is the same on all videos.
-    _isCodecSameOnAll = _videoInformations.every(
+    _isCodecSameOnAll = _videoInfos.every(
       (videoInformation) {
         if (videoInformation.codec == null) return false;
 
-        return videoInformation.codec == _videoInformations.first.codec;
+        return videoInformation.codec == _videoInfos.first.codec;
       },
     );
 
     // Checks if frame rate is the same on all videos.
-    _isFrameRateSameOnAll = _videoInformations.every(
+    _isFrameRateSameOnAll = _videoInfos.every(
       (videoInformation) {
         if (videoInformation.frameRate == null) return false;
 
-        return videoInformation.frameRate == _videoInformations.first.frameRate;
+        return videoInformation.frameRate == _videoInfos.first.frameRate;
       },
     );
 
     // Checks if audio is same on all videos.
-    _isAudioSameOnAll = _videoInformations.every(
+    _isAudioSameOnAll = _videoInfos.every(
       (videoInformation) {
         final isAudioSampleRateSame = videoInformation.audioSampleRate ==
-            _videoInformations.first.audioSampleRate;
+            _videoInfos.first.audioSampleRate;
         final isAudioChannelLayoutSame = videoInformation.audioChannelLayout ==
-            _videoInformations.first.audioChannelLayout;
+            _videoInfos.first.audioChannelLayout;
 
         return videoInformation.hasAudio &&
             isAudioSampleRateSame &&
@@ -177,7 +177,7 @@ final class FFmpegService {
       throw Exception('Videos are not initialised yet');
     }
 
-    if (_videoInformations.length < 2) {
+    if (_videoInfos.length < 2) {
       throw Exception('At least two videos are required to merge');
     }
 
@@ -210,7 +210,7 @@ final class FFmpegService {
     final command = StringBuffer('-y ');
 
     if (_isReencodingRequired!) {
-      for (final videoInformation in _videoInformations) {
+      for (final videoInformation in _videoInfos) {
         command.write('-i "${videoInformation.directory}" ');
       }
 
@@ -220,12 +220,12 @@ final class FFmpegService {
 
       command.write('-filter_complex "');
 
-      final width = _videoInformations.first.width;
-      final height = _videoInformations.first.height;
+      final width = _videoInfos.first.width;
+      final height = _videoInfos.first.height;
       final scale = _isResolutionSameOnAll! ? '' : 'scale=$width:$height,';
       final fps = _isFrameRateSameOnAll! ? '' : 'fps=30,';
 
-      for (var i = 0; i < _videoInformations.length; i++) {
+      for (var i = 0; i < _videoInfos.length; i++) {
         command.write('[$i:v:0]$scale${fps}setsar=1[v$i]; ');
       }
 
@@ -233,20 +233,20 @@ final class FFmpegService {
           'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
           ',aresample=48000:first_pts=0';
 
-      for (var i = 0; i < _videoInformations.length; i++) {
-        if (_videoInformations[i].hasAudio) {
+      for (var i = 0; i < _videoInfos.length; i++) {
+        if (_videoInfos[i].hasAudio) {
           command.write('[$i:a:0]$audio[a$i]; ');
         } else {
-          command.write('[${_videoInformations.length}:a]$audio[a$i]; ');
+          command.write('[${_videoInfos.length}:a]$audio[a$i]; ');
         }
       }
 
-      for (var i = 0; i < _videoInformations.length; i++) {
+      for (var i = 0; i < _videoInfos.length; i++) {
         command.write('[v$i][a$i] ');
       }
 
       command
-        ..write('concat=n=${_videoInformations.length}:v=1:a=1[outv][outa]" ')
+        ..write('concat=n=${_videoInfos.length}:v=1:a=1[outv][outa]" ')
         ..write('-map "[outv]" -map "[outa]" ')
         ..write('-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuvj420p ');
 
@@ -260,7 +260,7 @@ final class FFmpegService {
       final inputsDir = path.join(dirname, 'inputs.txt');
       final inputsFile = File(inputsDir);
       await inputsFile.writeAsString(
-        _videoInformations
+        _videoInfos
             .map((videoInformation) => "file '${videoInformation.directory}'")
             .join('\n'),
         mode: FileMode.writeOnly,
@@ -297,7 +297,7 @@ final class FFmpegService {
   }
 
   void _dispose() {
-    _videoInformations.clear();
+    _videoInfos.clear();
     _isResolutionSameOnAll = null;
     _isFormatSameOnAll = null;
     _isCodecSameOnAll = null;

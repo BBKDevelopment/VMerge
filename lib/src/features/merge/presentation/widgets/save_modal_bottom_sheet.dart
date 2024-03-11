@@ -81,8 +81,8 @@ class _SaveModalBottomSheet extends StatelessWidget {
                     backgroundColor: kPrimaryWhiteColor.withOpacity(0.7),
                     strokeWidth: 8,
                     //value: _editPageController.progressPercentage / 100,
-                    valueColor: const AlwaysStoppedAnimation(
-                      kPrimaryWhiteColor,
+                    valueColor: AlwaysStoppedAnimation<Color>(
+                      context.theme.iconTheme.color!,
                     ),
                   ),
                   Center(

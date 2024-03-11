@@ -80,8 +80,8 @@ final class MergeCubit extends Cubit<MergeState> {
         }
       };
 
-  Future<void> loadVideoMetadatas(List<VideoMetadata> metadatas) async {
-    if (metadatas.length != 2) {
+  Future<void> loadVideoMetadata(List<VideoMetadata> metadataList) async {
+    if (metadataList.length != 2) {
       emit(const MergeError());
       return;
     }
@@ -90,8 +90,8 @@ final class MergeCubit extends Cubit<MergeState> {
 
     try {
       await Future.wait([
-        _firstVideoPlayerService.loadFile(metadatas.first.file!),
-        _secondVideoPlayerService.loadFile(metadatas.last.file!),
+        _firstVideoPlayerService.loadFile(metadataList.first.file!),
+        _secondVideoPlayerService.loadFile(metadataList.last.file!),
       ]);
 
       if (_firstVideoPlayerService.controller == null ||
@@ -101,7 +101,7 @@ final class MergeCubit extends Cubit<MergeState> {
 
       emit(
         MergeLoaded(
-          metadatas: metadatas,
+          metadatas: metadataList,
           activeVideoIndex: ActiveVideoIndex.one,
           videoPlayerController: _firstVideoPlayerService.controller!,
           videoHeight: _firstVideoPlayerService.height,
@@ -310,7 +310,7 @@ final class MergeCubit extends Cubit<MergeState> {
             state.metadatas.map((metadata) => metadata.file!.path).toList();
 
         await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
-        await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
+      // await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
       default:
         return;
     }
