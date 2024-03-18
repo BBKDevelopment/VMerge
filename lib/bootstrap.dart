@@ -6,13 +6,18 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:launch_review_service/launch_review_service.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
+import 'package:video_player/video_player.dart';
+import 'package:video_player_service/video_player_service.dart';
+import 'package:vmerge/src/config/config.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/utilities/utilities.dart';
-import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 final getIt = GetIt.instance;
 
@@ -39,14 +44,28 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
   Bloc.observer = const AppBlocObserver();
 
+  LicenseRegistry.addLicense(() async* {
+    final robotoMono = await rootBundle.loadString(Assets.licenses.robotoMono);
+    final materialDesignIcons =
+        await rootBundle.loadString(Assets.licenses.materialDesignIcons);
+    final materialIcons =
+        await rootBundle.loadString(Assets.licenses.materialIcons);
+
+    yield LicenseEntryWithLineBreaks(['roboto-mono'], robotoMono);
+    yield LicenseEntryWithLineBreaks(
+      ['material-design-icons'],
+      materialDesignIcons,
+    );
+    yield LicenseEntryWithLineBreaks(['material-icons'], materialIcons);
+  });
+
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.dark);
 
   await Future.wait(
     [
       SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]),
-      PhotoManager.clearFileCache(),
       setup(),
     ],
   ).onError((error, stackTrace) => [log('$error', stackTrace: stackTrace)]);
@@ -56,10 +75,21 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
 Future<void> setup() async {
   getIt
+    ..registerFactoryParam<AppTheme, Color, void>(
+      (color, _) => LightAppTheme(color),
+      instanceName: '$LightAppTheme',
+    )
+    ..registerFactoryParam<AppTheme, Color, void>(
+      (color, _) => DarkAppTheme(color),
+      instanceName: '$DarkAppTheme',
+    )
     ..registerLazySingleton<LaunchReviewService>(
       () => const LaunchReviewService(androidAppId: kAndroidAppId),
     )
     ..registerLazySingleton<UrlLauncherService>(
       () => const UrlLauncherService(),
+    )
+    ..registerFactory<VideoPlayerService>(
+      () => VideoPlayerService(options: VideoPlayerOptions()),
     );
 }

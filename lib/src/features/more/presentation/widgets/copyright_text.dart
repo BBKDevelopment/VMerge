@@ -18,17 +18,32 @@ class _CopyrightText extends StatelessWidget {
           opacity: CurvedAnimation(
             parent: animation,
             curve: const Interval(
-              0.6,
+              0,
               1,
-              curve: Curves.easeInOutCubic,
+              curve: Curves.easeOut,
             ),
           ),
-          child: child,
+          child: SlideTransition(
+            position: Tween(
+              begin: const Offset(0, -0.2),
+              end: Offset.zero,
+            ).animate(
+              CurvedAnimation(
+                parent: animation,
+                curve: const Interval(
+                  0,
+                  1,
+                  curve: Curves.easeOut,
+                ),
+              ),
+            ),
+            child: child,
+          ),
         );
       },
       child: Text(
-        kCopyrightText,
-        style: context.textTheme.bodySmall,
+        context.l10n.copyrightMessage,
+        style: context.textTheme.labelSmall,
         textAlign: TextAlign.center,
       ),
     );

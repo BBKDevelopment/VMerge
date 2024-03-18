@@ -5,12 +5,12 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:vmerge/src/features/edit/edit.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:vmerge/src/core/core.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview/preview.dart';
-import 'package:vmerge/utilities/utilities.dart';
+import 'package:vmerge/src/features/preview_video/preview_video.dart';
 
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({super.key});
@@ -19,68 +19,101 @@ class AppNavigationBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => NavigationCubit(
-        const NavigationState(page: NavigationBarPage.preview),
+        const NavigationState(page: NavigationBarPage.previewVideo),
       ),
-      child: const _NavigationBarView(),
+      child: const _AppNavigationBarView(),
     );
   }
 }
 
-class _NavigationBarView extends StatelessWidget {
-  const _NavigationBarView();
+class _AppNavigationBarView extends StatefulWidget {
+  const _AppNavigationBarView();
+
+  @override
+  State<_AppNavigationBarView> createState() => _AppNavigationBarViewState();
+}
+
+class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
+  late final PageController _pageController;
+
+  @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage: context.read<NavigationCubit>().state.page.index,
+    );
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FlutterNativeSplash.remove();
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      body: SizedBox.expand(
-        child: PageView(
-          physics: const NeverScrollableScrollPhysics(),
-          onPageChanged: (index) async {
-            final page = NavigationBarPage.values[index];
-            context.read<NavigationCubit>().updatePage(page);
+      body: PageView(
+        controller: _pageController,
+        physics: const NeverScrollableScrollPhysics(),
+        onPageChanged: (index) async {
+          final page = NavigationBarPage.values[index];
+          context.read<NavigationCubit>().updatePage(page);
 
-            switch (page) {
-              case NavigationBarPage.preview:
-                break;
-              case NavigationBarPage.edit:
-                break;
-              case NavigationBarPage.more:
-                break;
-            }
+          switch (page) {
+            case NavigationBarPage.previewVideo:
+              break;
+            case NavigationBarPage.merge:
+              break;
+            case NavigationBarPage.more:
+              break;
+          }
 
-            // if (index == 1) {
-            //   _editPageController.getAnimationController.duration =
-            //       kEditPageInAnimationDuration;
-            //   await _editPageController.getAnimationController.forward();
-            //   if (_homePageController.getVideoList.length == 2) {
-            //     _editPageController
-            //         .updateAssets(_homePageController.getVideoList);
-            //   }
-            // }
-            // if (index == 2) {
-            //   _morePageController.getBeginList.clear();
-            //   _morePageController.getEndList.clear();
-            //   _morePageController.getAnimationController.duration =
-            //       kMorePageInAnimationDuration;
-            //   await _morePageController.getAnimationController.forward();
-            // }
-          },
-          children: const [
-            PreviewPage(),
-            EditPage(),
-            MorePage(),
-          ],
-        ),
+          // if (index == 1) {
+          //   _editPageController.getAnimationController.duration =
+          //       kEditPageInAnimationDuration;
+          //   await _editPageController.getAnimationController.forward();
+          //   if (_homePageController.getVideoList.length == 2) {
+          //     _editPageController
+          //         .updateAssets(_homePageController.getVideoList);
+          //   }
+          // }
+          // if (index == 2) {
+          //   _morePageController.getBeginList.clear();
+          //   _morePageController.getEndList.clear();
+          //   _morePageController.getAnimationController.duration =
+          //       kMorePageInAnimationDuration;
+          //   await _morePageController.getAnimationController.forward();
+          // }
+        },
+        children: const [
+          PreviewVideoPage(),
+          MergePage(),
+          MorePage(),
+        ],
       ),
       bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 14),
-        color: kPrimaryColor,
+        padding: AppPadding.horizontalMedium,
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(
+              color: context.theme.dividerColor,
+            ),
+          ),
+        ),
         child: BlocConsumer<NavigationCubit, NavigationState>(
           listener: (context, state) async {
+            _pageController.jumpToPage(state.page.index);
+
             switch (state.page) {
-              case NavigationBarPage.preview:
-                context.read<PreviewCubit>().resetVideos();
-              case NavigationBarPage.edit:
+              case NavigationBarPage.previewVideo:
+                break;
+              case NavigationBarPage.merge:
                 break;
               case NavigationBarPage.more:
                 break;
@@ -89,7 +122,10 @@ class _NavigationBarView extends StatelessWidget {
           builder: (context, state) {
             return BottomNavyBar(
               selectedIndex: state.page.index,
+              backgroundColor: context.theme.scaffoldBackgroundColor,
+              showElevation: false,
               onItemSelected: (index) async {
+                _pageController.jumpToPage(index);
                 // if (_bottomBarController.currentIndex == 1 && index != 1) {
                 //   _editPageController.getAnimationController.duration =
                 //       kEditPageOutAnimationDuration;
@@ -103,28 +139,45 @@ class _NavigationBarView extends StatelessWidget {
                 // _bottomBarController.updateCurrentIndex(index);
                 // _bottomBarController.pageController.jumpToPage(index);
               },
-              backgroundColor: kPrimaryColor,
-              items: <BottomNavyBarItem>[
+              items: [
                 BottomNavyBarItem(
-                  activeColor: kPrimaryWhiteColor,
-                  inactiveColor: kPrimaryWhiteColor,
-                  title: const Text('Home', style: kSemiBoldTextStyle),
+                  activeColor: context.colorScheme.secondary,
+                  title: Text(l10n.video, style: context.textTheme.titleMedium),
                   textAlign: TextAlign.center,
-                  icon: SvgPicture.asset(kHomeIconPath),
+                  icon: Assets.images.video.svg(
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
                 BottomNavyBarItem(
-                  activeColor: kPrimaryWhiteColor,
-                  inactiveColor: kPrimaryWhiteColor,
-                  title: const Text('Edit', style: kSemiBoldTextStyle),
+                  activeColor: context.colorScheme.secondary,
+                  title: Text(l10n.merge, style: context.textTheme.titleMedium),
                   textAlign: TextAlign.center,
-                  icon: SvgPicture.asset(kCutIconPath),
+                  icon: Assets.images.merge.svg(
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
                 BottomNavyBarItem(
-                  activeColor: kPrimaryWhiteColor,
-                  inactiveColor: kPrimaryWhiteColor,
-                  title: const Text('More', style: kSemiBoldTextStyle),
+                  activeColor: context.colorScheme.secondary,
+                  title: Text(l10n.more, style: context.textTheme.titleMedium),
                   textAlign: TextAlign.center,
-                  icon: SvgPicture.asset(kMoreIconPath),
+                  icon: Assets.images.more.svg(
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
+                    ),
+                  ),
                 ),
               ],
             );

@@ -8,7 +8,7 @@ import 'package:vmerge/src/features/navigation/navigation.dart';
 final class NavigationCubit extends Cubit<NavigationState> {
   NavigationCubit(super.initialState);
 
-  void updatePage(NavigationBarPage page) {
-    emit(NavigationState(page: page));
+  void updatePage(NavigationBarPage page, {Object? arguments}) {
+    emit(NavigationState(page: page, arguments: arguments));
   }
 }

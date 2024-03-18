@@ -3,5 +3,4 @@
 // in the LICENSE file.
 
 export 'constants.dart';
-export 'theme.dart';
 export 'time_formatter.dart';
