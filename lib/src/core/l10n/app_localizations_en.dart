@@ -17,7 +17,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get more => 'More';
 
   @override
-  String get selectTwoVideosMessage => 'Please select at least 2 videos to continue!';
+  String get selectTwoVideosMessage =>
+      'Please select at least 2 videos to continue!';
 
   @override
   String get openPicker => 'Open picker';
@@ -107,16 +108,20 @@ class AppLocalizationsEn extends AppLocalizations {
   String get resolution => 'Resolution';
 
   @override
-  String get originalResolutionTooltip => 'Videos will keep their original resolution.';
+  String get originalResolutionTooltip =>
+      'Videos will keep their original resolution.';
 
   @override
-  String get independentAspectRatioTooltip => 'Videos will keep their original aspect ratio.';
+  String get independentAspectRatioTooltip =>
+      'Videos will keep their original aspect ratio.';
 
   @override
-  String get firstAspectRatioTooltip => 'Videos will use the aspect ratio of the first video.';
+  String get firstAspectRatioTooltip =>
+      'Videos will use the aspect ratio of the first video.';
 
   @override
-  String get autoAspectRatioTooltip => 'Videos will use the aspect ratio of the selected resolution.';
+  String get autoAspectRatioTooltip =>
+      'Videos will use the aspect ratio of the selected resolution.';
 
   @override
   String get independent => 'Independent';
