@@ -5,4 +5,6 @@ abstract interface class SettingsService<T> {
   const SettingsService();
 
   Future<T> getMergeSettings();
+
+  Future<void> saveMergeSettings(T settings);
 }
