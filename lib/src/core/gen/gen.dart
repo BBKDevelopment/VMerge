@@ -4,3 +4,4 @@
 
 export 'assets.gen.dart';
 export 'fonts.gen.dart';
+export 'objectbox.g.dart';

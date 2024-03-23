@@ -12,6 +12,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:launch_review_service/launch_review_service.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
@@ -92,4 +94,21 @@ Future<void> setup() async {
     ..registerFactory<VideoPlayerService>(
       () => VideoPlayerService(options: VideoPlayerOptions()),
     );
+}
+
+final class ObjectBox {
+  ObjectBox._create(this.store) {
+    // Add any additional setup code, e.g. build queries.
+  }
+
+  /// The Store of this app.
+  final Store store;
+
+  /// Create an instance of ObjectBox to use throughout the app.
+  static Future<ObjectBox> create() async {
+    final appDocsDir = await getApplicationDocumentsDirectory();
+    final store =
+        await openStore(directory: p.join(appDocsDir.path, "obx-example"));
+    return ObjectBox._create(store);
+  }
 }
