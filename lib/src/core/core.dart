@@ -4,5 +4,6 @@
 
 export 'constants/constants.dart';
 export 'extensions/extensions.dart';
-export 'gen/gen.dart';
+export 'gen/gen.dart' hide Entity;
 export 'l10n/l10n.dart';
+export 'resources/resources.dart';
