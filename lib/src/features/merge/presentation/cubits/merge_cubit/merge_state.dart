@@ -109,48 +109,6 @@ enum ActiveVideoIndex {
   two,
 }
 
-enum PlaybackSpeed {
-  zeroPointFive(0.5),
-  one(1),
-  onePointFive(1.5),
-  two(2);
-
-  const PlaybackSpeed(this.value);
-
-  final double value;
-
-  static PlaybackSpeed? fromValue(double value) {
-    for (final speed in PlaybackSpeed.values) {
-      if (speed.value == value) return speed;
-    }
-
-    return null;
-  }
-}
-
-enum VideoResolution {
-  veryLow('240p', 426, 240, '16:9'),
-  low('360p', 480, 360, '4:3'),
-  medium('480p', 640, 480, '4:3'),
-  high('720p', 1280, 720, '16:9'),
-  veryHigh('1080p', 1920, 1080, '16:9'),
-  ultraHigh('1440p', 2560, 1440, '16:9'),
-  original('Original', null, null, null);
-
-  const VideoResolution(this.value, this.width, this.height, this.aspectRatio);
-
-  final String value;
-  final double? width;
-  final double? height;
-  final String? aspectRatio;
-}
-
-enum VideoAspectRatio {
-  independent,
-  firstVideo,
-  auto,
-}
-
 enum SaveModalBottomSheetStatus {
   idle,
   saving,

@@ -303,9 +303,8 @@ final class MergeCubit extends Cubit<MergeState> {
   Future<void> mergeVideos() async {
     switch (state) {
       case final MergeLoaded state:
-        final appDocumentsDir = await getApplicationDocumentsDirectory();
-        final outputVideoDir =
-            path.join(appDocumentsDir.path, 'vmerge_output.mp4');
+        final appDocsDir = await getApplicationDocumentsDirectory();
+        final outputVideoDir = path.join(appDocsDir.path, 'vmerge_output.mp4');
         final inputVideoDirs =
             state.metadatas.map((metadata) => metadata.file!.path).toList();
 
