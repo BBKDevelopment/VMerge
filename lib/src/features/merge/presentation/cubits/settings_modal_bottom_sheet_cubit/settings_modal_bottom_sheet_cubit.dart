@@ -77,19 +77,38 @@ final class SettingsModalBottomSheetCubit
     }
   }
 
+  void _saveStateAsMergeSettings() {
+    final settings = MergeSettings(
+      isSoundOn: state.isSoundOn,
+      playbackSpeed: state.playbackSpeed,
+      videoResolution: state.videoResolution,
+      videoAspectRatio: state.videoAspectRatio,
+    );
+
+    _saveMergeSettings(settings);
+  }
+
   void toggleSound({required bool isSoundOn}) {
     emit(state.copyWith(isSoundOn: isSoundOn));
+    _saveStateAsMergeSettings();
   }
 
   void changePlaybackSpeed(PlaybackSpeed playbackSpeed) {
+    // Slider gets triggered multiple times when the user drags it. This check
+    // prevents the settings from being saved multiple times.
+    if (state.playbackSpeed == playbackSpeed) return;
+
     emit(state.copyWith(playbackSpeed: playbackSpeed));
+    _saveStateAsMergeSettings();
   }
 
   void changeVideoResolution(VideoResolution videoResolution) {
     emit(state.copyWith(videoResolution: videoResolution));
+    _saveStateAsMergeSettings();
   }
 
   void changeVideoAspectRatio(VideoAspectRatio videoAspectRatio) {
     emit(state.copyWith(videoAspectRatio: videoAspectRatio));
+    _saveStateAsMergeSettings();
   }
 }

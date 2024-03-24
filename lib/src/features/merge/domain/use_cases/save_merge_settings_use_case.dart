@@ -4,13 +4,13 @@ import 'package:vmerge/src/features/merge/merge.dart';
 final class SaveMergeSettingsUseCase
     implements UseCase<DataState<bool>, MergeSettings> {
   const SaveMergeSettingsUseCase({
-    required MergeSettingsRepository mergeSettingsRepository,
-  }) : _mergeSettingsRepository = mergeSettingsRepository;
+    required MergeSettingsRepository repository,
+  }) : _repository = repository;
 
-  final MergeSettingsRepository _mergeSettingsRepository;
+  final MergeSettingsRepository _repository;
 
   @override
   Future<DataState<bool>> call({required MergeSettings params}) {
-    return _mergeSettingsRepository.saveMergeSettings(params);
+    return _repository.saveMergeSettings(params);
   }
 }

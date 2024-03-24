@@ -16,8 +16,15 @@ class _ControlButtonRow extends StatelessWidget {
       context: context,
       useRootNavigator: true,
       topRadius: Radius.zero,
-      builder: (_) => BlocProvider.value(
-        value: BlocProvider.of<MergePageCubit>(context),
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: BlocProvider.of<MergePageCubit>(context),
+          ),
+          BlocProvider.value(
+            value: BlocProvider.of<SettingsModalBottomSheetCubit>(context),
+          ),
+        ],
         child: const Material(child: _SettingsModalBottomSheet()),
       ),
     );

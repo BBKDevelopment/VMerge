@@ -9,7 +9,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
-import 'package:vmerge/src/components/no_video_warning.dart';
+import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
@@ -27,12 +27,21 @@ class MergePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => MergePageCubit(
-        const MergePageInitial(),
-        firstVideoPlayerService: getIt<VideoPlayerService>(),
-        secondVideoPlayerService: getIt<VideoPlayerService>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => MergePageCubit(
+            firstVideoPlayerService: getIt<VideoPlayerService>(),
+            secondVideoPlayerService: getIt<VideoPlayerService>(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => SettingsModalBottomSheetCubit(
+            getMergeSettingsUseCase: getIt<GetMergeSettingsUseCase>(),
+            saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
+          )..init(),
+        ),
+      ],
       child: const _MergeView(),
     );
   }

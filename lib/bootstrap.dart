@@ -19,6 +19,7 @@ import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/src/config/config.dart';
 import 'package:vmerge/src/core/core.dart';
+import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 final getIt = GetIt.instance;
@@ -76,6 +77,8 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 }
 
 Future<void> setup() async {
+  final objectBoxService = await ObjectBoxService.create();
+
   getIt
     ..registerFactoryParam<AppTheme, Color, void>(
       (color, _) => LightAppTheme(color),
@@ -84,6 +87,27 @@ Future<void> setup() async {
     ..registerFactoryParam<AppTheme, Color, void>(
       (color, _) => DarkAppTheme(color),
       instanceName: '$DarkAppTheme',
+    )
+    ..registerLazySingleton<ObjectBoxService>(() => objectBoxService)
+    ..registerLazySingleton<LocalMergeSettingsService>(
+      () => ObjectBoxMergeSettingsService(
+        service: getIt<ObjectBoxService>(),
+      ),
+    )
+    ..registerLazySingleton<MergeSettingsRepository>(
+      () => MergeSettingsRepositoryImpl(
+        localService: getIt<LocalMergeSettingsService>(),
+      ),
+    )
+    ..registerLazySingleton<GetMergeSettingsUseCase>(
+      () => GetMergeSettingsUseCase(
+        repository: getIt<MergeSettingsRepository>(),
+      ),
+    )
+    ..registerLazySingleton<SaveMergeSettingsUseCase>(
+      () => SaveMergeSettingsUseCase(
+        repository: getIt<MergeSettingsRepository>(),
+      ),
     )
     ..registerLazySingleton<LaunchReviewService>(
       () => const LaunchReviewService(androidAppId: kAndroidAppId),
@@ -96,19 +120,19 @@ Future<void> setup() async {
     );
 }
 
-final class ObjectBox {
-  ObjectBox._create(this.store) {
+final class ObjectBoxService {
+  ObjectBoxService._create(this.store) {
     // Add any additional setup code, e.g. build queries.
   }
 
   /// The Store of this app.
   final Store store;
 
-  /// Create an instance of ObjectBox to use throughout the app.
-  static Future<ObjectBox> create() async {
+  /// Create an instance of ObjectBoxService to use throughout the app.
+  static Future<ObjectBoxService> create() async {
     final appDocsDir = await getApplicationDocumentsDirectory();
     final store =
         await openStore(directory: join(appDocsDir.path, "obx-example"));
-    return ObjectBox._create(store);
+    return ObjectBoxService._create(store);
   }
 }

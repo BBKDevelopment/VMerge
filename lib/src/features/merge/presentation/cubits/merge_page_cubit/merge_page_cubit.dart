@@ -13,12 +13,12 @@ import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/merge/presentation/cubits/ffmpeg_service.dart';
 
 final class MergePageCubit extends Cubit<MergePageState> {
-  MergePageCubit(
-    super.initialState, {
+  MergePageCubit({
     required VideoPlayerService firstVideoPlayerService,
     required VideoPlayerService secondVideoPlayerService,
   })  : _firstVideoPlayerService = firstVideoPlayerService,
-        _secondVideoPlayerService = secondVideoPlayerService;
+        _secondVideoPlayerService = secondVideoPlayerService,
+        super(const MergePageInitial());
 
   final VideoPlayerService _firstVideoPlayerService;
   final VideoPlayerService _secondVideoPlayerService;

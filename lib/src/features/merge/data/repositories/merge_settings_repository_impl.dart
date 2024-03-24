@@ -3,16 +3,15 @@ import 'package:vmerge/src/features/merge/merge.dart';
 
 final class MergeSettingsRepositoryImpl implements MergeSettingsRepository {
   const MergeSettingsRepositoryImpl({
-    required LocalMergeSettingsService localMergeSettingsService,
-  }) : _localMergeSettingsService = localMergeSettingsService;
+    required LocalMergeSettingsService localService,
+  }) : _localService = localService;
 
-  final LocalMergeSettingsService _localMergeSettingsService;
+  final LocalMergeSettingsService _localService;
 
   @override
   Future<DataState<MergeSettings>> getMergeSettings() async {
     try {
-      final localMergeSettings =
-          await _localMergeSettingsService.getMergeSettings();
+      final localMergeSettings = await _localService.getMergeSettings();
       final mergeSettings = localMergeSettings.toEntity();
       return DataSuccess(mergeSettings);
     } catch (error, stackTrace) {
@@ -31,7 +30,7 @@ final class MergeSettingsRepositoryImpl implements MergeSettingsRepository {
   Future<DataState<bool>> saveMergeSettings(MergeSettings settings) async {
     try {
       final localMergeSettings = LocalMergeSettings.fromEntity(settings);
-      await _localMergeSettingsService.saveMergeSettings(localMergeSettings);
+      await _localService.saveMergeSettings(localMergeSettings);
       return const DataSuccess(true);
     } catch (error, stackTrace) {
       return DataFailure(
