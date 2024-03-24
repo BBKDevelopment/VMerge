@@ -28,8 +28,8 @@ class MergePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => MergeCubit(
-        const MergeInitial(),
+      create: (_) => MergePageCubit(
+        const MergePageInitial(),
         firstVideoPlayerService: getIt<VideoPlayerService>(),
         secondVideoPlayerService: getIt<VideoPlayerService>(),
       ),
@@ -67,7 +67,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 
-      context.read<MergeCubit>().loadVideoMetadata(videoMetadatas);
+      context.read<MergePageCubit>().loadVideoMetadata(videoMetadatas);
     });
   }
 
@@ -79,18 +79,18 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MergeCubit, MergeState>(
+    return BlocListener<MergePageCubit, MergePageState>(
       listener: (context, state) {
         switch (state) {
-          case MergeInitial():
+          case MergePageInitial():
             break;
-          case MergeLoading():
+          case MergePageLoading():
             _animationController.reset();
-          case MergeLoaded():
+          case MergePageLoaded():
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _animationController.forward();
             });
-          case MergeError():
+          case MergePageError():
             break;
         }
       },

@@ -8,25 +8,25 @@ class _ControlButtonRow extends StatelessWidget {
   final Animation<double> animation;
 
   void _onTapSettings(BuildContext context) {
-    if (context.read<MergeCubit>().state is! MergeLoaded) return;
+    if (context.read<MergePageCubit>().state is! MergePageLoaded) return;
 
-    context.read<MergeCubit>().stopVideo();
+    context.read<MergePageCubit>().stopVideo();
 
     showCupertinoModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
       topRadius: Radius.zero,
       builder: (_) => BlocProvider.value(
-        value: BlocProvider.of<MergeCubit>(context),
+        value: BlocProvider.of<MergePageCubit>(context),
         child: const Material(child: _SettingsModalBottomSheet()),
       ),
     );
   }
 
   void _onTapSaveVideo(BuildContext context) {
-    if (context.read<MergeCubit>().state is! MergeLoaded) return;
+    if (context.read<MergePageCubit>().state is! MergePageLoaded) return;
 
-    context.read<MergeCubit>().stopVideo();
+    context.read<MergePageCubit>().stopVideo();
     // context.read<MergeCubit>().mergeVideos();
 
     showCupertinoModalBottomSheet<void>(
@@ -34,7 +34,7 @@ class _ControlButtonRow extends StatelessWidget {
       useRootNavigator: true,
       topRadius: Radius.zero,
       builder: (_) => BlocProvider.value(
-        value: BlocProvider.of<MergeCubit>(context),
+        value: BlocProvider.of<MergePageCubit>(context),
         child: const Material(child: _SaveModalBottomSheet()),
       ),
     );
@@ -77,9 +77,10 @@ class _ControlButtonRow extends StatelessWidget {
               );
             },
             child: FilledButton.tonalIcon(
-              onPressed: context.watch<MergeCubit>().state is MergeLoaded
-                  ? () => _onTapSettings(context)
-                  : null,
+              onPressed:
+                  context.watch<MergePageCubit>().state is MergePageLoaded
+                      ? () => _onTapSettings(context)
+                      : null,
               label: Text(context.l10n.settings),
               icon: Hero(
                 tag: 'settings',
@@ -129,9 +130,10 @@ class _ControlButtonRow extends StatelessWidget {
               );
             },
             child: OutlinedButton.icon(
-              onPressed: context.watch<MergeCubit>().state is MergeLoaded
-                  ? () => _onTapSaveVideo(context)
-                  : null,
+              onPressed:
+                  context.watch<MergePageCubit>().state is MergePageLoaded
+                      ? () => _onTapSaveVideo(context)
+                      : null,
               label: Text(context.l10n.saveVideo),
               icon: Hero(
                 tag: 'save',
