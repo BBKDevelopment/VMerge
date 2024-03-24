@@ -1,16 +1,21 @@
 import 'package:equatable/equatable.dart';
 
 final class Failure extends Equatable {
-  const Failure({
-    required this.exception,
-    required this.message,
+  const Failure(
+    this.message, {
+    required this.name,
+    required this.error,
     required this.stackTrace,
   });
 
-  final Object exception;
   final String message;
+
+  final String name;
+
+  final Object error;
+
   final StackTrace stackTrace;
 
   @override
-  List<Object?> get props => [exception, message, stackTrace];
+  List<Object?> get props => [message, name, error, stackTrace];
 }
