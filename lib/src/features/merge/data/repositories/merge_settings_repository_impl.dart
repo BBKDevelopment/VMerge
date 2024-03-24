@@ -15,11 +15,12 @@ final class MergeSettingsRepositoryImpl implements MergeSettingsRepository {
           await _localMergeSettingsService.getMergeSettings();
       final mergeSettings = localMergeSettings.toEntity();
       return DataSuccess(mergeSettings);
-    } catch (exception, stackTrace) {
+    } catch (error, stackTrace) {
       return DataFailure(
         Failure(
-          exception: exception,
-          message: 'Could not get merge settings!',
+          'Could not get merge settings!',
+          error: error,
+          name: '$MergeSettingsRepositoryImpl',
           stackTrace: stackTrace,
         ),
       );
@@ -32,11 +33,12 @@ final class MergeSettingsRepositoryImpl implements MergeSettingsRepository {
       final localMergeSettings = LocalMergeSettings.fromEntity(settings);
       await _localMergeSettingsService.saveMergeSettings(localMergeSettings);
       return const DataSuccess(true);
-    } catch (exception, stackTrace) {
+    } catch (error, stackTrace) {
       return DataFailure(
         Failure(
-          exception: exception,
-          message: 'Could not save merge settings!',
+          'Could not save merge settings!',
+          error: error,
+          name: '$MergeSettingsRepositoryImpl',
           stackTrace: stackTrace,
         ),
       );

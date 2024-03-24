@@ -1,7 +1,7 @@
 import 'package:collection/collection.dart';
 import 'package:vmerge/src/core/core.dart';
 
-final class MergeSettings extends Entity {
+final class MergeSettings extends DomainEntity {
   const MergeSettings({
     required this.isSoundOn,
     required this.playbackSpeed,

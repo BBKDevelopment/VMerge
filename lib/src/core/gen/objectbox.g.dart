@@ -21,33 +21,33 @@ export 'package:objectbox/objectbox.dart'; // so that callers only have to impor
 
 final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
-      id: const obx_int.IdUid(2, 8480514306824483187),
+      id: const obx_int.IdUid(1, 8551260808493273318),
       name: 'LocalMergeSettings',
-      lastPropertyId: const obx_int.IdUid(5, 5988162432875676751),
+      lastPropertyId: const obx_int.IdUid(5, 4282369276157571834),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(1, 4956396745360290319),
+            id: const obx_int.IdUid(1, 3360665689172726783),
             name: 'id',
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 8428127085685007111),
+            id: const obx_int.IdUid(2, 5578878731541755337),
             name: 'isSoundOn',
             type: 1,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 7808486242829979408),
+            id: const obx_int.IdUid(3, 6608534077247407929),
             name: 'playbackSpeed',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(4, 7086592073638664485),
+            id: const obx_int.IdUid(4, 6444398988388069063),
             name: 'videoResolution',
             type: 9,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(5, 5988162432875676751),
+            id: const obx_int.IdUid(5, 4282369276157571834),
             name: 'videoAspectRatio',
             type: 9,
             flags: 0)
@@ -91,19 +91,13 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(2, 8480514306824483187),
+      lastEntityId: const obx_int.IdUid(1, 8551260808493273318),
       lastIndexId: const obx_int.IdUid(0, 0),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
-      retiredEntityUids: const [6340670761431747097],
+      retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [
-        2521569766324816989,
-        213874028732991268,
-        5606106742822233060,
-        6560843509079260207,
-        8429516065717112211
-      ],
+      retiredPropertyUids: const [],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,

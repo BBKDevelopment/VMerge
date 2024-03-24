@@ -4,33 +4,33 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "2:8480514306824483187",
-      "lastPropertyId": "5:5988162432875676751",
+      "id": "1:8551260808493273318",
+      "lastPropertyId": "5:4282369276157571834",
       "name": "LocalMergeSettings",
       "properties": [
         {
-          "id": "1:4956396745360290319",
+          "id": "1:3360665689172726783",
           "name": "id",
           "type": 6,
           "flags": 1
         },
         {
-          "id": "2:8428127085685007111",
+          "id": "2:5578878731541755337",
           "name": "isSoundOn",
           "type": 1
         },
         {
-          "id": "3:7808486242829979408",
+          "id": "3:6608534077247407929",
           "name": "playbackSpeed",
           "type": 9
         },
         {
-          "id": "4:7086592073638664485",
+          "id": "4:6444398988388069063",
           "name": "videoResolution",
           "type": 9
         },
         {
-          "id": "5:5988162432875676751",
+          "id": "5:4282369276157571834",
           "name": "videoAspectRatio",
           "type": 9
         }
@@ -38,23 +38,15 @@
       "relations": []
     }
   ],
-  "lastEntityId": "2:8480514306824483187",
+  "lastEntityId": "1:8551260808493273318",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
   "modelVersion": 5,
   "modelVersionParserMinimum": 5,
-  "retiredEntityUids": [
-    6340670761431747097
-  ],
+  "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [
-    2521569766324816989,
-    213874028732991268,
-    5606106742822233060,
-    6560843509079260207,
-    8429516065717112211
-  ],
+  "retiredPropertyUids": [],
   "retiredRelationUids": [],
   "version": 1
 }
