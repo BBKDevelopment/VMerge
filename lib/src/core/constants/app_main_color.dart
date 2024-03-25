@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'package:collection/collection.dart';
 import 'package:flutter/material.dart';
 
 /// An enum that provides constant main color values to use app-wide.
@@ -44,31 +45,32 @@ enum AppMainColor {
 
   /// Returns [Color] based on the enum value.
   Color get value {
-    switch (this) {
-      case red:
-        return Colors.red;
-      case pink:
-        return Colors.pink;
-      case purple:
-        return Colors.purple;
-      case indigo:
-        return Colors.indigo;
-      case blue:
-        return Colors.blue;
-      case cyan:
-        return Colors.cyan;
-      case teal:
-        return Colors.teal;
-      case green:
-        return Colors.green;
-      case lime:
-        return Colors.lime;
-      case yellow:
-        return Colors.yellow;
-      case orange:
-        return Colors.orange;
-      case brown:
-        return Colors.brown;
-    }
+    return switch (this) {
+      red => Colors.red,
+      pink => Colors.pink,
+      purple => Colors.purple,
+      indigo => Colors.indigo,
+      blue => Colors.blue,
+      cyan => Colors.cyan,
+      teal => Colors.teal,
+      green => Colors.green,
+      lime => Colors.lime,
+      yellow => Colors.yellow,
+      orange => Colors.orange,
+      brown => Colors.brown,
+    };
+  }
+
+  @override
+  String toString() {
+    return name;
+  }
+
+  static AppMainColor fromString(String value) {
+    final appMainColor = AppMainColor.values.firstWhereOrNull(
+      (appMainColor) => appMainColor.toString() == value,
+    );
+
+    return appMainColor ?? AppMainColor.indigo;
   }
 }

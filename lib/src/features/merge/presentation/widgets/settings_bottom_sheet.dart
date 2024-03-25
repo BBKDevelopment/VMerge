@@ -4,8 +4,8 @@
 
 part of '../pages/merge_page.dart';
 
-class _SettingsModalBottomSheet extends StatelessWidget {
-  const _SettingsModalBottomSheet();
+class _SettingsBottomSheet extends StatelessWidget {
+  const _SettingsBottomSheet();
 
   @override
   Widget build(BuildContext context) {
@@ -17,53 +17,66 @@ class _SettingsModalBottomSheet extends StatelessWidget {
       ),
       child: Padding(
         padding: AppPadding.general,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
+        child: BlocConsumer<SettingsBottomSheetCubit, SettingsBottomSheetState>(
+          listener: (context, state) {
+            context.read<MergePageCubit>().setVideoSpeedAndSound(
+                  speed: state.playbackSpeed,
+                  isSoundOn: state.isSoundOn,
+                );
+          },
+          builder: (context, state) {
+            return Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(width: AppButtonSize.small),
-                Hero(
-                  tag: 'settings',
-                  child: Assets.images.settings.svg(
-                    height: AppIconSize.xLarge,
-                    colorFilter: ColorFilter.mode(
-                      context.theme.iconTheme.color!,
-                      BlendMode.srcIn,
-                    ),
-                  ),
-                ),
-                SizedBox.square(
-                  dimension: AppButtonSize.small,
-                  child: IconButton.filledTonal(
-                    onPressed: Navigator.of(context).pop,
-                    icon: Assets.images.close.svg(
-                      height: AppIconSize.xxSmall,
-                      colorFilter: ColorFilter.mode(
-                        context.colorScheme.onSecondaryContainer,
-                        BlendMode.srcIn,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(width: AppButtonSize.small),
+                    Hero(
+                      tag: 'settings',
+                      child: Assets.images.settings.svg(
+                        height: AppIconSize.xLarge,
+                        colorFilter: ColorFilter.mode(
+                          context.theme.iconTheme.color!,
+                          BlendMode.srcIn,
+                        ),
                       ),
                     ),
-                  ),
+                    SizedBox.square(
+                      dimension: AppButtonSize.small,
+                      child: IconButton.filledTonal(
+                        onPressed: Navigator.of(context).pop,
+                        icon: Assets.images.close.svg(
+                          height: AppIconSize.xxSmall,
+                          colorFilter: ColorFilter.mode(
+                            context.colorScheme.onSecondaryContainer,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: AppPadding.medium),
+                Text(
+                  context.l10n.settings,
+                  style: context.textTheme.titleLarge,
+                ),
+                const SizedBox(height: AppPadding.xxLarge),
+                _SoundSelector(isSoundOn: state.isSoundOn),
+                const Divider(height: AppPadding.large),
+                _ResolutionSelector(state.videoResolution),
+                const SizedBox(height: AppPadding.large),
+                _AspectRatioSelector(
+                  state.videoAspectRatio,
+                  state.videoResolution,
+                ),
+                const Divider(height: AppPadding.large),
+                _SpeedSelector(state.playbackSpeed),
               ],
-            ),
-            const SizedBox(height: AppPadding.medium),
-            Text(
-              context.l10n.settings,
-              style: context.textTheme.titleLarge,
-            ),
-            const SizedBox(height: AppPadding.xxLarge),
-            const _SoundSelector(),
-            const Divider(height: AppPadding.large),
-            const _ResolutionSelector(),
-            const SizedBox(height: AppPadding.large),
-            const _AspectRatioSelector(),
-            const Divider(height: AppPadding.large),
-            const _SpeedSelector(),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -71,19 +84,12 @@ class _SettingsModalBottomSheet extends StatelessWidget {
 }
 
 class _SoundSelector extends StatelessWidget {
-  const _SoundSelector();
+  const _SoundSelector({required this.isSoundOn});
+
+  final bool isSoundOn;
 
   @override
   Widget build(BuildContext context) {
-    final isSoundOn = context.select<MergeCubit, bool>((cubit) {
-      switch (cubit.state) {
-        case final MergeLoaded state:
-          return state.isSoundOn;
-        default:
-          return false;
-      }
-    });
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -95,7 +101,7 @@ class _SoundSelector extends StatelessWidget {
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              context.l10n.on,
+              isSoundOn ? context.l10n.on : context.l10n.off,
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
@@ -105,7 +111,9 @@ class _SoundSelector extends StatelessWidget {
         Switch(
           value: isSoundOn,
           onChanged: (isSoundOn) {
-            context.read<MergeCubit>().toggleSound(isSoundOn: isSoundOn);
+            context
+                .read<SettingsBottomSheetCubit>()
+                .toggleSound(isSoundOn: isSoundOn);
           },
         ),
       ],
@@ -114,7 +122,9 @@ class _SoundSelector extends StatelessWidget {
 }
 
 class _ResolutionSelector extends StatelessWidget {
-  const _ResolutionSelector();
+  const _ResolutionSelector(this.resolution);
+
+  final VideoResolution resolution;
 
   String getSubtitle(BuildContext context, VideoResolution? resolution) {
     if (resolution == null) return '';
@@ -129,13 +139,6 @@ class _ResolutionSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final resolution = context.select<MergeCubit, VideoResolution?>((cubit) {
-      final state = cubit.state;
-      if (state is MergeLoaded) return state.videoResolution;
-
-      return null;
-    });
-
     return Row(
       children: [
         Column(
@@ -183,7 +186,9 @@ class _ResolutionSelector extends StatelessWidget {
           onChanged: (resolution) {
             if (resolution == null) return;
 
-            context.read<MergeCubit>().changeVideoResolution(resolution);
+            context
+                .read<SettingsBottomSheetCubit>()
+                .changeVideoResolution(resolution);
           },
         ),
       ],
@@ -192,22 +197,18 @@ class _ResolutionSelector extends StatelessWidget {
 }
 
 class _AspectRatioSelector extends StatelessWidget {
-  const _AspectRatioSelector();
+  const _AspectRatioSelector(this.aspectRatio, this.resolution);
+
+  final VideoAspectRatio aspectRatio;
+  final VideoResolution resolution;
 
   String getSubtitle(BuildContext context, VideoAspectRatio? ratio) {
     if (ratio == null) return '';
 
-    String getAutoSubtitle() {
-      final state = context.watch<MergeCubit>().state;
-      if (state is! MergeLoaded) return '';
-
-      return state.videoResolution.aspectRatio ?? '';
-    }
-
     return switch (ratio) {
       VideoAspectRatio.independent => context.l10n.independent,
       VideoAspectRatio.firstVideo => context.l10n.firstVideo,
-      VideoAspectRatio.auto => getAutoSubtitle(),
+      VideoAspectRatio.auto => resolution.aspectRatio ?? '',
     };
   }
 
@@ -234,13 +235,6 @@ class _AspectRatioSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ratio = context.select<MergeCubit, VideoAspectRatio?>((cubit) {
-      final state = cubit.state;
-      if (state is MergeLoaded) return state.videoAspectRatio;
-
-      return null;
-    });
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -252,7 +246,7 @@ class _AspectRatioSelector extends StatelessWidget {
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              getSubtitle(context, ratio),
+              getSubtitle(context, aspectRatio),
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
@@ -261,7 +255,7 @@ class _AspectRatioSelector extends StatelessWidget {
         ),
         const Spacer(),
         Tooltip(
-          message: getTooltip(context, ratio),
+          message: getTooltip(context, aspectRatio),
           triggerMode: TooltipTriggerMode.tap,
           child: Icon(
             Icons.info_outline,
@@ -279,13 +273,15 @@ class _AspectRatioSelector extends StatelessWidget {
                 child: Text(getDropdownLabel(context, ratio)),
               ),
           ],
-          value: ratio,
-          enabled: ratio != VideoAspectRatio.auto,
-          tooltip: getTooltip(context, ratio),
+          value: aspectRatio,
+          enabled: aspectRatio != VideoAspectRatio.auto,
+          tooltip: getTooltip(context, aspectRatio),
           onChanged: (ratio) {
             if (ratio == null) return;
 
-            context.read<MergeCubit>().changeVideoAspectRatio(ratio);
+            context
+                .read<SettingsBottomSheetCubit>()
+                .changeVideoAspectRatio(ratio);
           },
         ),
       ],
@@ -294,17 +290,12 @@ class _AspectRatioSelector extends StatelessWidget {
 }
 
 class _SpeedSelector extends StatelessWidget {
-  const _SpeedSelector();
+  const _SpeedSelector(this.speed);
+
+  final PlaybackSpeed speed;
 
   @override
   Widget build(BuildContext context) {
-    final speed = context.select<MergeCubit, PlaybackSpeed?>((cubit) {
-      final state = cubit.state;
-      if (state is MergeLoaded) return state.playbackSpeed;
-
-      return null;
-    });
-
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -326,12 +317,14 @@ class _SpeedSelector extends StatelessWidget {
         SliderTheme(
           data: SliderThemeData(overlayShape: SliderComponentShape.noOverlay),
           child: Slider(
-            value: speed?.value ?? PlaybackSpeed.one.value,
+            value: speed.value,
             onChanged: (value) {
               final speed = PlaybackSpeed.fromValue(value);
               if (speed == null) return;
 
-              context.read<MergeCubit>().changePlaybackSpeed(speed);
+              context
+                  .read<SettingsBottomSheetCubit>()
+                  .changePlaybackSpeed(speed);
             },
             min: PlaybackSpeed.zeroPointFive.value,
             max: PlaybackSpeed.two.value,

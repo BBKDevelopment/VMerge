@@ -44,7 +44,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
     );
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
 
-    WidgetsBinding.instance.addPostFrameCallback((_) => _openAssetsPicker());
+    WidgetsBinding.instance.addPostFrameCallback((_) => _openAssetPicker());
   }
 
   @override
@@ -53,7 +53,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
     super.dispose();
   }
 
-  Future<void> _openAssetsPicker() async {
+  Future<void> _openAssetPicker() async {
     List<AssetEntity>? assets;
     try {
       assets = await AssetPicker.pickAssets(
@@ -62,7 +62,9 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
           maxAssets: 4,
           requestType: RequestType.video,
           pickerTheme: context.theme,
-          textDelegate: const EnglishAssetPickerTextDelegate(),
+          textDelegate: _getAssetPickerTextDelegateFromLocale(
+            Localizations.localeOf(context),
+          ),
         ),
       );
     } catch (_) {
@@ -72,6 +74,17 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
     if (!context.mounted) return;
 
     await context.read<PreviewVideoCubit>().updateVideos(assets);
+  }
+
+  AssetPickerTextDelegate _getAssetPickerTextDelegateFromLocale(Locale locale) {
+    final languageCode = locale.languageCode.toLowerCase();
+    for (final delegate in assetPickerTextDelegates) {
+      if (delegate.languageCode != languageCode) continue;
+
+      return delegate;
+    }
+
+    return const EnglishAssetPickerTextDelegate();
   }
 
   @override
@@ -84,23 +97,22 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
           listener: (context, state) {
             switch (state) {
               case PreviewVideoLoading():
-                _openAssetsPicker();
+                _openAssetPicker();
                 _animationController.reset();
               case PreviewVideoLoaded():
-                context.read<NavigationCubit>().updatePage(
+                context.read<AppNavigationBarCubit>().updatePage(
                       NavigationBarPage.merge,
                       arguments: state.metadataList,
                     );
               case PreviewVideoError():
-                WidgetsBinding.instance.addPostFrameCallback((_) {
-                  _animationController.forward();
-                });
+                WidgetsBinding.instance.addPostFrameCallback(
+                  (_) => _animationController.forward(),
+                );
             }
           },
           builder: (context, state) {
-            switch (state) {
-              case PreviewVideoLoading():
-                return Center(
+            return switch (state) {
+              PreviewVideoLoading() => Center(
                   child: SizedBox.square(
                     dimension: context.screenWidth / 4 / 3,
                     child: CircularProgressIndicator(
@@ -109,11 +121,9 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                       ),
                     ),
                   ),
-                );
-              case PreviewVideoLoaded():
-                return const SizedBox.shrink();
-              case PreviewVideoError():
-                return AnimatedBuilder(
+                ),
+              PreviewVideoLoaded() => const SizedBox.shrink(),
+              PreviewVideoError() => AnimatedBuilder(
                   animation: _animation,
                   builder: (context, child) {
                     return FadeTransition(
@@ -146,8 +156,8 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                   child: NoVideoWarning(
                     onPressed: context.read<PreviewVideoCubit>().resetVideos,
                   ),
-                );
-            }
+                ),
+            };
           },
         ),
       ),

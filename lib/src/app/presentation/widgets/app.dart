@@ -17,11 +17,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AppCubit>(
       create: (_) => AppCubit(
-        const AppState(
-          themeMode: ThemeMode.dark,
-          mainColor: AppMainColor.indigo,
-        ),
-      ),
+        getThemeConfigurationUseCase: getIt<GetThemeConfigurationUseCase>(),
+        saveThemeConfigurationUseCase: getIt<SaveThemeConfigurationUseCase>(),
+      )..init(),
       child: const _AppView(),
     );
   }
@@ -34,21 +32,24 @@ class _AppView extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<AppCubit, AppState>(
       builder: (context, state) {
-        return MaterialApp(
-          debugShowCheckedModeBanner: false,
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          theme: getIt<AppTheme>(
-            param1: state.mainColor.value,
-            instanceName: '$LightAppTheme',
-          ).data,
-          darkTheme: getIt<AppTheme>(
-            param1: state.mainColor.value,
-            instanceName: '$DarkAppTheme',
-          ).data,
-          themeMode: state.themeMode,
-          home: const AppNavigationBar(),
-        );
+        return switch (state) {
+          AppInitializing() => const SizedBox.shrink(),
+          AppInitialized() => MaterialApp(
+              debugShowCheckedModeBanner: false,
+              localizationsDelegates: AppLocalizations.localizationsDelegates,
+              supportedLocales: AppLocalizations.supportedLocales,
+              theme: getIt<AppTheme>(
+                param1: state.mainColor.value,
+                instanceName: '$LightAppTheme',
+              ).data,
+              darkTheme: getIt<AppTheme>(
+                param1: state.mainColor.value,
+                instanceName: '$DarkAppTheme',
+              ).data,
+              themeMode: state.themeMode,
+              home: const AppNavigationBar(),
+            ),
+        };
       },
     );
   }

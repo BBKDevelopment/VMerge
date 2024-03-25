@@ -4,15 +4,15 @@
 
 part of '../pages/merge_page.dart';
 
-class _SaveModalBottomSheet extends StatelessWidget {
-  const _SaveModalBottomSheet();
+class _SaveBottomSheet extends StatelessWidget {
+  const _SaveBottomSheet();
 
   @override
   Widget build(BuildContext context) {
-    final status = context.select<MergeCubit, SaveModalBottomSheetStatus>(
+    final status = context.select<MergePageCubit, SaveModalBottomSheetStatus>(
       (cubit) {
         switch (cubit.state) {
-          case final MergeLoaded state:
+          case final MergePageLoaded state:
             return state.saveModalBottomSheetStatus;
           default:
             return SaveModalBottomSheetStatus.idle;

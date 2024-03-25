@@ -9,10 +9,10 @@ class _SelectedVideoList extends StatelessWidget {
   Widget build(BuildContext context) {
     return SizedBox(
       height: context.screenWidth / 4,
-      child: BlocBuilder<MergeCubit, MergeState>(
+      child: BlocBuilder<MergePageCubit, MergePageState>(
         builder: (context, state) {
           switch (state) {
-            case MergeInitial():
+            case MergePageInitial():
               return ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.zero,
@@ -28,11 +28,11 @@ class _SelectedVideoList extends StatelessWidget {
                   return const SizedBox(width: AppPadding.medium);
                 },
               );
-            case MergeLoading():
+            case MergePageLoading():
               return const Center(
                 child: CircularProgressIndicator(),
               );
-            case MergeLoaded():
+            case MergePageLoaded():
               return ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.zero,
@@ -49,7 +49,7 @@ class _SelectedVideoList extends StatelessWidget {
                   return const SizedBox(width: AppPadding.medium);
                 },
               );
-            case MergeError():
+            case MergePageError():
               return const SizedBox.shrink();
           }
         },

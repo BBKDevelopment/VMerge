@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vmerge/src/config/config.dart';
-import 'package:vmerge/src/core/gen/gen.dart';
+import 'package:vmerge/src/core/core.dart';
 
 /// {@template dark_app_theme}
 /// An implementation of the [AppTheme] interface class that provides the dark

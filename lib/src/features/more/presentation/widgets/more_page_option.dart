@@ -21,7 +21,7 @@ class _MorePageOption extends StatelessWidget {
           useRootNavigator: true,
           topRadius: Radius.zero,
           builder: (_) => BlocProvider.value(
-            value: BlocProvider.of<MoreCubit>(context),
+            value: BlocProvider.of<AppCubit>(context),
             child: const Material(child: _ThemeBottomSheet()),
           ),
         );

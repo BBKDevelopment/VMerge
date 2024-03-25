@@ -9,16 +9,16 @@ import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/components/components.dart';
-import 'package:vmerge/src/components/no_video_warning.dart';
+import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/control_button_row.dart';
-part '../widgets/save_modal_bottom_sheet.dart';
+part '../widgets/save_bottom_sheet.dart';
 part '../widgets/selected_video_list.dart';
-part '../widgets/settings_modal_bottom_sheet.dart';
+part '../widgets/settings_bottom_sheet.dart';
 part '../widgets/video_player.dart';
 part '../widgets/video_thumbnail.dart';
 
@@ -27,12 +27,21 @@ class MergePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => MergeCubit(
-        const MergeInitial(),
-        firstVideoPlayerService: getIt<VideoPlayerService>(),
-        secondVideoPlayerService: getIt<VideoPlayerService>(),
-      ),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => MergePageCubit(
+            firstVideoPlayerService: getIt<VideoPlayerService>(),
+            secondVideoPlayerService: getIt<VideoPlayerService>(),
+          ),
+        ),
+        BlocProvider(
+          create: (_) => SettingsBottomSheetCubit(
+            getMergeSettingsUseCase: getIt<GetMergeSettingsUseCase>(),
+            saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
+          )..init(),
+        ),
+      ],
       child: const _MergeView(),
     );
   }
@@ -63,11 +72,12 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animationController.forward();
 
-      final videoMetadatas = context.read<NavigationCubit>().state.arguments;
+      final videoMetadatas =
+          context.read<AppNavigationBarCubit>().state.arguments;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 
-      context.read<MergeCubit>().loadVideoMetadata(videoMetadatas);
+      context.read<MergePageCubit>().loadVideoMetadata(videoMetadatas);
     });
   }
 
@@ -79,18 +89,18 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MergeCubit, MergeState>(
+    return BlocListener<MergePageCubit, MergePageState>(
       listener: (context, state) {
         switch (state) {
-          case MergeInitial():
+          case MergePageInitial():
             break;
-          case MergeLoading():
+          case MergePageLoading():
             _animationController.reset();
-          case MergeLoaded():
+          case MergePageLoaded():
             WidgetsBinding.instance.addPostFrameCallback((_) {
               _animationController.forward();
             });
-          case MergeError():
+          case MergePageError():
             break;
         }
       },

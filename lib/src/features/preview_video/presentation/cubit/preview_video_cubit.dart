@@ -41,15 +41,14 @@ final class PreviewVideoCubit extends Cubit<PreviewVideoState> {
     }
   }
 
-  Future<({Uint8List image, File file})> _loadAsset(AssetEntity asset) async {
+  Future<({Uint8List? image, File? file})> _loadAsset(AssetEntity asset) async {
     final loadedAsset = await Future.wait([
       asset.thumbnailDataWithSize(
         const ThumbnailSize.square(256),
-        format: ThumbnailFormat.png,
       ),
       asset.loadFile(),
     ]);
 
-    return (image: loadedAsset[0]! as Uint8List, file: loadedAsset[1]! as File);
+    return (image: loadedAsset[0] as Uint8List?, file: loadedAsset[1] as File?);
   }
 }

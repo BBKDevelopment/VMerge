@@ -18,9 +18,7 @@ class AppNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => NavigationCubit(
-        const NavigationState(page: NavigationBarPage.previewVideo),
-      ),
+      create: (_) => AppNavigationBarCubit(),
       child: const _AppNavigationBarView(),
     );
   }
@@ -40,7 +38,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
   void initState() {
     super.initState();
     _pageController = PageController(
-      initialPage: context.read<NavigationCubit>().state.page.index,
+      initialPage: context.read<AppNavigationBarCubit>().state.page.index,
     );
     WidgetsBinding.instance.addPostFrameCallback((_) {
       FlutterNativeSplash.remove();
@@ -63,7 +61,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
         physics: const NeverScrollableScrollPhysics(),
         onPageChanged: (index) async {
           final page = NavigationBarPage.values[index];
-          context.read<NavigationCubit>().updatePage(page);
+          context.read<AppNavigationBarCubit>().updatePage(page);
 
           switch (page) {
             case NavigationBarPage.previewVideo:
@@ -106,7 +104,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
             ),
           ),
         ),
-        child: BlocConsumer<NavigationCubit, NavigationState>(
+        child: BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
           listener: (context, state) async {
             _pageController.jumpToPage(state.page.index);
 

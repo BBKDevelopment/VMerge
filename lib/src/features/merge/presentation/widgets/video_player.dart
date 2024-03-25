@@ -45,44 +45,49 @@ class _VideoPlayer extends StatelessWidget {
           ),
         );
       },
-      child: BlocBuilder<MergeCubit, MergeState>(
+      child: BlocBuilder<MergePageCubit, MergePageState>(
         buildWhen: (previous, current) {
-          if (current is MergeError) return false;
-          if (previous is MergeLoaded && current is MergeLoaded) {
+          if (current is MergePageError) return false;
+          if (previous is MergePageLoaded && current is MergePageLoaded) {
             return previous.isVideoPlaying != current.isVideoPlaying ||
-                previous.videoResolution != current.videoResolution ||
                 previous.videoPlayerController != current.videoPlayerController;
           }
 
           return true;
         },
         builder: (context, state) {
+          final settingsModalBottomSheetState =
+              context.watch<SettingsBottomSheetCubit>().state;
+
           return switch (state) {
-            MergeInitial() => NoVideoWarning(
+            MergePageInitial() => NoVideoWarning(
                 onPressed: () => context
-                    .read<NavigationCubit>()
+                    .read<AppNavigationBarCubit>()
                     .updatePage(NavigationBarPage.previewVideo),
               ),
-            MergeLoading() => const Center(
+            MergePageLoading() => const Center(
                 child: CircularProgressIndicator(),
               ),
-            MergeLoaded() => GestureDetector(
+            MergePageLoaded() => GestureDetector(
                 onTap: () {
                   if (state.isVideoPlaying) {
                     animatedControlButtonController.reverse();
-                    context.read<MergeCubit>().stopVideo();
+                    context.read<MergePageCubit>().stopVideo();
                   } else {
                     animatedControlButtonController.forward();
-                    context.read<MergeCubit>().playVideo();
+                    context.read<MergePageCubit>().playVideo();
                   }
                 },
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
                     AspectRatio(
-                      aspectRatio: (state.videoResolution.width ??
+                      aspectRatio: (settingsModalBottomSheetState
+                                  .videoResolution.width ??
                               state.videoWidth) /
-                          (state.videoResolution.height ?? state.videoHeight),
+                          (settingsModalBottomSheetState
+                                  .videoResolution.height ??
+                              state.videoHeight),
                       child: ClipRRect(
                         borderRadius: AppBorderRadius.circularXSmall,
                         child: VideoPlayer(state.videoPlayerController),
@@ -94,7 +99,7 @@ class _VideoPlayer extends StatelessWidget {
                   ],
                 ),
               ),
-            MergeError() => const SizedBox.shrink(),
+            MergePageError() => const SizedBox.shrink(),
           };
         },
       ),
