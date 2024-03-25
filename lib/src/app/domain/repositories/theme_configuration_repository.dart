@@ -6,7 +6,7 @@ abstract interface class ThemeConfigurationRepository {
 
   Future<DataState<ThemeConfiguration>> getThemeConfiguration();
 
-  Future<DataState<bool>> saveThemeConfiguration(
+  Future<DataState<void>> saveThemeConfiguration(
     ThemeConfiguration configuration,
   );
 }

@@ -6,5 +6,5 @@ abstract interface class MergeSettingsRepository {
 
   Future<DataState<MergeSettings>> getMergeSettings();
 
-  Future<DataState<bool>> saveMergeSettings(MergeSettings settings);
+  Future<DataState<void>> saveMergeSettings(MergeSettings settings);
 }

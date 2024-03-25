@@ -5,10 +5,12 @@
 import 'package:bloc/bloc.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 
-final class NavigationCubit extends Cubit<NavigationState> {
-  NavigationCubit(super.initialState);
+final class AppNavigationBarCubit extends Cubit<AppNavigationBarState> {
+  AppNavigationBarCubit()
+      : super(
+            const AppNavigationBarState(page: NavigationBarPage.previewVideo));
 
   void updatePage(NavigationBarPage page, {Object? arguments}) {
-    emit(NavigationState(page: page, arguments: arguments));
+    emit(AppNavigationBarState(page: page, arguments: arguments));
   }
 }

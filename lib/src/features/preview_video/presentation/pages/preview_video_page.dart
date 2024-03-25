@@ -100,7 +100,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                 _openAssetPicker();
                 _animationController.reset();
               case PreviewVideoLoaded():
-                context.read<NavigationCubit>().updatePage(
+                context.read<AppNavigationBarCubit>().updatePage(
                       NavigationBarPage.merge,
                       arguments: state.metadataList,
                     );

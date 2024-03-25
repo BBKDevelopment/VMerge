@@ -27,11 +27,11 @@ final class MergeSettingsRepositoryImpl implements MergeSettingsRepository {
   }
 
   @override
-  Future<DataState<bool>> saveMergeSettings(MergeSettings settings) async {
+  Future<DataState<void>> saveMergeSettings(MergeSettings settings) async {
     try {
       final localMergeSettings = LocalMergeSettings.fromEntity(settings);
       await _localService.saveMergeSettings(localMergeSettings);
-      return const DataSuccess(true);
+      return const DataSuccess(null);
     } catch (error, stackTrace) {
       return DataFailure(
         Failure(

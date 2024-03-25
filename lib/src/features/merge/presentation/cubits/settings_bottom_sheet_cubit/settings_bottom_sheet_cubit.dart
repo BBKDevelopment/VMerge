@@ -66,7 +66,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
     switch (dataState) {
       case DataSuccess():
         break;
-      case final DataFailure<bool> failure:
+      case final DataFailure<void> failure:
         log(
           failure.message,
           name: failure.name,

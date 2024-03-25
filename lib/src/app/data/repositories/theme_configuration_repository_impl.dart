@@ -29,14 +29,14 @@ final class ThemeConfigurationRepositoryImpl
   }
 
   @override
-  Future<DataState<bool>> saveThemeConfiguration(
+  Future<DataState<void>> saveThemeConfiguration(
     ThemeConfiguration configuration,
   ) async {
     try {
       final localThemeConfiguration =
           LocalThemeConfiguration.fromEntity(configuration);
       await _localService.saveThemeConfiguration(localThemeConfiguration);
-      return const DataSuccess(true);
+      return const DataSuccess(null);
     } catch (error, stackTrace) {
       return DataFailure(
         Failure(

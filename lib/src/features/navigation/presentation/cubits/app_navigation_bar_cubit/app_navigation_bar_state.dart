@@ -4,8 +4,8 @@
 
 import 'package:equatable/equatable.dart';
 
-final class NavigationState extends Equatable {
-  const NavigationState({required this.page, this.arguments});
+final class AppNavigationBarState extends Equatable {
+  const AppNavigationBarState({required this.page, this.arguments});
 
   final NavigationBarPage page;
   final Object? arguments;

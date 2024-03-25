@@ -62,7 +62,7 @@ class _VideoPlayer extends StatelessWidget {
           return switch (state) {
             MergePageInitial() => NoVideoWarning(
                 onPressed: () => context
-                    .read<NavigationCubit>()
+                    .read<AppNavigationBarCubit>()
                     .updatePage(NavigationBarPage.previewVideo),
               ),
             MergePageLoading() => const Center(
