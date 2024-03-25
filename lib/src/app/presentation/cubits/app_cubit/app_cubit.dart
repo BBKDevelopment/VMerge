@@ -11,30 +11,16 @@ final class AppCubit extends Cubit<AppState> {
     required SaveThemeConfigurationUseCase saveThemeConfigurationUseCase,
   })  : _getThemeConfigurationUseCase = getThemeConfigurationUseCase,
         _saveThemeConfigurationUseCase = saveThemeConfigurationUseCase,
-        super(
-          AppState(
-            themeMode: ThemeModeExt.fromString(
-              _defaultThemeConfiguration.themeMode,
-            ),
-            mainColor: AppMainColor.fromString(
-              _defaultThemeConfiguration.mainColor,
-            ),
-          ),
-        );
+        super(const AppInitializing());
 
   final GetThemeConfigurationUseCase _getThemeConfigurationUseCase;
   final SaveThemeConfigurationUseCase _saveThemeConfigurationUseCase;
-
-  static const _defaultThemeConfiguration = ThemeConfiguration(
-    themeMode: 'dark',
-    mainColor: 'indigo',
-  );
 
   Future<void> init() async {
     final themeConfiguration = await _getThemeConfiguration();
 
     emit(
-      state.copyWith(
+      AppInitialized(
         themeMode: ThemeModeExt.fromString(themeConfiguration.themeMode),
         mainColor: AppMainColor.fromString(themeConfiguration.mainColor),
       ),
@@ -54,8 +40,12 @@ final class AppCubit extends Cubit<AppState> {
           error: failure.error,
           stackTrace: failure.stackTrace,
         );
-        await _saveThemeConfiguration(_defaultThemeConfiguration);
-        return _defaultThemeConfiguration;
+        const defaultThemeConfiguration = ThemeConfiguration(
+          themeMode: 'dark',
+          mainColor: 'indigo',
+        );
+        await _saveThemeConfiguration(defaultThemeConfiguration);
+        return defaultThemeConfiguration;
     }
   }
 
@@ -78,22 +68,37 @@ final class AppCubit extends Cubit<AppState> {
     }
   }
 
-  void _saveStateAsThemeConfiguration() {
-    final themeConfiguration = ThemeConfiguration(
-      themeMode: state.themeMode.toString(),
-      mainColor: state.mainColor.toString(),
-    );
+  void _saveState() {
+    switch (state) {
+      case final AppInitialized state:
+        final themeConfiguration = ThemeConfiguration(
+          themeMode: state.themeMode.toString(),
+          mainColor: state.mainColor.toString(),
+        );
 
-    _saveThemeConfiguration(themeConfiguration);
+        _saveThemeConfiguration(themeConfiguration);
+      default:
+        break;
+    }
   }
 
   void toggleThemeMode({required ThemeMode themeMode}) {
-    emit(state.copyWith(themeMode: themeMode));
-    _saveStateAsThemeConfiguration();
+    switch (state) {
+      case final AppInitialized state:
+        emit(state.copyWith(themeMode: themeMode));
+        _saveState();
+      default:
+        break;
+    }
   }
 
   void updateMainColor({required AppMainColor mainColor}) {
-    emit(state.copyWith(mainColor: mainColor));
-    _saveStateAsThemeConfiguration();
+    switch (state) {
+      case final AppInitialized state:
+        emit(state.copyWith(mainColor: mainColor));
+        _saveState();
+      default:
+        break;
+    }
   }
 }

@@ -4,8 +4,8 @@
 
 part of '../pages/merge_page.dart';
 
-class _SaveModalBottomSheet extends StatelessWidget {
-  const _SaveModalBottomSheet();
+class _SaveBottomSheet extends StatelessWidget {
+  const _SaveBottomSheet();
 
   @override
   Widget build(BuildContext context) {

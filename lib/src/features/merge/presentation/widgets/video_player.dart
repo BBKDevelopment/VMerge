@@ -57,7 +57,7 @@ class _VideoPlayer extends StatelessWidget {
         },
         builder: (context, state) {
           final settingsModalBottomSheetState =
-              context.watch<SettingsModalBottomSheetCubit>().state;
+              context.watch<SettingsBottomSheetCubit>().state;
 
           return switch (state) {
             MergePageInitial() => NoVideoWarning(

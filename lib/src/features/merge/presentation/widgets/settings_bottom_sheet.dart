@@ -4,8 +4,8 @@
 
 part of '../pages/merge_page.dart';
 
-class _SettingsModalBottomSheet extends StatelessWidget {
-  const _SettingsModalBottomSheet();
+class _SettingsBottomSheet extends StatelessWidget {
+  const _SettingsBottomSheet();
 
   @override
   Widget build(BuildContext context) {
@@ -17,8 +17,7 @@ class _SettingsModalBottomSheet extends StatelessWidget {
       ),
       child: Padding(
         padding: AppPadding.general,
-        child: BlocConsumer<SettingsModalBottomSheetCubit,
-            SettingsModalBottomSheetState>(
+        child: BlocConsumer<SettingsBottomSheetCubit, SettingsBottomSheetState>(
           listener: (context, state) {
             context.read<MergePageCubit>().setVideoSpeedAndSound(
                   speed: state.playbackSpeed,
@@ -113,7 +112,7 @@ class _SoundSelector extends StatelessWidget {
           value: isSoundOn,
           onChanged: (isSoundOn) {
             context
-                .read<SettingsModalBottomSheetCubit>()
+                .read<SettingsBottomSheetCubit>()
                 .toggleSound(isSoundOn: isSoundOn);
           },
         ),
@@ -188,7 +187,7 @@ class _ResolutionSelector extends StatelessWidget {
             if (resolution == null) return;
 
             context
-                .read<SettingsModalBottomSheetCubit>()
+                .read<SettingsBottomSheetCubit>()
                 .changeVideoResolution(resolution);
           },
         ),
@@ -281,7 +280,7 @@ class _AspectRatioSelector extends StatelessWidget {
             if (ratio == null) return;
 
             context
-                .read<SettingsModalBottomSheetCubit>()
+                .read<SettingsBottomSheetCubit>()
                 .changeVideoAspectRatio(ratio);
           },
         ),
@@ -324,7 +323,7 @@ class _SpeedSelector extends StatelessWidget {
               if (speed == null) return;
 
               context
-                  .read<SettingsModalBottomSheetCubit>()
+                  .read<SettingsBottomSheetCubit>()
                   .changePlaybackSpeed(speed);
             },
             min: PlaybackSpeed.zeroPointFive.value,

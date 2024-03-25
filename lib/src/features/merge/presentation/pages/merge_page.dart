@@ -16,9 +16,9 @@ import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/control_button_row.dart';
-part '../widgets/save_modal_bottom_sheet.dart';
+part '../widgets/save_bottom_sheet.dart';
 part '../widgets/selected_video_list.dart';
-part '../widgets/settings_modal_bottom_sheet.dart';
+part '../widgets/settings_bottom_sheet.dart';
 part '../widgets/video_player.dart';
 part '../widgets/video_thumbnail.dart';
 
@@ -36,7 +36,7 @@ class MergePage extends StatelessWidget {
           ),
         ),
         BlocProvider(
-          create: (_) => SettingsModalBottomSheetCubit(
+          create: (_) => SettingsBottomSheetCubit(
             getMergeSettingsUseCase: getIt<GetMergeSettingsUseCase>(),
             saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
           )..init(),

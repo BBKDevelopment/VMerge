@@ -4,15 +4,14 @@ import 'package:bloc/bloc.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 
-final class SettingsModalBottomSheetCubit
-    extends Cubit<SettingsModalBottomSheetState> {
-  SettingsModalBottomSheetCubit({
+final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
+  SettingsBottomSheetCubit({
     required GetMergeSettingsUseCase getMergeSettingsUseCase,
     required SaveMergeSettingsUseCase saveMergeSettingsUseCase,
   })  : _getMergeSettingsUseCase = getMergeSettingsUseCase,
         _saveMergeSettingsUseCase = saveMergeSettingsUseCase,
         super(
-          SettingsModalBottomSheetState(
+          SettingsBottomSheetState(
             isSoundOn: _defaultMergeSettings.isSoundOn,
             playbackSpeed: _defaultMergeSettings.playbackSpeed,
             videoResolution: _defaultMergeSettings.videoResolution,

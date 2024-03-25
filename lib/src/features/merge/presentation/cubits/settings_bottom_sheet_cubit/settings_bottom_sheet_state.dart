@@ -1,8 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 
-final class SettingsModalBottomSheetState extends Equatable {
-  const SettingsModalBottomSheetState({
+final class SettingsBottomSheetState extends Equatable {
+  const SettingsBottomSheetState({
     required this.isSoundOn,
     required this.playbackSpeed,
     required this.videoResolution,
@@ -14,13 +14,13 @@ final class SettingsModalBottomSheetState extends Equatable {
   final VideoResolution videoResolution;
   final VideoAspectRatio videoAspectRatio;
 
-  SettingsModalBottomSheetState copyWith({
+  SettingsBottomSheetState copyWith({
     bool? isSoundOn,
     PlaybackSpeed? playbackSpeed,
     VideoResolution? videoResolution,
     VideoAspectRatio? videoAspectRatio,
   }) {
-    return SettingsModalBottomSheetState(
+    return SettingsBottomSheetState(
       isSoundOn: isSoundOn ?? this.isSoundOn,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       videoResolution: videoResolution ?? this.videoResolution,

@@ -13,7 +13,6 @@ import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
-import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/copyright_text.dart';
@@ -25,16 +24,7 @@ class MorePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<MoreCubit>(
-      create: (_) => MoreCubit(
-        MoreState(
-          isDarkModeEnabled:
-              context.read<AppCubit>().state.themeMode == ThemeMode.dark,
-          mainColor: context.read<AppCubit>().state.mainColor,
-        ),
-      ),
-      child: const _MoreView(),
-    );
+    return const _MoreView();
   }
 }
 
@@ -72,60 +62,50 @@ class _MoreViewState extends State<_MoreView>
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MoreCubit, MoreState>(
-      listener: (context, state) {
-        context.read<AppCubit>()
-          ..toggleThemeMode(
-            themeMode:
-                state.isDarkModeEnabled ? ThemeMode.dark : ThemeMode.light,
-          )
-          ..updateMainColor(mainColor: state.mainColor);
-      },
-      child: Scaffold(
-        appBar: CustomAppBar(title: context.l10n.appName),
-        body: Padding(
-          padding: AppPadding.general,
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.separated(
-                  physics: const NeverScrollableScrollPhysics(),
-                  itemCount: MorePageOption.values.length + 1,
-                  itemBuilder: (context, index) {
-                    return index == MorePageOption.values.length
-                        ? const SizedBox.shrink()
-                        : _MorePageOption(
-                            option: MorePageOption.values[index],
-                            animation: _animation,
-                          );
-                  },
-                  separatorBuilder: (context, index) {
-                    return AnimatedBuilder(
-                      animation: _animation,
-                      builder: (_, child) {
-                        return FadeTransition(
-                          opacity: CurvedAnimation(
-                            parent: _animation,
-                            curve: Interval(
-                              1 / MorePageOption.values.length,
-                              (index + 1) / MorePageOption.values.length,
-                              curve: Curves.easeOut,
-                            ),
-                          ),
-                          child: child,
+    return Scaffold(
+      appBar: CustomAppBar(title: context.l10n.appName),
+      body: Padding(
+        padding: AppPadding.general,
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.separated(
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: MorePageOption.values.length + 1,
+                itemBuilder: (context, index) {
+                  return index == MorePageOption.values.length
+                      ? const SizedBox.shrink()
+                      : _MorePageOption(
+                          option: MorePageOption.values[index],
+                          animation: _animation,
                         );
-                      },
-                      child: const Divider(
-                        thickness: 1,
-                        height: 0,
-                      ),
-                    );
-                  },
-                ),
+                },
+                separatorBuilder: (context, index) {
+                  return AnimatedBuilder(
+                    animation: _animation,
+                    builder: (_, child) {
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: _animation,
+                          curve: Interval(
+                            1 / MorePageOption.values.length,
+                            (index + 1) / MorePageOption.values.length,
+                            curve: Curves.easeOut,
+                          ),
+                        ),
+                        child: child,
+                      );
+                    },
+                    child: const Divider(
+                      thickness: 1,
+                      height: 0,
+                    ),
+                  );
+                },
               ),
-              _CopyrightText(animation: _animation),
-            ],
-          ),
+            ),
+            _CopyrightText(animation: _animation),
+          ],
         ),
       ),
     );

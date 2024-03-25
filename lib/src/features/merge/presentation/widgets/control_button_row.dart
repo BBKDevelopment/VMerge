@@ -22,10 +22,10 @@ class _ControlButtonRow extends StatelessWidget {
             value: BlocProvider.of<MergePageCubit>(context),
           ),
           BlocProvider.value(
-            value: BlocProvider.of<SettingsModalBottomSheetCubit>(context),
+            value: BlocProvider.of<SettingsBottomSheetCubit>(context),
           ),
         ],
-        child: const Material(child: _SettingsModalBottomSheet()),
+        child: const Material(child: _SettingsBottomSheet()),
       ),
     );
   }
@@ -42,7 +42,7 @@ class _ControlButtonRow extends StatelessWidget {
       topRadius: Radius.zero,
       builder: (_) => BlocProvider.value(
         value: BlocProvider.of<MergePageCubit>(context),
-        child: const Material(child: _SaveModalBottomSheet()),
+        child: const Material(child: _SaveBottomSheet()),
       ),
     );
   }
