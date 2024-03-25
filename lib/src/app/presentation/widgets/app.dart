@@ -17,11 +17,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider<AppCubit>(
       create: (_) => AppCubit(
-        const AppState(
-          themeMode: ThemeMode.dark,
-          mainColor: AppMainColor.indigo,
-        ),
-      ),
+        getThemeConfigurationUseCase: getIt<GetThemeConfigurationUseCase>(),
+        saveThemeConfigurationUseCase: getIt<SaveThemeConfigurationUseCase>(),
+      )..init(),
       child: const _AppView(),
     );
   }

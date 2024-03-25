@@ -15,6 +15,7 @@ import 'package:objectbox/internal.dart'
 import 'package:objectbox/objectbox.dart' as obx;
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import '../../../src/app/data/models/local_theme_configuration.dart';
 import '../../../src/features/merge/data/models/local_merge_settings.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -49,6 +50,30 @@ final _entities = <obx_int.ModelEntity>[
         obx_int.ModelProperty(
             id: const obx_int.IdUid(5, 4282369276157571834),
             name: 'videoAspectRatio',
+            type: 9,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(2, 4520518054235479906),
+      name: 'LocalThemeConfiguration',
+      lastPropertyId: const obx_int.IdUid(3, 7180929920422589669),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 3171587212615611172),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(2, 470621667412049234),
+            name: 'themeMode',
+            type: 9,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(3, 7180929920422589669),
+            name: 'mainColor',
             type: 9,
             flags: 0)
       ],
@@ -91,7 +116,7 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(1, 8551260808493273318),
+      lastEntityId: const obx_int.IdUid(2, 4520518054235479906),
       lastIndexId: const obx_int.IdUid(0, 0),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
@@ -142,6 +167,37 @@ obx_int.ModelDefinition getObjectBoxModel() {
                 .vTableGet(buffer, rootOffset, 12, '');
 
           return object;
+        }),
+    LocalThemeConfiguration: obx_int.EntityDefinition<LocalThemeConfiguration>(
+        model: _entities[1],
+        toOneRelations: (LocalThemeConfiguration object) => [],
+        toManyRelations: (LocalThemeConfiguration object) => {},
+        getId: (LocalThemeConfiguration object) => object.id,
+        setId: (LocalThemeConfiguration object, int id) {
+          object.id = id;
+        },
+        objectToFB: (LocalThemeConfiguration object, fb.Builder fbb) {
+          final themeModeOffset = fbb.writeString(object.themeMode);
+          final mainColorOffset = fbb.writeString(object.mainColor);
+          fbb.startTable(4);
+          fbb.addInt64(0, object.id);
+          fbb.addOffset(1, themeModeOffset);
+          fbb.addOffset(2, mainColorOffset);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = LocalThemeConfiguration()
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..themeMode = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 6, '')
+            ..mainColor = const fb.StringReader(asciiOptimization: true)
+                .vTableGet(buffer, rootOffset, 8, '');
+
+          return object;
         })
   };
 
@@ -169,4 +225,19 @@ class LocalMergeSettings_ {
   /// see [LocalMergeSettings.videoAspectRatio]
   static final videoAspectRatio =
       obx.QueryStringProperty<LocalMergeSettings>(_entities[0].properties[4]);
+}
+
+/// [LocalThemeConfiguration] entity fields to define ObjectBox queries.
+class LocalThemeConfiguration_ {
+  /// see [LocalThemeConfiguration.id]
+  static final id = obx.QueryIntegerProperty<LocalThemeConfiguration>(
+      _entities[1].properties[0]);
+
+  /// see [LocalThemeConfiguration.themeMode]
+  static final themeMode = obx.QueryStringProperty<LocalThemeConfiguration>(
+      _entities[1].properties[1]);
+
+  /// see [LocalThemeConfiguration.mainColor]
+  static final mainColor = obx.QueryStringProperty<LocalThemeConfiguration>(
+      _entities[1].properties[2]);
 }

@@ -102,7 +102,7 @@ class _SoundSelector extends StatelessWidget {
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              context.l10n.on,
+              isSoundOn ? context.l10n.on : context.l10n.off,
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),

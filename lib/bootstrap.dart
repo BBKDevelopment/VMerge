@@ -17,6 +17,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
+import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/config/config.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
@@ -89,6 +90,26 @@ Future<void> setup() async {
       instanceName: '$DarkAppTheme',
     )
     ..registerLazySingleton<ObjectBoxService>(() => objectBoxService)
+    ..registerLazySingleton<LocalThemeConfigurationService>(
+      () => ObjectBoxThemeConfigurationService(
+        service: getIt<ObjectBoxService>(),
+      ),
+    )
+    ..registerLazySingleton<ThemeConfigurationRepository>(
+      () => ThemeConfigurationRepositoryImpl(
+        localService: getIt<LocalThemeConfigurationService>(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => GetThemeConfigurationUseCase(
+        repository: getIt<ThemeConfigurationRepository>(),
+      ),
+    )
+    ..registerLazySingleton(
+      () => SaveThemeConfigurationUseCase(
+        repository: getIt<ThemeConfigurationRepository>(),
+      ),
+    )
     ..registerLazySingleton<LocalMergeSettingsService>(
       () => ObjectBoxMergeSettingsService(
         service: getIt<ObjectBoxService>(),

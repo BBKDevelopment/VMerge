@@ -44,9 +44,9 @@ final class SettingsModalBottomSheetCubit
   }
 
   Future<MergeSettings> _getMergeSettings() async {
-    final response = await _getMergeSettingsUseCase();
+    final dataState = await _getMergeSettingsUseCase();
 
-    switch (response) {
+    switch (dataState) {
       case final DataSuccess<MergeSettings> success:
         return success.data;
       case final DataFailure<MergeSettings> failure:
@@ -62,11 +62,11 @@ final class SettingsModalBottomSheetCubit
   }
 
   Future<void> _saveMergeSettings(MergeSettings settings) async {
-    final response = await _saveMergeSettingsUseCase(params: settings);
+    final dataState = await _saveMergeSettingsUseCase(params: settings);
 
-    switch (response) {
+    switch (dataState) {
       case DataSuccess():
-        return;
+        break;
       case final DataFailure<bool> failure:
         log(
           failure.message,
