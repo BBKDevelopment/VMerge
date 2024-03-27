@@ -95,15 +95,9 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
           MorePage(),
         ],
       ),
-      bottomNavigationBar: Container(
-        padding: AppPadding.horizontalMedium,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: context.theme.dividerColor,
-            ),
-          ),
-        ),
+      bottomNavigationBar: Card(
+        margin: EdgeInsets.zero,
+        shape: const ContinuousRectangleBorder(),
         child: BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
           listener: (context, state) async {
             _pageController.jumpToPage(state.page.index);
@@ -118,66 +112,74 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
             }
           },
           builder: (context, state) {
-            return BottomNavyBar(
-              selectedIndex: state.page.index,
-              backgroundColor: context.theme.scaffoldBackgroundColor,
-              showElevation: false,
-              onItemSelected: (index) async {
-                _pageController.jumpToPage(index);
-                // if (_bottomBarController.currentIndex == 1 && index != 1) {
-                //   _editPageController.getAnimationController.duration =
-                //       kEditPageOutAnimationDuration;
-                //   await _editPageController.getAnimationController.reverse();
-                // }
-                // if (_bottomBarController.currentIndex == 2 && index != 2) {
-                //   _morePageController.getAnimationController.duration =
-                //       kMorePageOutAnimationDuration;
-                //   await _morePageController.getAnimationController.reverse();
-                // }
-                // _bottomBarController.updateCurrentIndex(index);
-                // _bottomBarController.pageController.jumpToPage(index);
-              },
-              items: [
-                BottomNavyBarItem(
-                  activeColor: context.colorScheme.secondary,
-                  title: Text(l10n.video, style: context.textTheme.titleMedium),
-                  textAlign: TextAlign.center,
-                  icon: Assets.images.video.svg(
-                    height: AppIconSize.medium,
-                    width: AppIconSize.medium,
-                    colorFilter: ColorFilter.mode(
-                      context.theme.iconTheme.color!,
-                      BlendMode.srcIn,
+            return Padding(
+              padding: AppPadding.verticalMedium,
+              child: BottomNavyBar(
+                selectedIndex: state.page.index,
+                backgroundColor: Colors.transparent,
+                showElevation: false,
+                onItemSelected: (index) async {
+                  _pageController.jumpToPage(index);
+                  // if (_bottomBarController.currentIndex == 1 && index != 1) {
+                  //   _editPageController.getAnimationController.duration =
+                  //       kEditPageOutAnimationDuration;
+                  //   await _editPageController.getAnimationController.reverse();
+                  // }
+                  // if (_bottomBarController.currentIndex == 2 && index != 2) {
+                  //   _morePageController.getAnimationController.duration =
+                  //       kMorePageOutAnimationDuration;
+                  //   await _morePageController.getAnimationController.reverse();
+                  // }
+                  // _bottomBarController.updateCurrentIndex(index);
+                  // _bottomBarController.pageController.jumpToPage(index);
+                },
+                items: [
+                  BottomNavyBarItem(
+                    activeColor: context.colorScheme.secondary,
+                    title: Text(
+                      l10n.video,
+                      style: context.textTheme.titleMedium,
+                    ),
+                    textAlign: TextAlign.center,
+                    icon: Assets.images.video.svg(
+                      height: AppIconSize.medium,
+                      width: AppIconSize.medium,
+                      colorFilter: ColorFilter.mode(
+                        context.theme.iconTheme.color!,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                ),
-                BottomNavyBarItem(
-                  activeColor: context.colorScheme.secondary,
-                  title: Text(l10n.merge, style: context.textTheme.titleMedium),
-                  textAlign: TextAlign.center,
-                  icon: Assets.images.merge.svg(
-                    height: AppIconSize.medium,
-                    width: AppIconSize.medium,
-                    colorFilter: ColorFilter.mode(
-                      context.theme.iconTheme.color!,
-                      BlendMode.srcIn,
+                  BottomNavyBarItem(
+                    activeColor: context.colorScheme.secondary,
+                    title:
+                        Text(l10n.merge, style: context.textTheme.titleMedium),
+                    textAlign: TextAlign.center,
+                    icon: Assets.images.merge.svg(
+                      height: AppIconSize.medium,
+                      width: AppIconSize.medium,
+                      colorFilter: ColorFilter.mode(
+                        context.theme.iconTheme.color!,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                ),
-                BottomNavyBarItem(
-                  activeColor: context.colorScheme.secondary,
-                  title: Text(l10n.more, style: context.textTheme.titleMedium),
-                  textAlign: TextAlign.center,
-                  icon: Assets.images.more.svg(
-                    height: AppIconSize.medium,
-                    width: AppIconSize.medium,
-                    colorFilter: ColorFilter.mode(
-                      context.theme.iconTheme.color!,
-                      BlendMode.srcIn,
+                  BottomNavyBarItem(
+                    activeColor: context.colorScheme.secondary,
+                    title:
+                        Text(l10n.more, style: context.textTheme.titleMedium),
+                    textAlign: TextAlign.center,
+                    icon: Assets.images.more.svg(
+                      height: AppIconSize.medium,
+                      width: AppIconSize.medium,
+                      colorFilter: ColorFilter.mode(
+                        context.theme.iconTheme.color!,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),

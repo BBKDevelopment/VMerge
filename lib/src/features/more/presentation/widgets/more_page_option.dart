@@ -30,6 +30,7 @@ class _MorePageOption extends StatelessWidget {
               // used here to match the design because it uses the same colors.
               child: const Card(
                 margin: EdgeInsets.zero,
+                shape: ContinuousRectangleBorder(),
                 child: _ThemeBottomSheet(),
               ),
             );
@@ -102,22 +103,6 @@ class _MorePageOption extends StatelessWidget {
           applicationVersion: '1.0.0',
           applicationLegalese: context.l10n.copyrightMessage,
         );
-      // showLicensePage(
-      //   context: context,
-      //   applicationName: context.l10n.appName,
-      //   applicationIcon: Padding(
-      //     padding: AppPadding.verticalLarge,
-      //     child: Assets.images.vmerge.svg(
-      //       width: AppIconSize.xxLarge,
-      //       colorFilter: ColorFilter.mode(
-      //         context.theme.iconTheme.color!,
-      //         BlendMode.srcIn,
-      //       ),
-      //     ),
-      //   ),
-      //   applicationVersion: '_packageInfo.version',
-      //   applicationLegalese: context.l10n.copyrightMessage,
-      // );
     }
   }
 

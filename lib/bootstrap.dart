@@ -153,7 +153,7 @@ final class ObjectBoxService {
   static Future<ObjectBoxService> create() async {
     final appDocsDir = await getApplicationDocumentsDirectory();
     final store =
-        await openStore(directory: join(appDocsDir.path, "obx-example"));
+        await openStore(directory: join(appDocsDir.path, 'obx-example'));
     return ObjectBoxService._create(store);
   }
 }
