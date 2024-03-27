@@ -6,7 +6,7 @@ class _ThemeBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: AppPadding.general,
+      padding: AppPadding.allLarge,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [

@@ -9,75 +9,68 @@ class _SettingsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(color: context.theme.dividerColor),
-        ),
-      ),
-      child: Padding(
-        padding: AppPadding.general,
-        child: BlocConsumer<SettingsBottomSheetCubit, SettingsBottomSheetState>(
-          listener: (context, state) {
-            context.read<MergePageCubit>().setVideoSpeedAndSound(
-                  speed: state.playbackSpeed,
-                  isSoundOn: state.isSoundOn,
-                );
-          },
-          builder: (context, state) {
-            return Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(width: AppButtonSize.small),
-                    Hero(
-                      tag: 'settings',
-                      child: Assets.images.settings.svg(
-                        height: AppIconSize.xLarge,
+    return Padding(
+      padding: AppPadding.allLarge,
+      child: BlocConsumer<SettingsBottomSheetCubit, SettingsBottomSheetState>(
+        listener: (context, state) {
+          context.read<MergePageCubit>().setVideoSpeedAndSound(
+                speed: state.playbackSpeed,
+                isSoundOn: state.isSoundOn,
+              );
+        },
+        builder: (context, state) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(width: AppButtonSize.small),
+                  Hero(
+                    tag: 'settings',
+                    child: Assets.images.settings.svg(
+                      height: AppIconSize.xLarge,
+                      colorFilter: ColorFilter.mode(
+                        context.theme.iconTheme.color!,
+                        BlendMode.srcIn,
+                      ),
+                    ),
+                  ),
+                  SizedBox.square(
+                    dimension: AppButtonSize.small,
+                    child: IconButton.filledTonal(
+                      onPressed: Navigator.of(context).pop,
+                      icon: Assets.images.close.svg(
+                        height: AppIconSize.xxSmall,
                         colorFilter: ColorFilter.mode(
-                          context.theme.iconTheme.color!,
+                          context.colorScheme.onSecondaryContainer,
                           BlendMode.srcIn,
                         ),
                       ),
                     ),
-                    SizedBox.square(
-                      dimension: AppButtonSize.small,
-                      child: IconButton.filledTonal(
-                        onPressed: Navigator.of(context).pop,
-                        icon: Assets.images.close.svg(
-                          height: AppIconSize.xxSmall,
-                          colorFilter: ColorFilter.mode(
-                            context.colorScheme.onSecondaryContainer,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: AppPadding.medium),
-                Text(
-                  context.l10n.settings,
-                  style: context.textTheme.titleLarge,
-                ),
-                const SizedBox(height: AppPadding.xxLarge),
-                _SoundSelector(isSoundOn: state.isSoundOn),
-                const Divider(height: AppPadding.large),
-                _ResolutionSelector(state.videoResolution),
-                const SizedBox(height: AppPadding.large),
-                _AspectRatioSelector(
-                  state.videoAspectRatio,
-                  state.videoResolution,
-                ),
-                const Divider(height: AppPadding.large),
-                _SpeedSelector(state.playbackSpeed),
-              ],
-            );
-          },
-        ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: AppPadding.medium),
+              Text(
+                context.l10n.settings,
+                style: context.textTheme.titleLarge,
+              ),
+              const SizedBox(height: AppPadding.xxLarge),
+              _SoundSelector(isSoundOn: state.isSoundOn),
+              const Divider(height: AppPadding.large),
+              _ResolutionSelector(state.videoResolution),
+              const SizedBox(height: AppPadding.large),
+              _AspectRatioSelector(
+                state.videoAspectRatio,
+                state.videoResolution,
+              ),
+              const Divider(height: AppPadding.large),
+              _SpeedSelector(state.playbackSpeed),
+            ],
+          );
+        },
       ),
     );
   }
