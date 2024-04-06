@@ -11,7 +11,13 @@ final class AppNavigationBarCubit extends Cubit<AppNavigationBarState> {
           const AppNavigationBarState(page: NavigationBarPage.previewVideo),
         );
 
-  void updatePage(NavigationBarPage page, {Object? arguments}) {
-    emit(AppNavigationBarState(page: page, arguments: arguments));
+  void updatePage(NavigationBarPage page, {Object? args}) {
+    emit(
+      AppNavigationBarState(
+        page: page,
+        args: args,
+        isSafeToNavigate: args == null,
+      ),
+    );
   }
 }

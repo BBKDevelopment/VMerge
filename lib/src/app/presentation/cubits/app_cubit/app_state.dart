@@ -33,5 +33,5 @@ final class AppInitialized extends AppState {
   }
 
   @override
-  List<Object> get props => [themeMode, mainColor];
+  List<Object?> get props => [themeMode, mainColor];
 }

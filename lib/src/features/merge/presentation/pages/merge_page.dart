@@ -72,8 +72,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animationController.forward();
 
-      final videoMetadatas =
-          context.read<AppNavigationBarCubit>().state.arguments;
+      final videoMetadatas = context.read<AppNavigationBarCubit>().state.args;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 

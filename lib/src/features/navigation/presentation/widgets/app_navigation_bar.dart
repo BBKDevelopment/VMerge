@@ -4,6 +4,7 @@
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:vmerge/src/core/core.dart';
@@ -54,55 +55,23 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final bottomNavigationBarColor = context.colorScheme.surfaceVariant;
 
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) async {
-          final page = NavigationBarPage.values[index];
-          context.read<AppNavigationBarCubit>().updatePage(page);
-
-          switch (page) {
-            case NavigationBarPage.previewVideo:
-              break;
-            case NavigationBarPage.merge:
-              break;
-            case NavigationBarPage.more:
-              break;
-          }
-
-          // if (index == 1) {
-          //   _editPageController.getAnimationController.duration =
-          //       kEditPageInAnimationDuration;
-          //   await _editPageController.getAnimationController.forward();
-          //   if (_homePageController.getVideoList.length == 2) {
-          //     _editPageController
-          //         .updateAssets(_homePageController.getVideoList);
-          //   }
-          // }
-          // if (index == 2) {
-          //   _morePageController.getBeginList.clear();
-          //   _morePageController.getEndList.clear();
-          //   _morePageController.getAnimationController.duration =
-          //       kMorePageInAnimationDuration;
-          //   await _morePageController.getAnimationController.forward();
-          // }
-        },
-        children: const [
-          PreviewVideoPage(),
-          MergePage(),
-          MorePage(),
-        ],
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: bottomNavigationBarColor,
+        systemNavigationBarIconBrightness: context.theme.brightness,
+        systemNavigationBarContrastEnforced: false,
       ),
-      bottomNavigationBar: Card(
-        margin: EdgeInsets.zero,
-        shape: const ContinuousRectangleBorder(),
-        child: BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
-          listener: (context, state) async {
-            _pageController.jumpToPage(state.page.index);
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          onPageChanged: (index) async {
+            final page = NavigationBarPage.values[index];
+            // context.read<AppNavigationBarCubit>().updatePage(page);
 
-            switch (state.page) {
+            switch (page) {
               case NavigationBarPage.previewVideo:
                 break;
               case NavigationBarPage.merge:
@@ -110,16 +79,86 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
               case NavigationBarPage.more:
                 break;
             }
+
+            // if (index == 1) {
+            //   _editPageController.getAnimationController.duration =
+            //       kEditPageInAnimationDuration;
+            //   await _editPageController.getAnimationController.forward();
+            //   if (_homePageController.getVideoList.length == 2) {
+            //     _editPageController
+            //         .updateAssets(_homePageController.getVideoList);
+            //   }
+            // }
+            // if (index == 2) {
+            //   _morePageController.getBeginList.clear();
+            //   _morePageController.getEndList.clear();
+            //   _morePageController.getAnimationController.duration =
+            //       kMorePageInAnimationDuration;
+            //   await _morePageController.getAnimationController.forward();
+            // }
           },
-          builder: (context, state) {
-            return Padding(
-              padding: AppPadding.verticalMedium,
-              child: BottomNavyBar(
+          children: const [
+            PreviewVideoPage(),
+            MergePage(),
+            MorePage(),
+          ],
+        ),
+        bottomNavigationBar: Container(
+          color: bottomNavigationBarColor,
+          padding: AppPadding.verticalMedium,
+          child: BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
+            listener: (context, state) async {
+              _pageController.jumpToPage(state.page.index);
+
+              switch (state.page) {
+                case NavigationBarPage.previewVideo:
+                  break;
+                case NavigationBarPage.merge:
+                  break;
+                case NavigationBarPage.more:
+                  break;
+              }
+            },
+            builder: (context, state) {
+              return BottomNavyBar(
                 selectedIndex: state.page.index,
                 backgroundColor: Colors.transparent,
                 showElevation: false,
                 onItemSelected: (index) async {
-                  _pageController.jumpToPage(index);
+                  if (!state.isSafeToNavigate) {
+                    final canNavigate = await showDialog<bool>(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text(
+                              'Are you sure you want to leave this page?'),
+                          content: const Text('You have unsaved changes.'),
+                          actions: [
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(false);
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop(true);
+                              },
+                              child: const Text('Leave'),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    if (canNavigate == null || !canNavigate) return;
+                  }
+
+                  if (!context.mounted) return;
+                  final page = NavigationBarPage.values[index];
+                  context.read<AppNavigationBarCubit>().updatePage(page);
+                  // _pageController.jumpToPage(index);
+
                   // if (_bottomBarController.currentIndex == 1 && index != 1) {
                   //   _editPageController.getAnimationController.duration =
                   //       kEditPageOutAnimationDuration;
@@ -179,9 +218,9 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
                     ),
                   ),
                 ],
-              ),
-            );
-          },
+              );
+            },
+          ),
         ),
       ),
     );
