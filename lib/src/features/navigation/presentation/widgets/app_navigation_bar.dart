@@ -13,6 +13,8 @@ import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/src/features/preview_video/preview_video.dart';
 
+part 'navigation_confirm_dialog.dart';
+
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({super.key});
 
@@ -55,172 +57,93 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    final bottomNavigationBarColor = context.colorScheme.surfaceVariant;
+    final bottomNavigationBarColor = context.colorScheme.secondaryContainer;
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: bottomNavigationBarColor,
         systemNavigationBarIconBrightness: context.theme.brightness,
-        systemNavigationBarContrastEnforced: false,
       ),
       child: Scaffold(
         body: PageView(
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
-          onPageChanged: (index) async {
-            final page = NavigationBarPage.values[index];
-            // context.read<AppNavigationBarCubit>().updatePage(page);
-
-            switch (page) {
-              case NavigationBarPage.previewVideo:
-                break;
-              case NavigationBarPage.merge:
-                break;
-              case NavigationBarPage.more:
-                break;
-            }
-
-            // if (index == 1) {
-            //   _editPageController.getAnimationController.duration =
-            //       kEditPageInAnimationDuration;
-            //   await _editPageController.getAnimationController.forward();
-            //   if (_homePageController.getVideoList.length == 2) {
-            //     _editPageController
-            //         .updateAssets(_homePageController.getVideoList);
-            //   }
-            // }
-            // if (index == 2) {
-            //   _morePageController.getBeginList.clear();
-            //   _morePageController.getEndList.clear();
-            //   _morePageController.getAnimationController.duration =
-            //       kMorePageInAnimationDuration;
-            //   await _morePageController.getAnimationController.forward();
-            // }
-          },
           children: const [
             PreviewVideoPage(),
             MergePage(),
             MorePage(),
           ],
         ),
-        bottomNavigationBar: Container(
-          color: bottomNavigationBarColor,
-          padding: AppPadding.verticalMedium,
-          child: BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
-            listener: (context, state) async {
-              _pageController.jumpToPage(state.page.index);
+        bottomNavigationBar:
+            BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
+          listener: (context, state) {
+            _pageController.jumpToPage(state.page.index);
+          },
+          builder: (context, state) {
+            return BottomNavyBar(
+              selectedIndex: state.page.index,
+              backgroundColor: bottomNavigationBarColor,
+              showElevation: false,
+              onItemSelected: (index) async {
+                if (!state.isSafeToNavigate) {
+                  final canNavigate = await showDialog<bool>(
+                    context: context,
+                    builder: (_) => _NavigationConfirmDialog(),
+                  );
 
-              switch (state.page) {
-                case NavigationBarPage.previewVideo:
-                  break;
-                case NavigationBarPage.merge:
-                  break;
-                case NavigationBarPage.more:
-                  break;
-              }
-            },
-            builder: (context, state) {
-              return BottomNavyBar(
-                selectedIndex: state.page.index,
-                backgroundColor: Colors.transparent,
-                showElevation: false,
-                onItemSelected: (index) async {
-                  if (!state.isSafeToNavigate) {
-                    final canNavigate = await showDialog<bool>(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: const Text(
-                              'Are you sure you want to leave this page?'),
-                          content: const Text('You have unsaved changes.'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(false);
-                              },
-                              child: const Text('Cancel'),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop(true);
-                              },
-                              child: const Text('Leave'),
-                            ),
-                          ],
-                        );
-                      },
-                    );
+                  if (canNavigate == null || !canNavigate) return;
+                }
 
-                    if (canNavigate == null || !canNavigate) return;
-                  }
-
-                  if (!context.mounted) return;
-                  final page = NavigationBarPage.values[index];
-                  context.read<AppNavigationBarCubit>().updatePage(page);
-                  // _pageController.jumpToPage(index);
-
-                  // if (_bottomBarController.currentIndex == 1 && index != 1) {
-                  //   _editPageController.getAnimationController.duration =
-                  //       kEditPageOutAnimationDuration;
-                  //   await _editPageController.getAnimationController.reverse();
-                  // }
-                  // if (_bottomBarController.currentIndex == 2 && index != 2) {
-                  //   _morePageController.getAnimationController.duration =
-                  //       kMorePageOutAnimationDuration;
-                  //   await _morePageController.getAnimationController.reverse();
-                  // }
-                  // _bottomBarController.updateCurrentIndex(index);
-                  // _bottomBarController.pageController.jumpToPage(index);
-                },
-                items: [
-                  BottomNavyBarItem(
-                    activeColor: context.colorScheme.secondary,
-                    title: Text(
-                      l10n.video,
-                      style: context.textTheme.titleMedium,
-                    ),
-                    textAlign: TextAlign.center,
-                    icon: Assets.images.video.svg(
-                      height: AppIconSize.medium,
-                      width: AppIconSize.medium,
-                      colorFilter: ColorFilter.mode(
-                        context.theme.iconTheme.color!,
-                        BlendMode.srcIn,
-                      ),
+                if (!context.mounted) return;
+                final page = NavigationBarPage.values[index];
+                context.read<AppNavigationBarCubit>().updatePage(page);
+              },
+              items: [
+                BottomNavyBarItem(
+                  activeColor: context.colorScheme.secondary,
+                  title: Text(
+                    l10n.video,
+                    style: context.textTheme.titleMedium,
+                  ),
+                  textAlign: TextAlign.center,
+                  icon: Assets.images.video.svg(
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
                     ),
                   ),
-                  BottomNavyBarItem(
-                    activeColor: context.colorScheme.secondary,
-                    title:
-                        Text(l10n.merge, style: context.textTheme.titleMedium),
-                    textAlign: TextAlign.center,
-                    icon: Assets.images.merge.svg(
-                      height: AppIconSize.medium,
-                      width: AppIconSize.medium,
-                      colorFilter: ColorFilter.mode(
-                        context.theme.iconTheme.color!,
-                        BlendMode.srcIn,
-                      ),
+                ),
+                BottomNavyBarItem(
+                  activeColor: context.colorScheme.secondary,
+                  title: Text(l10n.merge, style: context.textTheme.titleMedium),
+                  textAlign: TextAlign.center,
+                  icon: Assets.images.merge.svg(
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
                     ),
                   ),
-                  BottomNavyBarItem(
-                    activeColor: context.colorScheme.secondary,
-                    title:
-                        Text(l10n.more, style: context.textTheme.titleMedium),
-                    textAlign: TextAlign.center,
-                    icon: Assets.images.more.svg(
-                      height: AppIconSize.medium,
-                      width: AppIconSize.medium,
-                      colorFilter: ColorFilter.mode(
-                        context.theme.iconTheme.color!,
-                        BlendMode.srcIn,
-                      ),
+                ),
+                BottomNavyBarItem(
+                  activeColor: context.colorScheme.secondary,
+                  title: Text(l10n.more, style: context.textTheme.titleMedium),
+                  textAlign: TextAlign.center,
+                  icon: Assets.images.more.svg(
+                    height: AppIconSize.medium,
+                    width: AppIconSize.medium,
+                    colorFilter: ColorFilter.mode(
+                      context.theme.iconTheme.color!,
+                      BlendMode.srcIn,
                     ),
                   ),
-                ],
-              );
-            },
-          ),
+                ),
+              ],
+            );
+          },
         ),
       ),
     );

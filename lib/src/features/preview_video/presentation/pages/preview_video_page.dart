@@ -65,12 +65,13 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
           pickerTheme: context.theme.copyWith(
             appBarTheme: context.theme.appBarTheme.copyWith(
               systemOverlayStyle: SystemUiOverlayStyle(
-                systemNavigationBarColor: context.colorScheme.surfaceVariant,
+                systemNavigationBarColor:
+                    context.colorScheme.secondaryContainer,
                 systemNavigationBarIconBrightness: context.theme.brightness,
               ),
             ),
             bottomAppBarTheme: context.theme.bottomAppBarTheme.copyWith(
-              color: context.colorScheme.surfaceVariant,
+              color: context.colorScheme.secondaryContainer,
             ),
           ),
           textDelegate: _getAssetPickerTextDelegateFromLocale(
