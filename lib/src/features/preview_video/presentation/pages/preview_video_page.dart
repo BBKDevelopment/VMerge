@@ -62,6 +62,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
         pickerConfig: AssetPickerConfig(
           maxAssets: 4,
           requestType: RequestType.video,
+          specialPickerType: SpecialPickerType.noPreview,
           pickerTheme: context.theme.copyWith(
             appBarTheme: context.theme.appBarTheme.copyWith(
               systemOverlayStyle: SystemUiOverlayStyle(
