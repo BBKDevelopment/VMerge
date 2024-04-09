@@ -300,7 +300,7 @@ class _SpeedSelector extends StatelessWidget {
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              '${speed?.value ?? PlaybackSpeed.one.value}x',
+              '${speed.value}x',
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),

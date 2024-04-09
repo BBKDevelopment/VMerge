@@ -45,7 +45,7 @@ class _ControlButtonRow extends StatelessWidget {
     if (context.read<MergePageCubit>().state is! MergePageLoaded) return;
 
     context.read<MergePageCubit>().stopVideo();
-    // context.read<MergeCubit>().mergeVideos();
+    context.read<MergePageCubit>().mergeVideos();
 
     // `showModalBottomSheet` is not used here since it does not support `Hero`
     // animations. Please see: https://github.com/flutter/flutter/issues/48467

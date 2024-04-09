@@ -11,7 +11,8 @@ class _NavigationConfirmDialog extends StatelessWidget {
         'Discard changes',
       ),
       content: const Text(
-          'You have unsaved changes. Are you sure you want to leave this page?'),
+        'You have unsaved changes. Are you sure you want to leave this page?',
+      ),
       actions: [
         TextButton(
           onPressed: () {

@@ -256,7 +256,7 @@ final class MergePageCubit extends Cubit<MergePageState> {
             state.metadatas.map((metadata) => metadata.file!.path).toList();
 
         await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
-      // await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
+        await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
       default:
         return;
     }

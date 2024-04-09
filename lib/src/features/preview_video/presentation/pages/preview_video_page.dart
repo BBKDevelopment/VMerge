@@ -84,7 +84,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
       assets = null;
     }
 
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     await context.read<PreviewVideoCubit>().updateVideos(assets);
   }

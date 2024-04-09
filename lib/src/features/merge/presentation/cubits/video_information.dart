@@ -11,6 +11,7 @@ final class VideoInfo extends Equatable {
     required this.hasAudio,
     required this.audioSampleRate,
     required this.audioChannelLayout,
+    required this.duration,
   });
 
   final String directory;
@@ -30,13 +31,14 @@ final class VideoInfo extends Equatable {
   final bool hasAudio;
   final String? audioSampleRate;
   final String? audioChannelLayout;
+  final int? duration;
 
   @override
   String toString() {
     return 'VideoInfo(directory: $directory, width: $width, height: $height, '
         'format: $format, codec: $codec, frameRate: $frameRate, hasAudio: '
         '$hasAudio, audioSampleRate: $audioSampleRate, audioChannelLayout: '
-        '$audioChannelLayout)';
+        '$audioChannelLayout, duration: $duration)';
   }
 
   @override
@@ -50,5 +52,6 @@ final class VideoInfo extends Equatable {
         hasAudio,
         audioSampleRate,
         audioChannelLayout,
+        duration,
       ];
 }
