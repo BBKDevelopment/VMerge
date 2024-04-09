@@ -6,21 +6,22 @@ import 'package:collection/collection.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffprobe_kit.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
+import 'package:ffmpeg_kit_flutter_full_gpl/media_information_session.dart';
+import 'package:ffmpeg_kit_flutter_full_gpl/statistics.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/stream_information.dart';
 import 'package:flutter/foundation.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path/path.dart' as path;
 import 'package:vmerge/src/features/merge/presentation/cubits/video_information.dart';
 
+/// Callback to report the progress of the FFmpeg command.
+typedef ProgressCallback = void Function(double progress);
+
 final class FFmpegService {
   FFmpegService()
       : _videoInfos = List.empty(growable: true),
         _isAudioSameOnAll = null,
         _isReencodingRequired = null;
-
-  static const _typeVideo = 'VIDEO';
-  static const _typeAudio = 'AUDIO';
 
   final List<VideoInfo> _videoInfos;
   bool? _isResolutionSameOnAll;
@@ -49,15 +50,16 @@ final class FFmpegService {
         .getMediaInformation()
         ?.getStreams()
         .firstWhereOrNull(
-          (stream) => stream.getType()?.toUpperCase() == _typeVideo,
+          (stream) => stream.getType()?.toUpperCase() == 'VIDEO',
         );
     final audioStream = mediaInformationSession
         .getMediaInformation()
         ?.getStreams()
         .firstWhereOrNull(
-          (stream) => stream.getType()?.toUpperCase() == _typeAudio,
+          (stream) => stream.getType()?.toUpperCase() == 'AUDIO',
         );
     final resolution = _getResolutionBasedOnRotation(videoStream);
+    final duration = _getDuration(mediaInformationSession);
     final videoInformation = VideoInfo(
       directory: dir,
       width: resolution.width,
@@ -68,6 +70,7 @@ final class FFmpegService {
       hasAudio: audioStream != null,
       audioSampleRate: audioStream?.getSampleRate(),
       audioChannelLayout: audioStream?.getChannelLayout(),
+      duration: duration,
     );
     _videoInfos.add(videoInformation);
   }
@@ -100,6 +103,18 @@ final class FFmpegService {
     } else {
       return (width: width, height: height);
     }
+  }
+
+  /// Returns the duration of the video in milliseconds.
+  int? _getDuration(MediaInformationSession session) {
+    final stringDuration = session.getMediaInformation()?.getDuration();
+    if (stringDuration == null) return null;
+
+    final durationInSeconds = double.tryParse(stringDuration);
+    if (durationInSeconds == null) return null;
+
+    final durationInMilliseconds = (durationInSeconds * 1000).toInt();
+    return durationInMilliseconds;
   }
 
   /// Analyses the videos to determine if re-encoding is required.
@@ -195,12 +210,8 @@ final class FFmpegService {
     final returnCode = await session.getReturnCode();
     final failStackTrace = await session.getFailStackTrace();
 
-    if (ReturnCode.isCancel(returnCode)) {
-      print('cancelled');
-    } else {
-      print('done');
+    if (returnCode?.isValueSuccess() ?? false) {
       final result = await ImageGallerySaver.saveFile(outputDir);
-      print(result);
     }
 
     _dispose();
@@ -276,20 +287,47 @@ final class FFmpegService {
     return command.toString();
   }
 
-  Future<void> _enableStatistics() async {
+  /// Enables progress callback to allow the user to track the progress of the
+  /// FFmpeg command.
+  Future<void> enableProgressCallback(ProgressCallback callback) async {
     await FFmpegKitConfig.enableStatistics();
 
+    // Calculates the total duration of all videos.
+    final totalDuration = _videoInfos.fold<int>(
+      0,
+      (previousValue, videoInfo) {
+        return previousValue + (videoInfo.duration ?? 0);
+      },
+    );
+
     FFmpegKitConfig.enableStatisticsCallback((statistics) {
-      debugPrint(statistics.toString());
+      final percentage = _calculateProgress(statistics, totalDuration);
+      callback(percentage);
     });
+  }
+
+  /// Disables the progress callback.
+  Future<void> disableProgressCallback() async {
+    await FFmpegKitConfig.disableStatistics();
+  }
+
+  /// Calculates the progress percentage of the FFmpeg command.
+  double _calculateProgress(Statistics? statistics, int totalDuration) {
+    if (statistics == null) return 0;
+
+    // The current time in the execution.
+    final currentTime = statistics.getTime();
+
+    // Calculates the progress percentage.
+    final progress = (currentTime / totalDuration) * 100;
+
+    return progress;
   }
 
   Future<void> _enableLogOnDebug() async {
     if (!kDebugMode) return;
 
     await FFmpegKitConfig.enableLogs();
-
-    FFmpegKitConfig.enableLogCallback();
 
     FFmpegKitConfig.enableLogCallback((log) {
       debugPrint(log.getMessage());
