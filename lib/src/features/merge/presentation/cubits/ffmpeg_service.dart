@@ -325,8 +325,6 @@ final class FFmpegService {
   /// Enables progress callback to allow the consumer of this service to get the
   /// progress of the FFmpeg command.
   Future<void> enableProgressCallback(ProgressCallback callback) async {
-    await FFmpegKitConfig.enableStatistics();
-
     // Calculates the total duration of all videos.
     final totalDuration = _videoDetails.fold<int>(
       0,
@@ -335,15 +333,35 @@ final class FFmpegService {
       },
     );
 
-    FFmpegKitConfig.enableStatisticsCallback((statistics) {
-      final percentage = _calculateProgress(statistics, totalDuration);
-      callback(percentage);
-    });
+    try {
+      await FFmpegKitConfig.enableStatistics();
+
+      FFmpegKitConfig.enableStatisticsCallback((statistics) {
+        final percentage = _calculateProgress(statistics, totalDuration);
+        callback(percentage);
+      });
+    } catch (error, stackTrace) {
+      log(
+        'Could not enable statistics!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   /// Disables the progress callback.
   Future<void> disableProgressCallback() async {
-    await FFmpegKitConfig.disableStatistics();
+    try {
+      await FFmpegKitConfig.disableStatistics();
+    } catch (error, stackTrace) {
+      log(
+        'Could not disable statistics!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
   /// Calculates the progress percentage of the FFmpeg command.
