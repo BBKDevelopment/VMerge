@@ -125,7 +125,7 @@ abstract class AppLocalizations {
   /// No description provided for @openPicker.
   ///
   /// In en, this message translates to:
-  /// **'Open picker'**
+  /// **'Open Picker'**
   String get openPicker;
 
   /// No description provided for @copyrightMessage.
@@ -349,6 +349,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Playback Speed'**
   String get playbackSpeed;
+
+  /// No description provided for @analyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing'**
+  String get analyzing;
+
+  /// No description provided for @merging.
+  ///
+  /// In en, this message translates to:
+  /// **'Merging'**
+  String get merging;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get saving;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @analyzingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing videos to determine the fastest way to merge them. Checking if re-encoding is required...'**
+  String get analyzingMessage;
+
+  /// No description provided for @mergingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Merging videos in a fast and efficient way. This process may take a while so please be patient!'**
+  String get mergingMessage;
+
+  /// No description provided for @savingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving the merged video to your device. Hang tight, this won\'t take long!'**
+  String get savingMessage;
+
+  /// No description provided for @doneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The video has been successfully saved to your device!'**
+  String get doneMessage;
+
+  /// No description provided for @errorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while merging the videos. Please try again!'**
+  String get errorMessage;
 }
 
 class _AppLocalizationsDelegate

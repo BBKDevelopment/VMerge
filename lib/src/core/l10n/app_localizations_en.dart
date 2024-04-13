@@ -21,7 +21,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Please select at least 2 videos to continue!';
 
   @override
-  String get openPicker => 'Open picker';
+  String get openPicker => 'Open Picker';
 
   @override
   String get copyrightMessage => 'Copyright © 2023 BBK Development';
@@ -137,4 +137,39 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get playbackSpeed => 'Playback Speed';
+
+  @override
+  String get analyzing => 'Analyzing';
+
+  @override
+  String get merging => 'Merging';
+
+  @override
+  String get saving => 'Saving';
+
+  @override
+  String get done => 'Done';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get analyzingMessage =>
+      'Analyzing videos to determine the fastest way to merge them. Checking if re-encoding is required...';
+
+  @override
+  String get mergingMessage =>
+      'Merging videos in a fast and efficient way. This process may take a while so please be patient!';
+
+  @override
+  String get savingMessage =>
+      'Saving the merged video to your device. Hang tight, this won\'t take long!';
+
+  @override
+  String get doneMessage =>
+      'The video has been successfully saved to your device!';
+
+  @override
+  String get errorMessage =>
+      'An error occurred while merging the videos. Please try again!';
 }
