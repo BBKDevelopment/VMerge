@@ -50,6 +50,11 @@ final class FFmpegService {
   bool? _isAudioSameOnAll;
   bool? _isReencodingRequired;
 
+  /// Initialises the FFmpeg service and analyses the videos to determine if
+  /// re-encoding is required.
+  ///
+  /// Throws [FFmpegServiceInitialisationException] if the FFmpeg service fails
+  /// to initialise.
   Future<void> initThenAnalyseVideos({required List<String> inputDirs}) async {
     // Disposes the previous state.
     _dispose();
@@ -67,6 +72,7 @@ final class FFmpegService {
     _analyseVideos();
   }
 
+  /// Initialises the video and extracts the video details.
   Future<void> _initVideo(String dir) async {
     final mediaInformationSession = await FFprobeKit.getMediaInformation(dir);
     final videoStream = mediaInformationSession
@@ -98,8 +104,8 @@ final class FFmpegService {
     _videoDetails.add(videoDetail);
   }
 
-  // Check if the video is rotated and returns the video width and height based
-  // on the rotation.
+  /// Checks if the video is rotated and returns the video width and height
+  /// based on the rotation.
   ({int? height, int? width}) _getResolutionBasedOnRotation(
     StreamInformation? videoStream,
   ) {
@@ -210,6 +216,16 @@ final class FFmpegService {
         !_isAudioSameOnAll!;
   }
 
+  /// Merges the videos.
+  ///
+  /// Throws [FFmpegServiceNotInitialisedException] if the FFmpeg service is not
+  /// initialised.
+  ///
+  /// Throws [FFmpegServiceInsufficientVideosException] if there are less than 2
+  /// videos to merge.
+  ///
+  /// Throws [FFmpegServiceMergeException] if the FFmpeg service fails to merge
+  /// the videos.
   Future<void> mergeVideos({required String outputDir}) async {
     if (_isReencodingRequired == null || _isAudioSameOnAll == null) {
       throw const FFmpegServiceNotInitialisedException();
@@ -235,6 +251,7 @@ final class FFmpegService {
     }
   }
 
+  /// Creates the FFmpeg command to merge the videos.
   Future<String> _createCommand(String outputDir) async {
     final command = StringBuffer('-y ');
 
@@ -342,6 +359,7 @@ final class FFmpegService {
     return progress;
   }
 
+  /// Enables logs and log callback for debugging purposes.
   Future<void> _enableLogOnDebug() async {
     if (!kDebugMode) return;
 
@@ -361,6 +379,7 @@ final class FFmpegService {
     }
   }
 
+  /// Disposes the resources.
   void _dispose() {
     _videoDetails.clear();
     _isResolutionSameOnAll = null;
