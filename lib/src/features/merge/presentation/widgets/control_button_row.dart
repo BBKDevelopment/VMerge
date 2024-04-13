@@ -42,10 +42,10 @@ class _ControlButtonRow extends StatelessWidget {
   }
 
   void _onTapSaveVideo(BuildContext context) {
-    if (context.read<MergePageCubit>().state is! MergePageLoaded) return;
+    final mergePageState = context.read<MergePageCubit>().state;
+    if (mergePageState is! MergePageLoaded) return;
 
     context.read<MergePageCubit>().stopVideo();
-    context.read<MergePageCubit>().mergeVideos();
 
     // `showModalBottomSheet` is not used here since it does not support `Hero`
     // animations. Please see: https://github.com/flutter/flutter/issues/48467
@@ -54,7 +54,8 @@ class _ControlButtonRow extends StatelessWidget {
       useRootNavigator: true,
       topRadius: const Radius.circular(AppBorderRadius.xxxLarge),
       builder: (_) => BlocProvider.value(
-        value: BlocProvider.of<MergePageCubit>(context),
+        value: BlocProvider.of<SaveBottomSheetCubit>(context)
+          ..init(mergePageState.videoMetadatas),
         // Default `showModalBottomSheet` and dialogs use
         // `dialogBackgroundColor` and `surfaceTintColor`, so `Card` is used
         // here to match the design because it uses the same colors.

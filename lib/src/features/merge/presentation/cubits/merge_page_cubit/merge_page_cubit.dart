@@ -6,11 +6,8 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
-import 'package:vmerge/src/features/merge/presentation/cubits/ffmpeg_service.dart';
 
 final class MergePageCubit extends Cubit<MergePageState> {
   MergePageCubit({
@@ -22,7 +19,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
 
   final VideoPlayerService _firstVideoPlayerService;
   final VideoPlayerService _secondVideoPlayerService;
-  final FFmpegService _ffmpegService = FFmpegService();
 
   VoidCallback get _firstVideoPlayerListener => () {
         switch (state) {
@@ -95,13 +91,12 @@ final class MergePageCubit extends Cubit<MergePageState> {
 
       emit(
         MergePageLoaded(
-          metadatas: metadataList,
+          videoMetadatas: metadataList,
           activeVideoIndex: ActiveVideoIndex.one,
           videoPlayerController: _firstVideoPlayerService.controller!,
           videoHeight: _firstVideoPlayerService.height,
           videoWidth: _firstVideoPlayerService.width,
           isVideoPlaying: _firstVideoPlayerService.isPlaying,
-          saveModalBottomSheetStatus: SaveModalBottomSheetStatus.idle,
         ),
       );
     } on LoadVideoException catch (error, stackTrace) {
@@ -242,21 +237,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
           // Restores last success state.
           emit(state);
         }
-      default:
-        return;
-    }
-  }
-
-  Future<void> mergeVideos() async {
-    switch (state) {
-      case final MergePageLoaded state:
-        final appDocsDir = await getApplicationDocumentsDirectory();
-        final outputVideoDir = path.join(appDocsDir.path, 'vmerge_output.mp4');
-        final inputVideoDirs =
-            state.metadatas.map((metadata) => metadata.file!.path).toList();
-
-        await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
-        await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
       default:
         return;
     }

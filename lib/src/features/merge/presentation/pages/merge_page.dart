@@ -41,6 +41,9 @@ class MergePage extends StatelessWidget {
             saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
           )..init(),
         ),
+        BlocProvider(
+          create: (_) => SaveBottomSheetCubit(),
+        ),
       ],
       child: const _MergeView(),
     );
