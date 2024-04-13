@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 
-final class VideoInfo extends Equatable {
-  const VideoInfo({
+final class VideoDetail extends Equatable {
+  const VideoDetail({
     required this.directory,
     required this.width,
     required this.height,
