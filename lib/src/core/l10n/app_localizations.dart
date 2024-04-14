@@ -409,6 +409,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred while merging the videos. Please try again!'**
   String get errorMessage;
+
+  /// No description provided for @seeInTheGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'See in the Gallery'**
+  String get seeInTheGallery;
 }
 
 class _AppLocalizationsDelegate

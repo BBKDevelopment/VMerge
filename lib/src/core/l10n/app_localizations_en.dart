@@ -172,4 +172,7 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorMessage =>
       'An error occurred while merging the videos. Please try again!';
+
+  @override
+  String get seeInTheGallery => 'See in the Gallery';
 }

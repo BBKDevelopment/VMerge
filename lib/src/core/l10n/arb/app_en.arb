@@ -52,5 +52,6 @@
   "mergingMessage": "Merging videos in a fast and efficient way. This process may take a while so please be patient!",
   "savingMessage": "Saving the merged video to your device. Hang tight, this won't take long!",
   "doneMessage": "The video has been successfully saved to your device!",
-  "errorMessage": "An error occurred while merging the videos. Please try again!"
+  "errorMessage": "An error occurred while merging the videos. Please try again!",
+  "seeInTheGallery": "See in the Gallery"
 }

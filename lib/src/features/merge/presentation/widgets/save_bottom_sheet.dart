@@ -23,6 +23,8 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Padding(
       padding: AppPadding.allLarge,
       child: BlocBuilder<SaveBottomSheetCubit, SaveBottomSheetState>(
@@ -88,28 +90,90 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
                       ),
                     ),
                     Center(
-                      child: state.status == SaveBottomSheetStatus.success
-                          ? const Icon(
-                              Icons.check_rounded,
-                              color: kPrimaryWhiteColor,
-                              size: kIconSize,
-                            )
-                          : Text(
-                              '${state.progress}%',
-                              //'${_editPageController.progressPercentage.round()}%',
-                              textAlign: TextAlign.center,
-                              style: kBoldTextStyle.copyWith(
-                                color: kPrimaryWhiteColor,
-                              ),
-                            ),
+                      child: switch (state.status) {
+                        SaveBottomSheetStatus.success => Icon(
+                            Icons.check_rounded,
+                            color: context.theme.iconTheme.color,
+                            size: AppIconSize.large,
+                          ),
+                        SaveBottomSheetStatus.error => Icon(
+                            Icons.close_rounded,
+                            color: context.colorScheme.error,
+                            size: AppIconSize.large,
+                          ),
+                        _ => Text(
+                            '${state.progress}%',
+                            textAlign: TextAlign.center,
+                            style: context.textTheme.titleMedium,
+                          ),
+                      },
                     ),
                   ],
                 ),
               ),
               const SizedBox(height: AppPadding.large),
-              Text(
-                state.status.name,
-                style: kMediumTextStyle,
+              AnimatedSwitcher(
+                duration: AppAnimationDuration.medium,
+                transitionBuilder: (child, animation) {
+                  return FadeTransition(
+                    opacity: animation,
+                    child: SlideTransition(
+                      position: Tween(
+                        begin: const Offset(0, 0.3),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    ),
+                  );
+                },
+                child: Text(
+                  switch (state.status) {
+                    SaveBottomSheetStatus.analyse => l10n.analyzing,
+                    SaveBottomSheetStatus.merge => l10n.merging,
+                    SaveBottomSheetStatus.save => l10n.saving,
+                    SaveBottomSheetStatus.success => l10n.done,
+                    SaveBottomSheetStatus.error => l10n.error,
+                  },
+                  key: ValueKey('title:${state.status.name}'),
+                  style: context.textTheme.titleMedium,
+                ),
+              ),
+              Container(
+                height: 80,
+                padding: AppPadding.horizontalLarge,
+                child: AnimatedSwitcher(
+                  duration: AppAnimationDuration.short,
+                  child: Text(
+                    switch (state.status) {
+                      SaveBottomSheetStatus.analyse => l10n.analyzingMessage,
+                      SaveBottomSheetStatus.merge => l10n.mergingMessage,
+                      SaveBottomSheetStatus.save => l10n.savingMessage,
+                      SaveBottomSheetStatus.success => l10n.doneMessage,
+                      SaveBottomSheetStatus.error => l10n.errorMessage,
+                    },
+                    key: ValueKey('subtitle:${state.status.name}'),
+                    style: context.textTheme.bodyMedium,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+              AnimatedContainer(
+                duration: AppAnimationDuration.short,
+                height: switch (state.status) {
+                  SaveBottomSheetStatus.success => kMinInteractiveDimension,
+                  _ => 0.0,
+                },
+                child: AnimatedOpacity(
+                  opacity: switch (state.status) {
+                    SaveBottomSheetStatus.success => 1.0,
+                    _ => 0.0,
+                  },
+                  duration: AppAnimationDuration.long,
+                  child: TextButton(
+                    onPressed: () {},
+                    child: Text(l10n.seeInTheGallery),
+                  ),
+                ),
               ),
             ],
           );
