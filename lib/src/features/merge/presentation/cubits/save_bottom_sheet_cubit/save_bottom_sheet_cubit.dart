@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:bloc/bloc.dart';
@@ -6,8 +7,9 @@ import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
+import 'package:wakelock_service/wakelock_service.dart';
 
-class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
+final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   SaveBottomSheetCubit()
       : super(
           const SaveBottomSheetState(
@@ -18,6 +20,7 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
         );
 
   final FFmpegService _ffmpegService = FFmpegService();
+  final WakelockService _wakelockService = WakelockService();
 
   void init(List<VideoMetadata> videoMetadatas) {
     emit(state.copyWith(videoMetadatas: videoMetadatas));
@@ -36,6 +39,8 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     final inputVideoDirs =
         state.videoMetadatas.map((metadata) => metadata.file!.path).toList();
 
+    unawaited(_wakelockService.enable());
+
     try {
       emit(state.copyWith(status: SaveBottomSheetStatus.analyse));
       await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
@@ -45,6 +50,7 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceInitialisationException {
       emit(state.copyWith(status: SaveBottomSheetStatus.error));
+      unawaited(_wakelockService.disable());
       return;
     }
 
@@ -61,6 +67,8 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceMergeException {
       emit(state.copyWith(status: SaveBottomSheetStatus.error));
       return;
+    } finally {
+      unawaited(_wakelockService.disable());
     }
 
     try {
