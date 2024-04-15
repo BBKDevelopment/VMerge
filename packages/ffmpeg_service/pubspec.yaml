@@ -1,0 +1,21 @@
+name: ffmpeg_service
+description: FFmpeg Service
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=3.3.0 <4.0.0'
+
+dependencies:
+  collection: ^1.18.0
+  equatable: ^2.0.5
+  ffmpeg_kit_flutter_full_gpl: ^6.0.3
+  flutter:
+    sdk: flutter
+  path: ^1.9.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  mocktail: ^1.0.3
+  very_good_analysis: ^5.1.0
