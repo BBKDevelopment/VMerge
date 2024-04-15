@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path/path.dart' as path;
@@ -22,7 +24,14 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   }
 
   Future<void> mergeVideos() async {
-    final appDocsDir = await getApplicationDocumentsDirectory();
+    final Directory appDocsDir;
+    try {
+      appDocsDir = await getApplicationDocumentsDirectory();
+    } catch (_) {
+      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+      return;
+    }
+
     final outputVideoDir = path.join(appDocsDir.path, 'vmerge_output.mp4');
     final inputVideoDirs =
         state.videoMetadatas.map((metadata) => metadata.file!.path).toList();
@@ -33,7 +42,7 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       await _ffmpegService.enableProgressCallback((progress) {
         emit(state.copyWith(progress: progress.ceil()));
       });
-      await Future<void>.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceInitialisationException {
       emit(state.copyWith(status: SaveBottomSheetStatus.error));
       return;
@@ -42,7 +51,7 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     try {
       emit(state.copyWith(status: SaveBottomSheetStatus.merge));
       await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
-      await Future<void>.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceNotInitialisedException {
       emit(state.copyWith(status: SaveBottomSheetStatus.error));
       return;
@@ -55,9 +64,9 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     }
 
     try {
-      emit(state.copyWith(status: SaveBottomSheetStatus.save));
+      emit(state.copyWith(status: SaveBottomSheetStatus.save, progress: 100));
       await ImageGallerySaver.saveFile(outputVideoDir);
-      await Future<void>.delayed(const Duration(seconds: 1));
+      await Future<void>.delayed(_kMinStatusDuration);
     } catch (_) {
       emit(state.copyWith(status: SaveBottomSheetStatus.error));
       return;
@@ -66,3 +75,6 @@ class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     emit(state.copyWith(status: SaveBottomSheetStatus.success));
   }
 }
+
+/// The minimum duration a status should be displayed for.
+const _kMinStatusDuration = Duration(milliseconds: 1500);
