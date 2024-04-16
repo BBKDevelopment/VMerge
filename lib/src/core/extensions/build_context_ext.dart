@@ -24,4 +24,8 @@ extension BuildContextExt on BuildContext {
 
   /// Provides direct access to the width of the screen.
   double get screenWidth => MediaQuery.sizeOf(this).width;
+
+  /// Provides direct access to pop operation of the navigator.
+  void pop<T extends Object?>([T? result]) =>
+      Navigator.of(this).pop<T?>(result);
 }

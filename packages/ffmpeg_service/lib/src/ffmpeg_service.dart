@@ -1,3 +1,7 @@
+// Copyright 2024 BBK Development. All rights reserved.
+// Use of this source code is governed by a GPL-style license that can be found
+// in the LICENSE file.
+
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
@@ -6,23 +10,29 @@ import 'package:collection/collection.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit_config.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffprobe_kit.dart';
-import 'package:ffmpeg_kit_flutter_full_gpl/return_code.dart';
+import 'package:ffmpeg_kit_flutter_full_gpl/media_information_session.dart';
+import 'package:ffmpeg_kit_flutter_full_gpl/statistics.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/stream_information.dart';
+import 'package:ffmpeg_service/ffmpeg_service.dart';
+import 'package:ffmpeg_service/src/video_detail.dart';
 import 'package:flutter/foundation.dart';
-import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:path/path.dart' as path;
-import 'package:vmerge/src/features/merge/presentation/cubits/video_information.dart';
 
+/// Callback to report the progress of the FFmpeg command.
+typedef ProgressCallback = void Function(double progress);
+
+/// {@template ffmpeg_service}
+/// A service that wraps the FFmpegKit library to provide secure and efficient
+/// video editing capabilities.
+/// {@endtemplate}
 final class FFmpegService {
+  /// {@macro ffmpeg_service}
   FFmpegService()
-      : _videoInfos = List.empty(growable: true),
+      : _videoDetails = List.empty(growable: true),
         _isAudioSameOnAll = null,
         _isReencodingRequired = null;
 
-  static const _typeVideo = 'VIDEO';
-  static const _typeAudio = 'AUDIO';
-
-  final List<VideoInfo> _videoInfos;
+  final List<VideoDetail> _videoDetails;
   bool? _isResolutionSameOnAll;
   bool? _isFormatSameOnAll;
   bool? _isCodecSameOnAll;
@@ -30,12 +40,21 @@ final class FFmpegService {
   bool? _isAudioSameOnAll;
   bool? _isReencodingRequired;
 
+  /// Initialises the FFmpeg service and analyses the videos to determine if
+  /// re-encoding is required.
+  ///
+  /// Throws [FFmpegServiceInitialisationException] if the FFmpeg service fails
+  /// to initialise.
   Future<void> initThenAnalyseVideos({required List<String> inputDirs}) async {
     // Disposes the previous state.
     _dispose();
 
     for (final inputDir in inputDirs) {
-      await _initVideo(inputDir);
+      try {
+        await _initVideo(inputDir);
+      } catch (_) {
+        throw const FFmpegServiceNotInitialisedException();
+      }
     }
 
     // Analyse the videos to determine if re-encoding is required and if audio
@@ -43,22 +62,24 @@ final class FFmpegService {
     _analyseVideos();
   }
 
+  /// Initialises the video and extracts the video details.
   Future<void> _initVideo(String dir) async {
     final mediaInformationSession = await FFprobeKit.getMediaInformation(dir);
     final videoStream = mediaInformationSession
         .getMediaInformation()
         ?.getStreams()
         .firstWhereOrNull(
-          (stream) => stream.getType()?.toUpperCase() == _typeVideo,
+          (stream) => stream.getType()?.toUpperCase() == 'VIDEO',
         );
     final audioStream = mediaInformationSession
         .getMediaInformation()
         ?.getStreams()
         .firstWhereOrNull(
-          (stream) => stream.getType()?.toUpperCase() == _typeAudio,
+          (stream) => stream.getType()?.toUpperCase() == 'AUDIO',
         );
     final resolution = _getResolutionBasedOnRotation(videoStream);
-    final videoInformation = VideoInfo(
+    final duration = _getDuration(mediaInformationSession);
+    final videoDetail = VideoDetail(
       directory: dir,
       width: resolution.width,
       height: resolution.height,
@@ -68,12 +89,13 @@ final class FFmpegService {
       hasAudio: audioStream != null,
       audioSampleRate: audioStream?.getSampleRate(),
       audioChannelLayout: audioStream?.getChannelLayout(),
+      duration: duration,
     );
-    _videoInfos.add(videoInformation);
+    _videoDetails.add(videoDetail);
   }
 
-  // Check if the video is rotated and returns the video width and height based
-  // on the rotation.
+  /// Checks if the video is rotated and returns the video width and height
+  /// based on the rotation.
   ({int? height, int? width}) _getResolutionBasedOnRotation(
     StreamInformation? videoStream,
   ) {
@@ -102,54 +124,66 @@ final class FFmpegService {
     }
   }
 
+  /// Returns the duration of the video in milliseconds.
+  int? _getDuration(MediaInformationSession session) {
+    final stringDuration = session.getMediaInformation()?.getDuration();
+    if (stringDuration == null) return null;
+
+    final durationInSeconds = double.tryParse(stringDuration);
+    if (durationInSeconds == null) return null;
+
+    final durationInMilliseconds = (durationInSeconds * 1000).toInt();
+    return durationInMilliseconds;
+  }
+
   /// Analyses the videos to determine if re-encoding is required.
   void _analyseVideos() {
     // Checks if resolution is the same on all videos.
-    _isResolutionSameOnAll = _videoInfos.every(
-      (videoInformation) {
-        if (videoInformation.width == null || videoInformation.height == null) {
+    _isResolutionSameOnAll = _videoDetails.every(
+      (videoDetail) {
+        if (videoDetail.width == null || videoDetail.height == null) {
           return false;
         }
 
-        return videoInformation.width == _videoInfos.first.width &&
-            videoInformation.height == _videoInfos.first.height;
+        return videoDetail.width == _videoDetails.first.width &&
+            videoDetail.height == _videoDetails.first.height;
       },
     );
 
     // Checks if format is the same on all videos.
-    _isFormatSameOnAll = _videoInfos.every(
+    _isFormatSameOnAll = _videoDetails.every(
       (videoInformation) {
         if (videoInformation.format == null) return false;
 
-        return videoInformation.format == _videoInfos.first.format;
+        return videoInformation.format == _videoDetails.first.format;
       },
     );
 
     // Checks if codec is the same on all videos.
-    _isCodecSameOnAll = _videoInfos.every(
+    _isCodecSameOnAll = _videoDetails.every(
       (videoInformation) {
         if (videoInformation.codec == null) return false;
 
-        return videoInformation.codec == _videoInfos.first.codec;
+        return videoInformation.codec == _videoDetails.first.codec;
       },
     );
 
     // Checks if frame rate is the same on all videos.
-    _isFrameRateSameOnAll = _videoInfos.every(
+    _isFrameRateSameOnAll = _videoDetails.every(
       (videoInformation) {
         if (videoInformation.frameRate == null) return false;
 
-        return videoInformation.frameRate == _videoInfos.first.frameRate;
+        return videoInformation.frameRate == _videoDetails.first.frameRate;
       },
     );
 
     // Checks if audio is same on all videos.
-    _isAudioSameOnAll = _videoInfos.every(
+    _isAudioSameOnAll = _videoDetails.every(
       (videoInformation) {
         final isAudioSampleRateSame = videoInformation.audioSampleRate ==
-            _videoInfos.first.audioSampleRate;
+            _videoDetails.first.audioSampleRate;
         final isAudioChannelLayoutSame = videoInformation.audioChannelLayout ==
-            _videoInfos.first.audioChannelLayout;
+            _videoDetails.first.audioChannelLayout;
 
         return videoInformation.hasAudio &&
             isAudioSampleRateSame &&
@@ -172,45 +206,47 @@ final class FFmpegService {
         !_isAudioSameOnAll!;
   }
 
+  /// Merges the videos.
+  ///
+  /// Throws [FFmpegServiceNotInitialisedException] if the FFmpeg service is not
+  /// initialised.
+  ///
+  /// Throws [FFmpegServiceInsufficientVideosException] if there are less than 2
+  /// videos to merge.
+  ///
+  /// Throws [FFmpegServiceMergeException] if the FFmpeg service fails to merge
+  /// the videos.
   Future<void> mergeVideos({required String outputDir}) async {
     if (_isReencodingRequired == null || _isAudioSameOnAll == null) {
-      throw Exception('Videos are not initialised yet');
+      throw const FFmpegServiceNotInitialisedException();
     }
 
-    if (_videoInfos.length < 2) {
-      throw Exception('At least two videos are required to merge');
+    if (_videoDetails.length < 2) {
+      throw const FFmpegServiceInsufficientVideosException();
     }
 
     final command = await _createCommand(outputDir);
 
     await _enableLogOnDebug();
 
-    final session = await FFmpegKit.execute(command);
-
-    final sessionId = session.getSessionId();
-
-    final state = FFmpegKitConfig.sessionStateToString(
-      await session.getState(),
-    );
-    final returnCode = await session.getReturnCode();
-    final failStackTrace = await session.getFailStackTrace();
-
-    if (ReturnCode.isCancel(returnCode)) {
-      print('cancelled');
-    } else {
-      print('done');
-      final result = await ImageGallerySaver.saveFile(outputDir);
-      print(result);
+    try {
+      final session = await FFmpegKit.execute(command);
+      final returnCode = await session.getReturnCode();
+      final isSuccess = returnCode?.isValueSuccess() ?? false;
+      if (!isSuccess) throw Exception('Failed to merge videos');
+    } catch (_) {
+      throw const FFmpegServiceMergeException();
+    } finally {
+      _dispose();
     }
-
-    _dispose();
   }
 
+  /// Creates the FFmpeg command to merge the videos.
   Future<String> _createCommand(String outputDir) async {
     final command = StringBuffer('-y ');
 
     if (_isReencodingRequired!) {
-      for (final videoInformation in _videoInfos) {
+      for (final videoInformation in _videoDetails) {
         command.write('-i "${videoInformation.directory}" ');
       }
 
@@ -220,12 +256,12 @@ final class FFmpegService {
 
       command.write('-filter_complex "');
 
-      final width = _videoInfos.first.width;
-      final height = _videoInfos.first.height;
+      final width = _videoDetails.first.width;
+      final height = _videoDetails.first.height;
       final scale = _isResolutionSameOnAll! ? '' : 'scale=$width:$height,';
       final fps = _isFrameRateSameOnAll! ? '' : 'fps=30,';
 
-      for (var i = 0; i < _videoInfos.length; i++) {
+      for (var i = 0; i < _videoDetails.length; i++) {
         command.write('[$i:v:0]$scale${fps}setsar=1[v$i]; ');
       }
 
@@ -233,20 +269,20 @@ final class FFmpegService {
           'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
           ',aresample=48000:first_pts=0';
 
-      for (var i = 0; i < _videoInfos.length; i++) {
-        if (_videoInfos[i].hasAudio) {
+      for (var i = 0; i < _videoDetails.length; i++) {
+        if (_videoDetails[i].hasAudio) {
           command.write('[$i:a:0]$audio[a$i]; ');
         } else {
-          command.write('[${_videoInfos.length}:a]$audio[a$i]; ');
+          command.write('[${_videoDetails.length}:a]$audio[a$i]; ');
         }
       }
 
-      for (var i = 0; i < _videoInfos.length; i++) {
+      for (var i = 0; i < _videoDetails.length; i++) {
         command.write('[v$i][a$i] ');
       }
 
       command
-        ..write('concat=n=${_videoInfos.length}:v=1:a=1[outv][outa]" ')
+        ..write('concat=n=${_videoDetails.length}:v=1:a=1[outv][outa]" ')
         ..write('-map "[outv]" -map "[outa]" ')
         ..write('-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuvj420p ');
 
@@ -260,7 +296,7 @@ final class FFmpegService {
       final inputsDir = path.join(dirname, 'inputs.txt');
       final inputsFile = File(inputsDir);
       await inputsFile.writeAsString(
-        _videoInfos
+        _videoDetails
             .map((videoInformation) => "file '${videoInformation.directory}'")
             .join('\n'),
         mode: FileMode.writeOnly,
@@ -276,28 +312,84 @@ final class FFmpegService {
     return command.toString();
   }
 
-  Future<void> _enableStatistics() async {
-    await FFmpegKitConfig.enableStatistics();
+  /// Enables progress callback to allow the consumer of this service to get the
+  /// progress of the FFmpeg command.
+  Future<void> enableProgressCallback(ProgressCallback callback) async {
+    // Calculates the total duration of all videos.
+    final totalDuration = _videoDetails.fold<int>(
+      0,
+      (previousValue, videoInfo) {
+        return previousValue + (videoInfo.duration ?? 0);
+      },
+    );
 
-    FFmpegKitConfig.enableStatisticsCallback((statistics) {
-      debugPrint(statistics.toString());
-    });
+    try {
+      await FFmpegKitConfig.enableStatistics();
+
+      FFmpegKitConfig.enableStatisticsCallback((statistics) {
+        final percentage = _calculateProgress(statistics, totalDuration);
+        callback(percentage);
+      });
+    } catch (error, stackTrace) {
+      log(
+        'Could not enable statistics!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
+  /// Disables the progress callback.
+  Future<void> disableProgressCallback() async {
+    try {
+      await FFmpegKitConfig.disableStatistics();
+    } catch (error, stackTrace) {
+      log(
+        'Could not disable statistics!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  /// Calculates the progress percentage of the FFmpeg command.
+  double _calculateProgress(Statistics? statistics, int totalDuration) {
+    if (statistics == null) return 0;
+
+    // The current time in the execution.
+    final currentTime = statistics.getTime();
+
+    // Calculates the progress percentage.
+    final progress = (currentTime / totalDuration) * 100;
+
+    return progress;
+  }
+
+  /// Enables logs and log callback for debugging purposes.
   Future<void> _enableLogOnDebug() async {
     if (!kDebugMode) return;
 
-    await FFmpegKitConfig.enableLogs();
+    try {
+      await FFmpegKitConfig.enableLogs();
 
-    FFmpegKitConfig.enableLogCallback();
-
-    FFmpegKitConfig.enableLogCallback((log) {
-      debugPrint(log.getMessage());
-    });
+      FFmpegKitConfig.enableLogCallback((ffmpegLog) {
+        log(ffmpegLog.getMessage());
+      });
+    } catch (error, stackTrace) {
+      log(
+        'Could not enable logs!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
   }
 
+  /// Disposes the resources.
   void _dispose() {
-    _videoInfos.clear();
+    _videoDetails.clear();
     _isResolutionSameOnAll = null;
     _isFormatSameOnAll = null;
     _isCodecSameOnAll = null;

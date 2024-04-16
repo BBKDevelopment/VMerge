@@ -10,7 +10,6 @@ final class DarkAppTheme implements AppTheme {
   /// {@macro dark_app_theme}
   DarkAppTheme(Color mainColor)
       : data = ThemeData(
-          useMaterial3: true,
           fontFamily: FontFamily.robotoMono,
           brightness: Brightness.dark,
           colorSchemeSeed: mainColor,

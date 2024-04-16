@@ -37,12 +37,12 @@ class _SelectedVideoList extends StatelessWidget {
                 scrollDirection: Axis.horizontal,
                 padding: EdgeInsets.zero,
                 shrinkWrap: true,
-                itemCount: state.metadatas.length,
+                itemCount: state.videoMetadatas.length,
                 itemBuilder: (_, index) {
                   return _VideoThumbnail(
                     animation: animation,
                     index: index,
-                    metadata: state.metadatas[index],
+                    metadata: state.videoMetadatas[index],
                   );
                 },
                 separatorBuilder: (_, __) {

@@ -5,13 +5,24 @@
 import 'package:equatable/equatable.dart';
 
 final class AppNavigationBarState extends Equatable {
-  const AppNavigationBarState({required this.page, this.arguments});
+  const AppNavigationBarState({
+    required this.page,
+    this.args,
+    this.isSafeToNavigate = true,
+  });
 
   final NavigationBarPage page;
-  final Object? arguments;
+  final Object? args;
+  final bool isSafeToNavigate;
 
   @override
-  List<Object?> get props => [page];
+  String toString() {
+    return 'AppNavigationBarState(page: $page, args: $args, isSafeToNavigate: '
+        '$isSafeToNavigate)';
+  }
+
+  @override
+  List<Object?> get props => [page, args, isSafeToNavigate];
 }
 
 enum NavigationBarPage {

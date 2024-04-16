@@ -14,66 +14,60 @@ final class MergePageInitial extends MergePageState {
   const MergePageInitial();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class MergePageLoading extends MergePageState {
   const MergePageLoading();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 final class MergePageLoaded extends MergePageState {
   const MergePageLoaded({
-    required this.metadatas,
+    required this.videoMetadatas,
     required this.activeVideoIndex,
     required this.videoPlayerController,
     required this.videoHeight,
     required this.videoWidth,
     required this.isVideoPlaying,
-    required this.saveModalBottomSheetStatus,
   });
 
-  final List<VideoMetadata> metadatas;
+  final List<VideoMetadata> videoMetadatas;
   final ActiveVideoIndex activeVideoIndex;
   final VideoPlayerController videoPlayerController;
   final double videoWidth;
   final double videoHeight;
   final bool isVideoPlaying;
-  final SaveModalBottomSheetStatus saveModalBottomSheetStatus;
 
   MergePageLoaded copyWith({
-    List<VideoMetadata>? metadatas,
+    List<VideoMetadata>? videoMetadatas,
     ActiveVideoIndex? activeVideoIndex,
     VideoPlayerController? videoPlayerController,
     double? videoWidth,
     double? videoHeight,
     bool? isVideoPlaying,
-    SaveModalBottomSheetStatus? saveModalBottomSheetStatus,
   }) {
     return MergePageLoaded(
-      metadatas: metadatas ?? this.metadatas,
+      videoMetadatas: videoMetadatas ?? this.videoMetadatas,
       activeVideoIndex: activeVideoIndex ?? this.activeVideoIndex,
       videoPlayerController:
           videoPlayerController ?? this.videoPlayerController,
       videoWidth: videoWidth ?? this.videoWidth,
       videoHeight: videoHeight ?? this.videoHeight,
       isVideoPlaying: isVideoPlaying ?? this.isVideoPlaying,
-      saveModalBottomSheetStatus:
-          saveModalBottomSheetStatus ?? this.saveModalBottomSheetStatus,
     );
   }
 
   @override
-  List<Object> get props => [
-        metadatas,
+  List<Object?> get props => [
+        videoMetadatas,
         activeVideoIndex,
         videoPlayerController,
         videoWidth,
         videoHeight,
         isVideoPlaying,
-        saveModalBottomSheetStatus,
       ];
 }
 
@@ -81,17 +75,10 @@ final class MergePageError extends MergePageState {
   const MergePageError();
 
   @override
-  List<Object> get props => [];
+  List<Object?> get props => [];
 }
 
 enum ActiveVideoIndex {
   one,
   two,
-}
-
-enum SaveModalBottomSheetStatus {
-  idle,
-  saving,
-  saved,
-  error,
 }

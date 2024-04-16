@@ -2,6 +2,11 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'dart:developer';
+import 'dart:io';
+
+import 'package:android_intent_plus/android_intent.dart';
+import 'package:android_intent_plus/flag.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -41,6 +46,9 @@ class MergePage extends StatelessWidget {
             saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
           )..init(),
         ),
+        BlocProvider(
+          create: (_) => SaveBottomSheetCubit(),
+        ),
       ],
       child: const _MergeView(),
     );
@@ -72,8 +80,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _animationController.forward();
 
-      final videoMetadatas =
-          context.read<AppNavigationBarCubit>().state.arguments;
+      final videoMetadatas = context.read<AppNavigationBarCubit>().state.args;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 

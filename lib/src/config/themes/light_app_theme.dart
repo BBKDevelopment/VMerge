@@ -10,7 +10,6 @@ final class LightAppTheme implements AppTheme {
   /// {@macro light_app_theme}
   LightAppTheme(Color mainColor)
       : data = ThemeData(
-          useMaterial3: true,
           fontFamily: FontFamily.robotoMono,
           brightness: Brightness.light,
           colorSchemeSeed: mainColor,

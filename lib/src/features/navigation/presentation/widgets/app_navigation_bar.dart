@@ -4,6 +4,7 @@
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:vmerge/src/core/core.dart';
@@ -11,6 +12,8 @@ import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/src/features/preview_video/preview_video.dart';
+
+part 'navigation_confirm_dialog.dart';
 
 class AppNavigationBar extends StatelessWidget {
   const AppNavigationBar({super.key});
@@ -54,93 +57,54 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final bottomNavigationBarColor = context.colorScheme.secondaryContainer;
 
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        onPageChanged: (index) async {
-          final page = NavigationBarPage.values[index];
-          context.read<AppNavigationBarCubit>().updatePage(page);
-
-          switch (page) {
-            case NavigationBarPage.previewVideo:
-              break;
-            case NavigationBarPage.merge:
-              break;
-            case NavigationBarPage.more:
-              break;
-          }
-
-          // if (index == 1) {
-          //   _editPageController.getAnimationController.duration =
-          //       kEditPageInAnimationDuration;
-          //   await _editPageController.getAnimationController.forward();
-          //   if (_homePageController.getVideoList.length == 2) {
-          //     _editPageController
-          //         .updateAssets(_homePageController.getVideoList);
-          //   }
-          // }
-          // if (index == 2) {
-          //   _morePageController.getBeginList.clear();
-          //   _morePageController.getEndList.clear();
-          //   _morePageController.getAnimationController.duration =
-          //       kMorePageInAnimationDuration;
-          //   await _morePageController.getAnimationController.forward();
-          // }
-        },
-        children: const [
-          PreviewVideoPage(),
-          MergePage(),
-          MorePage(),
-        ],
+    return AnnotatedRegion(
+      value: SystemUiOverlayStyle(
+        systemNavigationBarColor: bottomNavigationBarColor,
+        systemNavigationBarIconBrightness: context.theme.brightness,
       ),
-      bottomNavigationBar: Container(
-        padding: AppPadding.horizontalMedium,
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(
-              color: context.theme.dividerColor,
-            ),
-          ),
+      child: Scaffold(
+        body: PageView(
+          controller: _pageController,
+          physics: const NeverScrollableScrollPhysics(),
+          children: const [
+            PreviewVideoPage(),
+            MergePage(),
+            MorePage(),
+          ],
         ),
-        child: BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
-          listener: (context, state) async {
+        bottomNavigationBar:
+            BlocConsumer<AppNavigationBarCubit, AppNavigationBarState>(
+          listener: (context, state) {
             _pageController.jumpToPage(state.page.index);
-
-            switch (state.page) {
-              case NavigationBarPage.previewVideo:
-                break;
-              case NavigationBarPage.merge:
-                break;
-              case NavigationBarPage.more:
-                break;
-            }
           },
           builder: (context, state) {
             return BottomNavyBar(
               selectedIndex: state.page.index,
-              backgroundColor: context.theme.scaffoldBackgroundColor,
+              backgroundColor: bottomNavigationBarColor,
               showElevation: false,
               onItemSelected: (index) async {
-                _pageController.jumpToPage(index);
-                // if (_bottomBarController.currentIndex == 1 && index != 1) {
-                //   _editPageController.getAnimationController.duration =
-                //       kEditPageOutAnimationDuration;
-                //   await _editPageController.getAnimationController.reverse();
-                // }
-                // if (_bottomBarController.currentIndex == 2 && index != 2) {
-                //   _morePageController.getAnimationController.duration =
-                //       kMorePageOutAnimationDuration;
-                //   await _morePageController.getAnimationController.reverse();
-                // }
-                // _bottomBarController.updateCurrentIndex(index);
-                // _bottomBarController.pageController.jumpToPage(index);
+                if (!state.isSafeToNavigate) {
+                  final canNavigate = await showDialog<bool>(
+                    context: context,
+                    builder: (_) => const _NavigationConfirmDialog(),
+                  );
+
+                  if (canNavigate == null || !canNavigate) return;
+                }
+
+                if (!context.mounted) return;
+                final page = NavigationBarPage.values[index];
+                context.read<AppNavigationBarCubit>().updatePage(page);
               },
               items: [
                 BottomNavyBarItem(
                   activeColor: context.colorScheme.secondary,
-                  title: Text(l10n.video, style: context.textTheme.titleMedium),
+                  title: Text(
+                    l10n.video,
+                    style: context.textTheme.titleMedium,
+                  ),
                   textAlign: TextAlign.center,
                   icon: Assets.images.video.svg(
                     height: AppIconSize.medium,

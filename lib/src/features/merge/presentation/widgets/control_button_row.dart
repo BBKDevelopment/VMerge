@@ -12,37 +12,58 @@ class _ControlButtonRow extends StatelessWidget {
 
     context.read<MergePageCubit>().stopVideo();
 
+    // `showModalBottomSheet` is not used here since it does not support `Hero`
+    // animations. Please see: https://github.com/flutter/flutter/issues/48467
     showCupertinoModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
-      topRadius: Radius.zero,
-      builder: (_) => MultiBlocProvider(
-        providers: [
-          BlocProvider.value(
-            value: BlocProvider.of<MergePageCubit>(context),
+      topRadius: const Radius.circular(AppBorderRadius.xxxLarge),
+      builder: (_) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider.value(
+              value: BlocProvider.of<MergePageCubit>(context),
+            ),
+            BlocProvider.value(
+              value: BlocProvider.of<SettingsBottomSheetCubit>(context),
+            ),
+          ],
+          // Default `showModalBottomSheet` and dialogs use
+          // `dialogBackgroundColor` and `surfaceTintColor`, so `Card` is
+          // used here to match the design because it uses the same colors.
+          child: const Card(
+            margin: EdgeInsets.zero,
+            shape: ContinuousRectangleBorder(),
+            child: _SettingsBottomSheet(),
           ),
-          BlocProvider.value(
-            value: BlocProvider.of<SettingsBottomSheetCubit>(context),
-          ),
-        ],
-        child: const Material(child: _SettingsBottomSheet()),
-      ),
+        );
+      },
     );
   }
 
   void _onTapSaveVideo(BuildContext context) {
-    if (context.read<MergePageCubit>().state is! MergePageLoaded) return;
+    final mergePageState = context.read<MergePageCubit>().state;
+    if (mergePageState is! MergePageLoaded) return;
 
     context.read<MergePageCubit>().stopVideo();
-    // context.read<MergeCubit>().mergeVideos();
 
+    // `showModalBottomSheet` is not used here since it does not support `Hero`
+    // animations. Please see: https://github.com/flutter/flutter/issues/48467
     showCupertinoModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
-      topRadius: Radius.zero,
+      topRadius: const Radius.circular(AppBorderRadius.xxxLarge),
       builder: (_) => BlocProvider.value(
-        value: BlocProvider.of<MergePageCubit>(context),
-        child: const Material(child: _SaveBottomSheet()),
+        value: BlocProvider.of<SaveBottomSheetCubit>(context)
+          ..init(mergePageState.videoMetadatas),
+        // Default `showModalBottomSheet` and dialogs use
+        // `dialogBackgroundColor` and `surfaceTintColor`, so `Card` is used
+        // here to match the design because it uses the same colors.
+        child: const Card(
+          margin: EdgeInsets.zero,
+          shape: ContinuousRectangleBorder(),
+          child: _SaveBottomSheet(),
+        ),
       ),
     );
   }

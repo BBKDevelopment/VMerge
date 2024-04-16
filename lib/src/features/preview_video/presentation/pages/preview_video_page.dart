@@ -3,6 +3,7 @@
 // in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/components.dart';
@@ -61,7 +62,19 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
         pickerConfig: AssetPickerConfig(
           maxAssets: 4,
           requestType: RequestType.video,
-          pickerTheme: context.theme,
+          specialPickerType: SpecialPickerType.noPreview,
+          pickerTheme: context.theme.copyWith(
+            appBarTheme: context.theme.appBarTheme.copyWith(
+              systemOverlayStyle: SystemUiOverlayStyle(
+                systemNavigationBarColor:
+                    context.colorScheme.secondaryContainer,
+                systemNavigationBarIconBrightness: context.theme.brightness,
+              ),
+            ),
+            bottomAppBarTheme: context.theme.bottomAppBarTheme.copyWith(
+              color: context.colorScheme.secondaryContainer,
+            ),
+          ),
           textDelegate: _getAssetPickerTextDelegateFromLocale(
             Localizations.localeOf(context),
           ),
@@ -71,7 +84,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
       assets = null;
     }
 
-    if (!context.mounted) return;
+    if (!mounted) return;
 
     await context.read<PreviewVideoCubit>().updateVideos(assets);
   }
@@ -102,7 +115,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
               case PreviewVideoLoaded():
                 context.read<AppNavigationBarCubit>().updatePage(
                       NavigationBarPage.merge,
-                      arguments: state.metadataList,
+                      args: state.metadataList,
                     );
               case PreviewVideoError():
                 WidgetsBinding.instance.addPostFrameCallback(
