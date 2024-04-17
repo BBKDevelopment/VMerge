@@ -13,7 +13,6 @@ import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
-import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/copyright_text.dart';
 part '../widgets/more_page_option.dart';

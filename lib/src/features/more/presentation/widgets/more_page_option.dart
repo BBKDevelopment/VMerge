@@ -66,7 +66,7 @@ class _MorePageOption extends StatelessWidget {
         });
       case MorePageOption.termsAndConditions:
         getIt<UrlLauncherService>()
-            .launch(url: Uri(path: kTermsAndConditions))
+            .launch(url: Uri(path: AppUrl.termsAndConditions))
             .onError<UrlLaunchException>((error, stackTrace) {
           context.read<ErrorCubit>().catched(
                 message:
@@ -77,7 +77,7 @@ class _MorePageOption extends StatelessWidget {
         });
       case MorePageOption.privacyPolicy:
         getIt<UrlLauncherService>()
-            .launch(url: Uri(path: kPrivacyPolicy))
+            .launch(url: Uri(path: AppUrl.privacyPolicy))
             .onError<UrlLaunchException>((error, stackTrace) {
           context.read<ErrorCubit>().catched(
                 message:

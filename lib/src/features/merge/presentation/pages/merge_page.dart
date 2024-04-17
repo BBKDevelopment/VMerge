@@ -17,7 +17,6 @@ import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/control_button_row.dart';
 part '../widgets/save_bottom_sheet.dart';

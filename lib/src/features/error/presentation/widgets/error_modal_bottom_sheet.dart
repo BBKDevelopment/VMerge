@@ -40,12 +40,7 @@ class _ErrorModalBottomSheet extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(width: 28),
-                    SvgPicture.asset(
-                      kErrorIconPath,
-                      colorFilter: ColorFilter.mode(
-                        Theme.of(context).iconTheme.color!,
-                        BlendMode.srcIn,
-                      ),
+                    Assets.images.error.svg(
                       width: MediaQuery.of(context).size.height * 0.1,
                       height: MediaQuery.of(context).size.height * 0.1,
                     ),
@@ -54,12 +49,7 @@ class _ErrorModalBottomSheet extends StatelessWidget {
                       overlayColor:
                           MaterialStateProperty.all(Colors.transparent),
                       highlightColor: Colors.transparent,
-                      child: SvgPicture.asset(
-                        kCloseIconPath,
-                        colorFilter: ColorFilter.mode(
-                          Theme.of(context).iconTheme.color!,
-                          BlendMode.srcIn,
-                        ),
+                      child: Assets.images.close.svg(
                         width: 28,
                         height: 28,
                       ),

@@ -4,4 +4,5 @@
 
 export 'app_color_ext.dart';
 export 'build_context_ext.dart';
+export 'duration_ext.dart';
 export 'theme_mode_ext.dart';

@@ -5,8 +5,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
-import 'package:vmerge/utilities/utilities.dart';
 
 part 'error_modal_bottom_sheet.dart';
 
