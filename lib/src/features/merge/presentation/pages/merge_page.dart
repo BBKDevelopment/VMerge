@@ -13,7 +13,6 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
-import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
