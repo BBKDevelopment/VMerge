@@ -2,6 +2,5 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
-export 'cubit/preview_video_cubit.dart';
-export 'cubit/preview_video_state.dart';
-export 'pages/preview_video_page.dart';
+export 'cubits/cubits.dart';
+export 'pages/video_select_page.dart';

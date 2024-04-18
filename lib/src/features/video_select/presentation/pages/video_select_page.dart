@@ -8,16 +8,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview_video/preview_video.dart';
+import 'package:vmerge/src/features/video_select/video_select.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
-class PreviewVideoPage extends StatelessWidget {
-  const PreviewVideoPage({super.key});
+class VideoSelectPage extends StatelessWidget {
+  const VideoSelectPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider<PreviewVideoCubit>(
-      create: (_) => PreviewVideoCubit(const PreviewVideoLoading()),
+    return BlocProvider<VideoSelectPageCubit>(
+      create: (_) => VideoSelectPageCubit(const VideoSelectPageLoading()),
       child: const _PreviewVideoView(),
     );
   }
@@ -85,7 +85,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
 
     if (!mounted) return;
 
-    await context.read<PreviewVideoCubit>().updateVideos(assets);
+    await context.read<VideoSelectPageCubit>().updateVideos(assets);
   }
 
   AssetPickerTextDelegate _getAssetPickerTextDelegateFromLocale(Locale locale) {
@@ -105,18 +105,18 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
       appBar: CustomAppBar(title: context.l10n.appName),
       body: Padding(
         padding: AppPadding.general,
-        child: BlocConsumer<PreviewVideoCubit, PreviewVideoState>(
+        child: BlocConsumer<VideoSelectPageCubit, VideoSelectPageState>(
           listener: (context, state) {
             switch (state) {
-              case PreviewVideoLoading():
+              case VideoSelectPageLoading():
                 _openAssetPicker();
                 _animationController.reset();
-              case PreviewVideoLoaded():
+              case VideoSelectPageLoaded():
                 context.read<AppNavigationBarCubit>().updatePage(
                       NavigationBarPage.merge,
                       args: state.metadataList,
                     );
-              case PreviewVideoError():
+              case VideoSelectPageError():
                 WidgetsBinding.instance.addPostFrameCallback(
                   (_) => _animationController.forward(),
                 );
@@ -124,7 +124,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
           },
           builder: (context, state) {
             return switch (state) {
-              PreviewVideoLoading() => Center(
+              VideoSelectPageLoading() => Center(
                   child: SizedBox.square(
                     dimension: context.screenWidth / 4 / 3,
                     child: CircularProgressIndicator(
@@ -134,8 +134,8 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                     ),
                   ),
                 ),
-              PreviewVideoLoaded() => const SizedBox.shrink(),
-              PreviewVideoError() => AnimatedBuilder(
+              VideoSelectPageLoaded() => const SizedBox.shrink(),
+              VideoSelectPageError() => AnimatedBuilder(
                   animation: _animation,
                   builder: (context, child) {
                     return FadeTransition(
@@ -166,7 +166,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                     );
                   },
                   child: NoVideoWarning(
-                    onPressed: context.read<PreviewVideoCubit>().resetVideos,
+                    onPressed: context.read<VideoSelectPageCubit>().resetVideos,
                   ),
                 ),
             };
