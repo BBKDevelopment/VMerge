@@ -27,7 +27,7 @@ class AnimatedControlButton extends StatefulWidget {
 
 class _AnimatedControlButtonState extends State<AnimatedControlButton>
     with TickerProviderStateMixin {
-  late final AnimationController _animatedIconcontroller;
+  late final AnimationController _animatedIconController;
   late final AnimationController _animationController;
   late final Animation<double> _scaleAnimation;
   late final Animation<double> _fadeAnimation;
@@ -35,7 +35,7 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
   @override
   void initState() {
     super.initState();
-    _animatedIconcontroller = AnimationController(
+    _animatedIconController = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
@@ -52,7 +52,7 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
 
   @override
   void dispose() {
-    _animatedIconcontroller.dispose();
+    _animatedIconController.dispose();
     _animationController.dispose();
     super.dispose();
   }
@@ -62,7 +62,7 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
       if (!mounted) return;
 
       await Future.wait([
-        _animatedIconcontroller.forward(),
+        _animatedIconController.forward(),
         _animationController.forward(from: 0),
       ]);
     };
@@ -71,7 +71,7 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
       if (!mounted) return;
 
       await Future.wait([
-        _animatedIconcontroller.reverse(),
+        _animatedIconController.reverse(),
         _animationController.forward(from: 0),
       ]);
     };
@@ -109,7 +109,7 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
           child: AnimatedIcon(
             icon: AnimatedIcons.play_pause,
             color: Theme.of(context).colorScheme.onSecondaryContainer,
-            progress: _animatedIconcontroller,
+            progress: _animatedIconController,
             size: widget.size * 2,
           ),
         ),
