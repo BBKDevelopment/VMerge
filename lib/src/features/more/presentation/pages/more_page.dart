@@ -61,8 +61,10 @@ class _MoreViewState extends State<_MoreView>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      appBar: CustomAppBar(title: context.l10n.appName),
+      appBar: CustomAppBar(title: l10n.appName),
       body: Padding(
         padding: AppPadding.general,
         child: Column(

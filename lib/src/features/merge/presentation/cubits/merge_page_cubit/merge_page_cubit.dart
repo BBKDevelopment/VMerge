@@ -70,8 +70,8 @@ final class MergePageCubit extends Cubit<MergePageState> {
         }
       };
 
-  Future<void> loadVideoMetadata(List<VideoMetadata> metadataList) async {
-    if (metadataList.length != 2) {
+  Future<void> loadVideoMetadata(List<VideoMetadata> metadatas) async {
+    if (metadatas.length != 2) {
       emit(const MergePageError());
       return;
     }
@@ -80,8 +80,8 @@ final class MergePageCubit extends Cubit<MergePageState> {
 
     try {
       await Future.wait([
-        _firstVideoPlayerService.loadFile(metadataList.first.file!),
-        _secondVideoPlayerService.loadFile(metadataList.last.file!),
+        _firstVideoPlayerService.loadFile(metadatas.first.file!),
+        _secondVideoPlayerService.loadFile(metadatas.last.file!),
       ]);
 
       if (_firstVideoPlayerService.controller == null ||
@@ -91,7 +91,7 @@ final class MergePageCubit extends Cubit<MergePageState> {
 
       emit(
         MergePageLoaded(
-          videoMetadatas: metadataList,
+          videoMetadatas: metadatas,
           activeVideoIndex: ActiveVideoIndex.one,
           videoPlayerController: _firstVideoPlayerService.controller!,
           videoHeight: _firstVideoPlayerService.height,
@@ -214,9 +214,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
           );
 
           emit(const MergePageError());
-
-          // Restores last success state.
-          emit(state);
         } on SeekVideoPositionException catch (error, stackTrace) {
           log(
             'Could not reset the video!',
@@ -233,8 +230,7 @@ final class MergePageCubit extends Cubit<MergePageState> {
               videoWidth: _firstVideoPlayerService.width,
             ),
           );
-
-          // Restores last success state.
+        } finally {
           emit(state);
         }
       default:
