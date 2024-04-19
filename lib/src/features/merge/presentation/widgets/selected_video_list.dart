@@ -10,6 +10,13 @@ class _SelectedVideoList extends StatelessWidget {
     return SizedBox(
       height: context.screenWidth / 4,
       child: BlocBuilder<MergePageCubit, MergePageState>(
+        buildWhen: (previous, current) {
+          if (previous is MergePageLoaded && current is MergePageLoaded) {
+            return false;
+          }
+
+          return true;
+        },
         builder: (context, state) {
           switch (state) {
             case MergePageInitial():

@@ -47,7 +47,6 @@ class _VideoPlayer extends StatelessWidget {
       },
       child: BlocBuilder<MergePageCubit, MergePageState>(
         buildWhen: (previous, current) {
-          if (current is MergePageError) return false;
           if (previous is MergePageLoaded && current is MergePageLoaded) {
             return previous.isVideoPlaying != current.isVideoPlaying ||
                 previous.videoPlayerController != current.videoPlayerController;
