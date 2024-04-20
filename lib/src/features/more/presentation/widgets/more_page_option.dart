@@ -40,11 +40,11 @@ class _MorePageOption extends StatelessWidget {
         getIt<LaunchReviewService>()
             .launch()
             .onError<LaunchReviewException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch review service! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.contactUs:
@@ -57,33 +57,33 @@ class _MorePageOption extends StatelessWidget {
           ),
         )
             .onError<SendEmailException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch email service! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.termsAndConditions:
         getIt<UrlLauncherService>()
             .launch(url: Uri(path: AppUrl.termsAndConditions))
             .onError<UrlLaunchException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch url! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.privacyPolicy:
         getIt<UrlLauncherService>()
             .launch(url: Uri(path: AppUrl.privacyPolicy))
             .onError<UrlLaunchException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch url! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.licenses:

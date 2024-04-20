@@ -49,7 +49,7 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
                 dimension: AppButtonSize.small,
                 child: IconButton.filledTonal(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    context.pop();
                   },
                   icon: Assets.images.close.svg(
                     height: AppIconSize.xxSmall,

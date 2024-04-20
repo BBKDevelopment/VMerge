@@ -40,7 +40,7 @@ class _SettingsBottomSheet extends StatelessWidget {
                   SizedBox.square(
                     dimension: AppButtonSize.small,
                     child: IconButton.filledTonal(
-                      onPressed: Navigator.of(context).pop,
+                      onPressed: context.pop,
                       icon: Assets.images.close.svg(
                         height: AppIconSize.xxSmall,
                         colorFilter: ColorFilter.mode(
@@ -52,22 +52,38 @@ class _SettingsBottomSheet extends StatelessWidget {
                   ),
                 ],
               ),
-              const SizedBox(height: AppPadding.medium),
+              const SizedBox(
+                height: AppPadding.medium,
+              ),
               Text(
                 context.l10n.settings,
                 style: context.textTheme.titleLarge,
               ),
-              const SizedBox(height: AppPadding.xxLarge),
-              _SoundSelector(isSoundOn: state.isSoundOn),
-              const Divider(height: AppPadding.large),
-              _ResolutionSelector(state.videoResolution),
-              const SizedBox(height: AppPadding.large),
+              const SizedBox(
+                height: AppPadding.xxLarge,
+              ),
+              _SoundSelector(
+                isSoundOn: state.isSoundOn,
+              ),
+              const Divider(
+                height: AppPadding.large,
+              ),
+              _ResolutionSelector(
+                state.videoResolution,
+              ),
+              const SizedBox(
+                height: AppPadding.large,
+              ),
               _AspectRatioSelector(
                 state.videoAspectRatio,
                 state.videoResolution,
               ),
-              const Divider(height: AppPadding.large),
-              _SpeedSelector(state.playbackSpeed),
+              const Divider(
+                height: AppPadding.large,
+              ),
+              _SpeedSelector(
+                state.playbackSpeed,
+              ),
             ],
           );
         },

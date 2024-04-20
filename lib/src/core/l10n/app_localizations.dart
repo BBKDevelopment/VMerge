@@ -146,6 +146,12 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
   /// No description provided for @contactUs.
   ///
   /// In en, this message translates to:
@@ -187,6 +193,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The video has been successfully saved to your device!'**
   String get doneMessage;
+
+  /// No description provided for @exceptionDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception Detail'**
+  String get exceptionDetail;
 
   /// No description provided for @error.
   ///

@@ -34,6 +34,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get close => 'Close';
+
+  @override
   String get contactUs => 'Contact Us';
 
   @override
@@ -54,6 +57,9 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get doneMessage =>
       'The video has been successfully saved to your device!';
+
+  @override
+  String get exceptionDetail => 'Exception Detail';
 
   @override
   String get error => 'Error';

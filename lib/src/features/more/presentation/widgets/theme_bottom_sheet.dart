@@ -28,7 +28,7 @@ class _ThemeBottomSheet extends StatelessWidget {
               SizedBox.square(
                 dimension: AppButtonSize.small,
                 child: IconButton.filledTonal(
-                  onPressed: Navigator.of(context).pop,
+                  onPressed: context.pop,
                   icon: Assets.images.close.svg(
                     height: AppIconSize.xxSmall,
                     colorFilter: ColorFilter.mode(
@@ -40,14 +40,20 @@ class _ThemeBottomSheet extends StatelessWidget {
               ),
             ],
           ),
-          const SizedBox(height: AppPadding.medium),
+          const SizedBox(
+            height: AppPadding.medium,
+          ),
           Text(
             context.l10n.theme,
             style: context.textTheme.titleLarge,
           ),
-          const SizedBox(height: AppPadding.xxLarge),
+          const SizedBox(
+            height: AppPadding.xxLarge,
+          ),
           const _ModeSelector(),
-          const Divider(height: AppPadding.large),
+          const Divider(
+            height: AppPadding.large,
+          ),
           const _MainColorSelector(),
         ],
       ),

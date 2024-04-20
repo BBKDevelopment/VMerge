@@ -6,17 +6,17 @@ import 'package:bloc/bloc.dart';
 import 'package:vmerge/src/features/error/error.dart';
 
 final class ErrorCubit extends Cubit<ErrorState> {
-  ErrorCubit() : super(const ErrorInitial());
+  ErrorCubit() : super(const ErrorIdle());
 
-  void catched({
+  void caught({
     required String message,
-    required String error,
-    required String stackTrace,
+    required Object error,
+    required StackTrace stackTrace,
   }) {
-    emit(ErrorCatched(message: message, error: error, stackTrace: stackTrace));
+    emit(ErrorCaught(message: message, error: error, stackTrace: stackTrace));
   }
 
   void reset() {
-    emit(const ErrorInitial());
+    emit(const ErrorIdle());
   }
 }

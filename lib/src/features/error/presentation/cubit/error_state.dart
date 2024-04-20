@@ -8,23 +8,25 @@ sealed class ErrorState extends Equatable {
   const ErrorState();
 }
 
-final class ErrorInitial extends ErrorState {
-  const ErrorInitial();
+final class ErrorIdle extends ErrorState {
+  const ErrorIdle();
 
   @override
   List<Object> get props => [];
 }
 
-final class ErrorCatched extends ErrorState {
-  const ErrorCatched({
+final class ErrorCaught extends ErrorState {
+  const ErrorCaught({
     required this.error,
     required this.stackTrace,
     required this.message,
   });
 
   final String message;
-  final String error;
-  final String stackTrace;
+
+  final Object error;
+
+  final StackTrace stackTrace;
 
   @override
   List<Object> get props => [
