@@ -92,12 +92,8 @@ class _MorePageOption extends StatelessWidget {
           applicationName: context.l10n.appName,
           applicationIcon: Padding(
             padding: AppPadding.verticalMedium,
-            child: Assets.images.vmerge.svg(
+            child: Assets.images.vmerge.image(
               width: AppIconSize.xxLarge,
-              colorFilter: ColorFilter.mode(
-                context.theme.iconTheme.color!,
-                BlendMode.srcIn,
-              ),
             ),
           ),
           applicationVersion: '1.0.0',
