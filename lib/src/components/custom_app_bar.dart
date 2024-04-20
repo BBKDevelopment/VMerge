@@ -18,8 +18,13 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       centerTitle: true,
       bottom: const PreferredSize(
-        preferredSize: Size.fromHeight(1),
-        child: Divider(thickness: 1, height: 0),
+        preferredSize: Size.fromHeight(
+          1,
+        ),
+        child: Divider(
+          thickness: 1,
+          height: 0,
+        ),
       ),
     );
   }

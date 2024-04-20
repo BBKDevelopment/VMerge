@@ -72,7 +72,7 @@ class _VideoThumbnail extends StatelessWidget {
               Text(
                 metadata != null
                     ? Duration(seconds: metadata!.duration!).format
-                    : 'NON',
+                    : 'N/A',
                 textAlign: TextAlign.center,
               ),
             ],

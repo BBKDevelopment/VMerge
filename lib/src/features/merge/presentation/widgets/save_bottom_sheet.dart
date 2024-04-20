@@ -34,7 +34,9 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(width: AppButtonSize.small),
+              const SizedBox(
+                width: AppButtonSize.small,
+              ),
               Hero(
                 tag: 'save',
                 child: Assets.images.save.svg(
@@ -62,14 +64,20 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
               ),
             ],
           ),
-          const SizedBox(height: AppPadding.medium),
+          const SizedBox(
+            height: AppPadding.medium,
+          ),
           Text(
             context.l10n.saveVideo,
             style: context.textTheme.titleLarge,
           ),
-          const SizedBox(height: AppPadding.xxLarge),
+          const SizedBox(
+            height: AppPadding.xxLarge,
+          ),
           const _ProgressIndicator(),
-          const SizedBox(height: AppPadding.large),
+          const SizedBox(
+            height: AppPadding.large,
+          ),
           const _Status(),
           const _StatusMessage(),
           const _GalleryButton(),
@@ -252,7 +260,9 @@ class _GalleryButton extends StatelessWidget {
                   }
                 }
               },
-              child: Text(l10n.seeInTheGallery),
+              child: Text(
+                l10n.seeInTheGallery,
+              ),
             ),
           ),
         );

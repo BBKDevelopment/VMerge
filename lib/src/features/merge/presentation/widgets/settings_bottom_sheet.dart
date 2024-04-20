@@ -279,7 +279,9 @@ class _AspectRatioSelector extends StatelessWidget {
               DropdownMenuItem(
                 value: ratio,
                 enabled: ratio != VideoAspectRatio.auto,
-                child: Text(getDropdownLabel(context, ratio)),
+                child: Text(
+                  getDropdownLabel(context, ratio),
+                ),
               ),
           ],
           value: aspectRatio,

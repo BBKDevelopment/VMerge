@@ -105,7 +105,9 @@ class _MoreViewState extends State<_MoreView>
                 },
               ),
             ),
-            _CopyrightText(animation: _animation),
+            _CopyrightText(
+              animation: _animation,
+            ),
           ],
         ),
       ),

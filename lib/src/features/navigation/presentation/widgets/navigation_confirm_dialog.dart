@@ -17,11 +17,15 @@ class _NavigationConfirmDialog extends StatelessWidget {
       actions: [
         TextButton(
           onPressed: () => context.pop(false),
-          child: Text(l10n.cancel),
+          child: Text(
+            l10n.cancel,
+          ),
         ),
         TextButton(
           onPressed: () => context.pop(true),
-          child: Text(l10n.leave),
+          child: Text(
+            l10n.leave,
+          ),
         ),
       ],
     );

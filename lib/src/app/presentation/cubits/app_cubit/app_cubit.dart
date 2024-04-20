@@ -40,9 +40,9 @@ final class AppCubit extends Cubit<AppState> {
           error: failure.error,
           stackTrace: failure.stackTrace,
         );
-        const defaultThemeConfiguration = ThemeConfiguration(
-          themeMode: 'dark',
-          mainColor: 'indigo',
+        final defaultThemeConfiguration = ThemeConfiguration(
+          themeMode: '${ThemeMode.dark}',
+          mainColor: '${AppMainColor.indigo}',
         );
         await _saveThemeConfiguration(defaultThemeConfiguration);
         return defaultThemeConfiguration;
