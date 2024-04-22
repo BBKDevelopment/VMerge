@@ -12,10 +12,8 @@ import 'package:wakelock_service/wakelock_service.dart';
 final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   SaveBottomSheetCubit()
       : super(
-          const SaveBottomSheetState(
+          const SaveBottomSheetInitial(
             videoMetadatas: [],
-            status: SaveBottomSheetStatus.analyse,
-            progress: 0,
           ),
         );
 
@@ -23,64 +21,102 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   final WakelockService _wakelockService = WakelockService();
 
   void init(List<VideoMetadata> videoMetadatas) {
-    emit(state.copyWith(videoMetadatas: videoMetadatas));
+    emit(SaveBottomSheetInitial(videoMetadatas: videoMetadatas));
   }
 
   Future<void> mergeVideos() async {
     final Directory appDocsDir;
     try {
       appDocsDir = await getApplicationDocumentsDirectory();
-    } catch (_) {
-      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+    } catch (error, stackTrace) {
+      emit(
+        SaveBottomSheetError(
+          type: SaveBottomSheetErrorType.readPermissionException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
       return;
     }
 
     final outputVideoDir = path.join(appDocsDir.path, 'vmerge_output.mp4');
-    final inputVideoDirs =
-        state.videoMetadatas.map((metadata) => metadata.file!.path).toList();
+    final inputVideoDirs = (state as SaveBottomSheetInitial)
+        .videoMetadatas
+        .map((metadata) => metadata.file!.path)
+        .toList();
 
     unawaited(_wakelockService.enable());
 
     try {
-      emit(state.copyWith(status: SaveBottomSheetStatus.analyse));
+      emit(const SaveBottomSheetAnalysing());
       await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
       await _ffmpegService.enableProgressCallback((progress) {
-        emit(state.copyWith(progress: progress.ceil()));
+        emit(SaveBottomSheetMerging(progress: progress.ceil()));
       });
       await Future<void>.delayed(_kMinStatusDuration);
-    } on FFmpegServiceInitialisationException {
-      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+    } on FFmpegServiceInitialisationException catch (error, stackTrace) {
+      emit(
+        SaveBottomSheetError(
+          type: SaveBottomSheetErrorType.videoInitialisationException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
       unawaited(_wakelockService.disable());
       return;
     }
 
     try {
-      emit(state.copyWith(status: SaveBottomSheetStatus.merge));
+      emit(const SaveBottomSheetMerging(progress: 0));
       await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
       await Future<void>.delayed(_kMinStatusDuration);
-    } on FFmpegServiceNotInitialisedException {
-      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+    } on FFmpegServiceNotInitialisedException catch (error, stackTrace) {
+      emit(
+        SaveBottomSheetError(
+          type: SaveBottomSheetErrorType.videoInitialisationException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
       return;
-    } on FFmpegServiceInsufficientVideosException {
-      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+    } on FFmpegServiceInsufficientVideosException catch (error, stackTrace) {
+      emit(
+        SaveBottomSheetError(
+          type: SaveBottomSheetErrorType.insufficientVideoException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
       return;
-    } on FFmpegServiceMergeException {
-      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+    } on FFmpegServiceMergeException catch (error, stackTrace) {
+      emit(
+        SaveBottomSheetError(
+          type: SaveBottomSheetErrorType.mergeException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
       return;
     } finally {
       unawaited(_wakelockService.disable());
     }
 
     try {
-      emit(state.copyWith(status: SaveBottomSheetStatus.save, progress: 100));
+      emit(const SaveBottomSheetSaving());
       await ImageGallerySaver.saveFile(outputVideoDir);
       await Future<void>.delayed(_kMinStatusDuration);
-    } catch (_) {
-      emit(state.copyWith(status: SaveBottomSheetStatus.error));
+    } catch (error, stackTrace) {
+      emit(
+        SaveBottomSheetError(
+          type: SaveBottomSheetErrorType.saveException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
       return;
     }
 
-    emit(state.copyWith(status: SaveBottomSheetStatus.success));
+    emit(const SaveBottomSheetSuccess());
   }
 }
 
