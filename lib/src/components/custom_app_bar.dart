@@ -22,7 +22,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       actions: [
         IconButton(
-          icon: const Icon(Icons.info_rounded),
+          icon: Icon(
+            Icons.info_rounded,
+            color: context.theme.iconTheme.color,
+          ),
           onPressed: () {
             showAboutDialog(
               context: context,
