@@ -3,8 +3,9 @@
 // in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:vmerge/src/core/core.dart';
 
-class AnimatedControlButtonController {
+final class AnimatedControlButtonController {
   late Future<void> Function() forward;
   late Future<void> Function() reverse;
 }
@@ -103,12 +104,12 @@ class _AnimatedControlButtonState extends State<AnimatedControlButton>
           width: widget.size * 3,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: Theme.of(context).colorScheme.secondaryContainer,
+            color: context.colorScheme.secondaryContainer,
           ),
           alignment: Alignment.center,
           child: AnimatedIcon(
             icon: AnimatedIcons.play_pause,
-            color: Theme.of(context).colorScheme.onSecondaryContainer,
+            color: context.colorScheme.onSecondaryContainer,
             progress: _animatedIconController,
             size: widget.size * 2,
           ),
