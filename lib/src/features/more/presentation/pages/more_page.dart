@@ -7,6 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review_service/launch_review_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/src/app/app.dart';

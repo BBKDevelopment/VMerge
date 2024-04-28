@@ -3,6 +3,9 @@
 // in the LICENSE file.
 
 import 'package:flutter/material.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:vmerge/bootstrap.dart';
+import 'package:vmerge/src/core/core.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppBar({required this.title, super.key});
@@ -14,9 +17,28 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         title,
-        style: Theme.of(context).textTheme.titleLarge,
+        style: context.textTheme.titleLarge,
       ),
       centerTitle: true,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.info_rounded),
+          onPressed: () {
+            showAboutDialog(
+              context: context,
+              applicationName: context.l10n.appName,
+              applicationIcon: Padding(
+                padding: AppPadding.verticalMedium,
+                child: Assets.images.vmerge.image(
+                  width: AppIconSize.xxLarge,
+                ),
+              ),
+              applicationVersion: getIt<PackageInfo>().version,
+              applicationLegalese: context.l10n.copyrightMessage,
+            );
+          },
+        ),
+      ],
       bottom: const PreferredSize(
         preferredSize: Size.fromHeight(
           1,

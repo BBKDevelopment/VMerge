@@ -87,7 +87,7 @@ class _MorePageOption extends StatelessWidget {
               );
         });
       case MorePageOption.licenses:
-        showAboutDialog(
+        showLicensePage(
           context: context,
           applicationName: context.l10n.appName,
           applicationIcon: Padding(
@@ -96,7 +96,7 @@ class _MorePageOption extends StatelessWidget {
               width: AppIconSize.xxLarge,
             ),
           ),
-          applicationVersion: '1.0.0',
+          applicationVersion: getIt<PackageInfo>().version,
           applicationLegalese: context.l10n.copyrightMessage,
         );
     }

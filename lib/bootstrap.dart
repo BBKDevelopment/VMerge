@@ -132,6 +132,9 @@ Future<void> setup() async {
         repository: getIt<MergeSettingsRepository>(),
       ),
     )
+    ..registerLazySingleton<PackageInfo>(
+      () => packageInfo,
+    )
     ..registerLazySingleton<LaunchReviewService>(
       () => LaunchReviewService(androidAppId: packageInfo.packageName),
     )
