@@ -13,7 +13,7 @@ final class AppNavigationBarCubit extends Cubit<AppNavigationBarState> {
 
   void updatePage(NavigationBarPage page, {Object? args}) {
     emit(
-      state.copyWith(
+      AppNavigationBarState(
         page: page,
         args: args,
         isSafeToNavigate: args == null,

@@ -6,6 +6,7 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:ffmpeg_service/ffmpeg_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -22,6 +23,7 @@ import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/config/config.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
+import 'package:wakelock_service/wakelock_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -135,6 +137,12 @@ Future<void> setup() async {
     )
     ..registerLazySingleton<UrlLauncherService>(
       () => const UrlLauncherService(),
+    )
+    ..registerLazySingleton<FFmpegService>(
+      FFmpegService.new,
+    )
+    ..registerLazySingleton<WakelockService>(
+      () => const WakelockService(),
     )
     ..registerFactory<VideoPlayerService>(
       () => VideoPlayerService(options: VideoPlayerOptions()),

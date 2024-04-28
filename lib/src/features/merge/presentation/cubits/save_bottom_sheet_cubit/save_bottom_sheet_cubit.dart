@@ -10,15 +10,19 @@ import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:wakelock_service/wakelock_service.dart';
 
 final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
-  SaveBottomSheetCubit()
-      : super(
+  SaveBottomSheetCubit({
+    required FFmpegService ffmpegService,
+    required WakelockService wakelockService,
+  })  : _ffmpegService = ffmpegService,
+        _wakelockService = wakelockService,
+        super(
           const SaveBottomSheetInitial(
             videoMetadatas: [],
           ),
         );
 
-  final FFmpegService _ffmpegService = FFmpegService();
-  final WakelockService _wakelockService = WakelockService();
+  final FFmpegService _ffmpegService;
+  final WakelockService _wakelockService;
 
   void init(List<VideoMetadata> videoMetadatas) {
     emit(SaveBottomSheetInitial(videoMetadatas: videoMetadatas));

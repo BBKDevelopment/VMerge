@@ -7,6 +7,7 @@ import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
+import 'package:ffmpeg_service/ffmpeg_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -18,6 +19,7 @@ import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
+import 'package:wakelock_service/wakelock_service.dart';
 
 part '../widgets/control_button_row.dart';
 part '../widgets/save_bottom_sheet.dart';
@@ -46,7 +48,10 @@ class MergePage extends StatelessWidget {
           )..init(),
         ),
         BlocProvider(
-          create: (_) => SaveBottomSheetCubit(),
+          create: (_) => SaveBottomSheetCubit(
+            ffmpegService: getIt<FFmpegService>(),
+            wakelockService: getIt<WakelockService>(),
+          ),
         ),
       ],
       child: const _MergeView(),
