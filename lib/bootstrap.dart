@@ -136,7 +136,7 @@ Future<void> setup() async {
       () => packageInfo,
     )
     ..registerLazySingleton<LaunchReviewService>(
-      () => LaunchReviewService(androidAppId: packageInfo.packageName),
+      () => LaunchReviewService(androidAppId: getIt<PackageInfo>().packageName),
     )
     ..registerLazySingleton<UrlLauncherService>(
       () => const UrlLauncherService(),

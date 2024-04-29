@@ -40,11 +40,11 @@ dependencies:
     git:
       url: https://github.com/BBKDevelopment/Url-Launcher-Service.git
       ref: v1.0.0
-  video_player: ^2.8.5
+  video_player: ^2.8.6
   video_player_service:
     git:
       url: https://github.com/BBKDevelopment/Video-Player-Service.git
-      ref: v1.1.0
+      ref: v1.2.0
   wakelock_service:
     git:
       url: https://github.com/BBKDevelopment/Wakelock-Service.git
