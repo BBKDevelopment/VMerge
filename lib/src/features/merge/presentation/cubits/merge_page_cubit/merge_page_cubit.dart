@@ -117,7 +117,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
         error: error,
         stackTrace: stackTrace,
       );
-
       emit(const MergePageError());
     }
   }
@@ -147,7 +146,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
           _removeVideoPlayerListeners();
 
           emit(const MergePageError());
-
           // Restores last success state.
           emit(state);
         }
@@ -168,7 +166,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
             case ActiveVideoIndex.two:
               await _secondVideoPlayerService.pause();
           }
-
           emit(state.copyWith(isVideoPlaying: false));
         } on PauseVideoException catch (error, stackTrace) {
           log(
@@ -177,9 +174,7 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-
           emit(const MergePageError());
-
           // Restores last success state.
           emit(state);
         }

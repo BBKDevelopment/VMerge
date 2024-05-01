@@ -2,6 +2,7 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
@@ -85,6 +86,8 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
       await context.read<SettingsBottomSheetCubit>().init();
       if (!mounted) return;
 
+      unawaited(_animationController.forward());
+
       final videoMetadatas = context.read<AppNavigationBarCubit>().state.args;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
@@ -93,8 +96,6 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
             videoMetadatas,
             isSoundOn: context.read<SettingsBottomSheetCubit>().state.isSoundOn,
           );
-
-      await _animationController.forward();
     });
   }
 

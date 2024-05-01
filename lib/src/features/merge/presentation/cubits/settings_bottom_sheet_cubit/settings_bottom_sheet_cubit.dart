@@ -102,7 +102,17 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
   }
 
   void changeVideoResolution(VideoResolution videoResolution) {
-    emit(state.copyWith(videoResolution: videoResolution));
+    final newState = switch (videoResolution) {
+      VideoResolution.original => state.copyWith(
+          videoResolution: videoResolution,
+          videoAspectRatio: VideoAspectRatio.firstVideo,
+        ),
+      _ => state.copyWith(
+          videoResolution: videoResolution,
+          videoAspectRatio: VideoAspectRatio.auto,
+        ),
+    };
+    emit(newState);
     _saveStateAsMergeSettings();
   }
 
