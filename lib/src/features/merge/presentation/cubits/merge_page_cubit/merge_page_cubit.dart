@@ -70,7 +70,10 @@ final class MergePageCubit extends Cubit<MergePageState> {
         }
       };
 
-  Future<void> loadVideoMetadata(List<VideoMetadata> metadatas) async {
+  Future<void> loadVideoMetadata(
+    List<VideoMetadata> metadatas, {
+    required bool isSoundOn,
+  }) async {
     if (metadatas.length != 2) {
       emit(const MergePageError());
       return;
@@ -78,15 +81,23 @@ final class MergePageCubit extends Cubit<MergePageState> {
 
     emit(const MergePageLoading());
 
+    final volume = isSoundOn ? 1.0 : 0.0;
+
     try {
       await Future.wait([
-        _firstVideoPlayerService.loadFile(metadatas.first.file!),
-        _secondVideoPlayerService.loadFile(metadatas.last.file!),
+        _firstVideoPlayerService.loadFile(
+          metadatas.first.file!,
+          volume: volume,
+        ),
+        _secondVideoPlayerService.loadFile(
+          metadatas.last.file!,
+          volume: volume,
+        ),
       ]);
 
       if (_firstVideoPlayerService.controller == null ||
           _secondVideoPlayerService.controller == null) {
-        throw LoadVideoException();
+        throw const LoadVideoException();
       }
 
       emit(
@@ -177,10 +188,9 @@ final class MergePageCubit extends Cubit<MergePageState> {
     }
   }
 
-  Future<void> setVideoSpeedAndSound({
-    required PlaybackSpeed speed,
-    required bool isSoundOn,
-  }) async {
+  Future<void> setVideoSpeed(
+    PlaybackSpeed speed,
+  ) async {
     switch (state) {
       case final MergePageLoaded state:
         emit(
@@ -193,12 +203,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
         );
 
         try {
-          // TODO(BBarisKilic): Add this feature to package.
-          // await Future.wait([
-          //   _firstVideoPlayerService.setVolume(loadedState.isSoundOn ? 0 : 1),
-          //   _secondVideoPlayerService.setVolume(loadedState.isSoundOn ? 0 : 1),
-          // ]);
-
           await Future.wait([
             _firstVideoPlayerService.setPlaybackSpeed(speed.value),
             _secondVideoPlayerService.setPlaybackSpeed(speed.value),
@@ -212,8 +216,9 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-
           emit(const MergePageError());
+          // Restores last success state.
+          emit(state);
         } on SeekVideoPositionException catch (error, stackTrace) {
           log(
             'Could not reset the video!',
@@ -221,16 +226,35 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
+          emit(const MergePageError());
+          // Restores last success state.
+          emit(state);
+        }
+      default:
+        return;
+    }
+  }
 
-          emit(
-            state.copyWith(
-              activeVideoIndex: ActiveVideoIndex.one,
-              videoPlayerController: _firstVideoPlayerService.controller,
-              videoHeight: _firstVideoPlayerService.height,
-              videoWidth: _firstVideoPlayerService.width,
-            ),
+  Future<void> setSound({
+    required bool isSoundOn,
+  }) async {
+    switch (state) {
+      case final MergePageLoaded state:
+        final volume = isSoundOn ? 1.0 : 0.0;
+        try {
+          await Future.wait([
+            _firstVideoPlayerService.setVolume(volume),
+            _secondVideoPlayerService.setVolume(volume),
+          ]);
+        } on SetVolumeException catch (error, stackTrace) {
+          log(
+            'Could not change the volume of the video!',
+            name: '$MergePageCubit',
+            error: error,
+            stackTrace: stackTrace,
           );
-        } finally {
+          emit(const MergePageError());
+          // Restores last success state.
           emit(state);
         }
       default:

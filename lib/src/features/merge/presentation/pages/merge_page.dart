@@ -45,7 +45,7 @@ class MergePage extends StatelessWidget {
           create: (_) => SettingsBottomSheetCubit(
             getMergeSettingsUseCase: getIt<GetMergeSettingsUseCase>(),
             saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
-          )..init(),
+          ),
         ),
         BlocProvider(
           create: (_) => SaveBottomSheetCubit(
@@ -81,14 +81,20 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animatedControlButtonController = AnimatedControlButtonController();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _animationController.forward();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await context.read<SettingsBottomSheetCubit>().init();
+      if (!mounted) return;
 
       final videoMetadatas = context.read<AppNavigationBarCubit>().state.args;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 
-      context.read<MergePageCubit>().loadVideoMetadata(videoMetadatas);
+      await context.read<MergePageCubit>().loadVideoMetadata(
+            videoMetadatas,
+            isSoundOn: context.read<SettingsBottomSheetCubit>().state.isSoundOn,
+          );
+
+      await _animationController.forward();
     });
   }
 
