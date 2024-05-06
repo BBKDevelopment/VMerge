@@ -1,3 +1,7 @@
+// Copyright 2021 BBK Development. All rights reserved.
+// Use of this source code is governed by a GPL-style license that can be found
+// in the LICENSE file.
+
 part of '../pages/merge_page.dart';
 
 class _ControlButtonRow extends StatelessWidget {
@@ -53,12 +57,19 @@ class _ControlButtonRow extends StatelessWidget {
       context: context,
       useRootNavigator: true,
       topRadius: const Radius.circular(AppBorderRadius.xxxLarge),
-      builder: (_) => BlocProvider.value(
-        value: BlocProvider.of<SaveBottomSheetCubit>(context)
-          ..init(mergePageState.videoMetadatas),
-        // Default `showModalBottomSheet` and dialogs use
-        // `dialogBackgroundColor` and `surfaceTintColor`, so `Card` is used
-        // here to match the design because it uses the same colors.
+      builder: (_) => MultiBlocProvider(
+        providers: [
+          BlocProvider.value(
+            value: BlocProvider.of<SaveBottomSheetCubit>(context)
+              ..init(mergePageState.videoMetadatas),
+          ),
+          BlocProvider.value(
+            value: BlocProvider.of<AppNavigationBarCubit>(context),
+          ),
+          BlocProvider.value(
+            value: BlocProvider.of<ErrorCubit>(context),
+          ),
+        ],
         child: const Card(
           margin: EdgeInsets.zero,
           shape: ContinuousRectangleBorder(),

@@ -70,8 +70,8 @@ class $AssetsImagesGen {
   /// File path: assets/images/video.svg
   SvgGenImage get video => const SvgGenImage('assets/images/video.svg');
 
-  /// File path: assets/images/vmerge.svg
-  SvgGenImage get vmerge => const SvgGenImage('assets/images/vmerge.svg');
+  /// File path: assets/images/vmerge.png
+  AssetGenImage get vmerge => const AssetGenImage('assets/images/vmerge.png');
 
   /// List of all assets
   List<dynamic> get values => [

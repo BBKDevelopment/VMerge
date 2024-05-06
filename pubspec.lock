@@ -1079,10 +1079,10 @@ packages:
     dependency: "direct main"
     description:
       name: video_player
-      sha256: efa2e24042166906ddf836dd131258d0371d0009cdf0476f6a83fd992a17f5d0
+      sha256: db6a72d8f4fd155d0189845678f55ad2fd54b02c10dcafd11c068dbb631286c0
       url: "https://pub.dev"
     source: hosted
-    version: "2.8.5"
+    version: "2.8.6"
   video_player_android:
     dependency: transitive
     description:
@@ -1095,10 +1095,10 @@ packages:
     dependency: transitive
     description:
       name: video_player_avfoundation
-      sha256: bc923884640d6dc403050586eb40713cdb8d1d84e6886d8aca50ab04c59124c2
+      sha256: "00c49b1d68071341397cf760b982c1e26ed9232464c8506ee08378a5cca5070d"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.2"
+    version: "2.5.7"
   video_player_platform_interface:
     dependency: transitive
     description:
@@ -1111,11 +1111,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.1.0"
-      resolved-ref: "04ee5817811ed26289d3efc8eaeb30865d8f5217"
+      ref: "v1.2.0"
+      resolved-ref: b2f7793b2642c4a859d8aeaddf6460f66f21be2d
       url: "https://github.com/BBKDevelopment/Video-Player-Service.git"
     source: git
-    version: "1.1.0"
+    version: "1.2.0"
   video_player_web:
     dependency: transitive
     description:

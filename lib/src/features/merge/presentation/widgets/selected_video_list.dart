@@ -1,3 +1,7 @@
+// Copyright 2021 BBK Development. All rights reserved.
+// Use of this source code is governed by a GPL-style license that can be found
+// in the LICENSE file.
+
 part of '../pages/merge_page.dart';
 
 class _SelectedVideoList extends StatelessWidget {
@@ -10,6 +14,13 @@ class _SelectedVideoList extends StatelessWidget {
     return SizedBox(
       height: context.screenWidth / 4,
       child: BlocBuilder<MergePageCubit, MergePageState>(
+        buildWhen: (previous, current) {
+          if (previous is MergePageLoaded && current is MergePageLoaded) {
+            return false;
+          }
+
+          return true;
+        },
         builder: (context, state) {
           switch (state) {
             case MergePageInitial():

@@ -20,4 +20,8 @@ final class AppNavigationBarCubit extends Cubit<AppNavigationBarState> {
       ),
     );
   }
+
+  void resetIsSafeToNavigate() {
+    emit(state.copyWith(isSafeToNavigate: true));
+  }
 }

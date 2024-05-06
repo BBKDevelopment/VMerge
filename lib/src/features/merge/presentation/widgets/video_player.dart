@@ -47,7 +47,6 @@ class _VideoPlayer extends StatelessWidget {
       },
       child: BlocBuilder<MergePageCubit, MergePageState>(
         buildWhen: (previous, current) {
-          if (current is MergePageError) return false;
           if (previous is MergePageLoaded && current is MergePageLoaded) {
             return previous.isVideoPlaying != current.isVideoPlaying ||
                 previous.videoPlayerController != current.videoPlayerController;
@@ -56,8 +55,10 @@ class _VideoPlayer extends StatelessWidget {
           return true;
         },
         builder: (context, state) {
-          final settingsModalBottomSheetState =
-              context.watch<SettingsBottomSheetCubit>().state;
+          final videoResolution =
+              context.select<SettingsBottomSheetCubit, VideoResolution>(
+            (cubit) => cubit.state.videoResolution,
+          );
 
           return switch (state) {
             MergePageInitial() => NoVideoWarning(
@@ -82,12 +83,8 @@ class _VideoPlayer extends StatelessWidget {
                   alignment: Alignment.center,
                   children: [
                     AspectRatio(
-                      aspectRatio: (settingsModalBottomSheetState
-                                  .videoResolution.width ??
-                              state.videoWidth) /
-                          (settingsModalBottomSheetState
-                                  .videoResolution.height ??
-                              state.videoHeight),
+                      aspectRatio: (videoResolution.width ?? state.videoWidth) /
+                          (videoResolution.height ?? state.videoHeight),
                       child: ClipRRect(
                         borderRadius: AppBorderRadius.circularXSmall,
                         child: VideoPlayer(state.videoPlayerController),

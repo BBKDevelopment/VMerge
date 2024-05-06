@@ -24,16 +24,22 @@ class NoVideoWarning extends StatelessWidget {
               BlendMode.srcIn,
             ),
           ),
-          const SizedBox(height: AppPadding.xLarge),
+          const SizedBox(
+            height: AppPadding.xLarge,
+          ),
           Text(
             context.l10n.selectTwoVideosMessage,
             textAlign: TextAlign.center,
             style: context.textTheme.bodyMedium,
           ),
-          const SizedBox(height: AppPadding.large),
+          const SizedBox(
+            height: AppPadding.large,
+          ),
           OutlinedButton(
             onPressed: onPressed,
-            child: Text(context.l10n.openPicker),
+            child: Text(
+              context.l10n.openPicker,
+            ),
           ),
         ],
       ),

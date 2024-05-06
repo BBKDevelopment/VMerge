@@ -7,13 +7,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:launch_review_service/launch_review_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
 import 'package:vmerge/bootstrap.dart';
-import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/app/app.dart';
+import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
-import 'package:vmerge/utilities/utilities.dart';
 
 part '../widgets/copyright_text.dart';
 part '../widgets/more_page_option.dart';
@@ -62,8 +62,10 @@ class _MoreViewState extends State<_MoreView>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Scaffold(
-      appBar: CustomAppBar(title: context.l10n.appName),
+      appBar: CustomAppBar(title: l10n.appName),
       body: Padding(
         padding: AppPadding.general,
         child: Column(
@@ -104,7 +106,9 @@ class _MoreViewState extends State<_MoreView>
                 },
               ),
             ),
-            _CopyrightText(animation: _animation),
+            _CopyrightText(
+              animation: _animation,
+            ),
           ],
         ),
       ),

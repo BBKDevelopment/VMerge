@@ -2,23 +2,25 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
 
 import 'package:android_intent_plus/android_intent.dart';
 import 'package:android_intent_plus/flag.dart';
+import 'package:ffmpeg_service/ffmpeg_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
-import 'package:vmerge/components/components.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
+import 'package:vmerge/src/features/error/error.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/utilities/utilities.dart';
+import 'package:wakelock_service/wakelock_service.dart';
 
 part '../widgets/control_button_row.dart';
 part '../widgets/save_bottom_sheet.dart';
@@ -44,10 +46,13 @@ class MergePage extends StatelessWidget {
           create: (_) => SettingsBottomSheetCubit(
             getMergeSettingsUseCase: getIt<GetMergeSettingsUseCase>(),
             saveMergeSettingsUseCase: getIt<SaveMergeSettingsUseCase>(),
-          )..init(),
+          ),
         ),
         BlocProvider(
-          create: (_) => SaveBottomSheetCubit(),
+          create: (_) => SaveBottomSheetCubit(
+            ffmpegService: getIt<FFmpegService>(),
+            wakelockService: getIt<WakelockService>(),
+          ),
         ),
       ],
       child: const _MergeView(),
@@ -77,14 +82,20 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
     _animation = Tween<double>(begin: 0, end: 1).animate(_animationController);
     _animatedControlButtonController = AnimatedControlButtonController();
 
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _animationController.forward();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await context.read<SettingsBottomSheetCubit>().init();
+      if (!mounted) return;
+
+      unawaited(_animationController.forward());
 
       final videoMetadatas = context.read<AppNavigationBarCubit>().state.args;
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 
-      context.read<MergePageCubit>().loadVideoMetadata(videoMetadatas);
+      await context.read<MergePageCubit>().loadVideoMetadata(
+            videoMetadatas,
+            isSoundOn: context.read<SettingsBottomSheetCubit>().state.isSoundOn,
+          );
     });
   }
 

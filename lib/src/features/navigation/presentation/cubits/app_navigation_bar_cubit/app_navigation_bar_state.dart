@@ -15,6 +15,18 @@ final class AppNavigationBarState extends Equatable {
   final Object? args;
   final bool isSafeToNavigate;
 
+  AppNavigationBarState copyWith({
+    NavigationBarPage? page,
+    Object? args,
+    bool? isSafeToNavigate,
+  }) {
+    return AppNavigationBarState(
+      page: page ?? this.page,
+      args: args ?? this.args,
+      isSafeToNavigate: isSafeToNavigate ?? this.isSafeToNavigate,
+    );
+  }
+
   @override
   String toString() {
     return 'AppNavigationBarState(page: $page, args: $args, isSafeToNavigate: '

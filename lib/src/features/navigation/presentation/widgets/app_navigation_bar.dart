@@ -11,7 +11,7 @@ import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 import 'package:vmerge/src/features/more/more.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
-import 'package:vmerge/src/features/preview_video/preview_video.dart';
+import 'package:vmerge/src/features/video_select/video_select.dart';
 
 part 'navigation_confirm_dialog.dart';
 
@@ -69,7 +69,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
           controller: _pageController,
           physics: const NeverScrollableScrollPhysics(),
           children: const [
-            PreviewVideoPage(),
+            VideoSelectPage(),
             MergePage(),
             MorePage(),
           ],

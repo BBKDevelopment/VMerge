@@ -8,6 +8,7 @@ import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/config/config.dart';
 import 'package:vmerge/src/core/core.dart';
+import 'package:vmerge/src/features/error/error.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 
 class App extends StatelessWidget {
@@ -47,7 +48,9 @@ class _AppView extends StatelessWidget {
                 instanceName: '$DarkAppTheme',
               ).data,
               themeMode: state.themeMode,
-              home: const AppNavigationBar(),
+              home: const ErrorListener(
+                child: AppNavigationBar(),
+              ),
             ),
         };
       },

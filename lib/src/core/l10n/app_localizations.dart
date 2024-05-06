@@ -92,293 +92,11 @@ abstract class AppLocalizations {
   /// A list of this localizations delegate's supported locales.
   static const List<Locale> supportedLocales = <Locale>[Locale('en')];
 
-  /// No description provided for @appName.
-  ///
-  /// In en, this message translates to:
-  /// **'VMerge'**
-  String get appName;
-
-  /// No description provided for @video.
-  ///
-  /// In en, this message translates to:
-  /// **'Video'**
-  String get video;
-
-  /// No description provided for @merge.
-  ///
-  /// In en, this message translates to:
-  /// **'Merge'**
-  String get merge;
-
-  /// No description provided for @more.
-  ///
-  /// In en, this message translates to:
-  /// **'More'**
-  String get more;
-
-  /// No description provided for @selectTwoVideosMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Please select at least 2 videos to continue!'**
-  String get selectTwoVideosMessage;
-
-  /// No description provided for @openPicker.
-  ///
-  /// In en, this message translates to:
-  /// **'Open Picker'**
-  String get openPicker;
-
-  /// No description provided for @copyrightMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Copyright © 2023 BBK Development'**
-  String get copyrightMessage;
-
-  /// No description provided for @theme.
-  ///
-  /// In en, this message translates to:
-  /// **'Theme'**
-  String get theme;
-
-  /// No description provided for @rateUs.
-  ///
-  /// In en, this message translates to:
-  /// **'Rate Us'**
-  String get rateUs;
-
-  /// No description provided for @contactUs.
-  ///
-  /// In en, this message translates to:
-  /// **'Contact Us'**
-  String get contactUs;
-
-  /// No description provided for @termsAndConditions.
-  ///
-  /// In en, this message translates to:
-  /// **'Terms and Conditions'**
-  String get termsAndConditions;
-
-  /// No description provided for @privacyPolicy.
-  ///
-  /// In en, this message translates to:
-  /// **'Privacy Policy'**
-  String get privacyPolicy;
-
-  /// No description provided for @licenses.
-  ///
-  /// In en, this message translates to:
-  /// **'Licenses'**
-  String get licenses;
-
-  /// No description provided for @darkMode.
-  ///
-  /// In en, this message translates to:
-  /// **'Dark Mode'**
-  String get darkMode;
-
-  /// No description provided for @mainColor.
-  ///
-  /// In en, this message translates to:
-  /// **'Main Color'**
-  String get mainColor;
-
-  /// No description provided for @on.
-  ///
-  /// In en, this message translates to:
-  /// **'On'**
-  String get on;
-
-  /// No description provided for @off.
-  ///
-  /// In en, this message translates to:
-  /// **'Off'**
-  String get off;
-
-  /// No description provided for @red.
-  ///
-  /// In en, this message translates to:
-  /// **'Red'**
-  String get red;
-
-  /// No description provided for @pink.
-  ///
-  /// In en, this message translates to:
-  /// **'Pink'**
-  String get pink;
-
-  /// No description provided for @purple.
-  ///
-  /// In en, this message translates to:
-  /// **'Purple'**
-  String get purple;
-
-  /// No description provided for @indigo.
-  ///
-  /// In en, this message translates to:
-  /// **'Indigo'**
-  String get indigo;
-
-  /// No description provided for @blue.
-  ///
-  /// In en, this message translates to:
-  /// **'Blue'**
-  String get blue;
-
-  /// No description provided for @cyan.
-  ///
-  /// In en, this message translates to:
-  /// **'Cyan'**
-  String get cyan;
-
-  /// No description provided for @teal.
-  ///
-  /// In en, this message translates to:
-  /// **'Teal'**
-  String get teal;
-
-  /// No description provided for @green.
-  ///
-  /// In en, this message translates to:
-  /// **'Green'**
-  String get green;
-
-  /// No description provided for @lime.
-  ///
-  /// In en, this message translates to:
-  /// **'Lime'**
-  String get lime;
-
-  /// No description provided for @yellow.
-  ///
-  /// In en, this message translates to:
-  /// **'Yellow'**
-  String get yellow;
-
-  /// No description provided for @orange.
-  ///
-  /// In en, this message translates to:
-  /// **'Orange'**
-  String get orange;
-
-  /// No description provided for @brown.
-  ///
-  /// In en, this message translates to:
-  /// **'Brown'**
-  String get brown;
-
-  /// No description provided for @settings.
-  ///
-  /// In en, this message translates to:
-  /// **'Settings'**
-  String get settings;
-
-  /// No description provided for @saveVideo.
-  ///
-  /// In en, this message translates to:
-  /// **'Save Video'**
-  String get saveVideo;
-
-  /// No description provided for @sound.
-  ///
-  /// In en, this message translates to:
-  /// **'Sound'**
-  String get sound;
-
-  /// No description provided for @original.
-  ///
-  /// In en, this message translates to:
-  /// **'Original'**
-  String get original;
-
-  /// No description provided for @resolution.
-  ///
-  /// In en, this message translates to:
-  /// **'Resolution'**
-  String get resolution;
-
-  /// No description provided for @originalResolutionTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Videos will keep their original resolution.'**
-  String get originalResolutionTooltip;
-
-  /// No description provided for @independentAspectRatioTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Videos will keep their original aspect ratio.'**
-  String get independentAspectRatioTooltip;
-
-  /// No description provided for @firstAspectRatioTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Videos will use the aspect ratio of the first video.'**
-  String get firstAspectRatioTooltip;
-
-  /// No description provided for @autoAspectRatioTooltip.
-  ///
-  /// In en, this message translates to:
-  /// **'Videos will use the aspect ratio of the selected resolution.'**
-  String get autoAspectRatioTooltip;
-
-  /// No description provided for @independent.
-  ///
-  /// In en, this message translates to:
-  /// **'Independent'**
-  String get independent;
-
-  /// No description provided for @firstVideo.
-  ///
-  /// In en, this message translates to:
-  /// **'First video'**
-  String get firstVideo;
-
-  /// No description provided for @auto.
-  ///
-  /// In en, this message translates to:
-  /// **'Auto'**
-  String get auto;
-
-  /// No description provided for @aspectRatio.
-  ///
-  /// In en, this message translates to:
-  /// **'Aspect Ratio'**
-  String get aspectRatio;
-
-  /// No description provided for @playbackSpeed.
-  ///
-  /// In en, this message translates to:
-  /// **'Playback Speed'**
-  String get playbackSpeed;
-
   /// No description provided for @analyzing.
   ///
   /// In en, this message translates to:
   /// **'Analyzing'**
   String get analyzing;
-
-  /// No description provided for @merging.
-  ///
-  /// In en, this message translates to:
-  /// **'Merging'**
-  String get merging;
-
-  /// No description provided for @saving.
-  ///
-  /// In en, this message translates to:
-  /// **'Saving'**
-  String get saving;
-
-  /// No description provided for @done.
-  ///
-  /// In en, this message translates to:
-  /// **'Done'**
-  String get done;
-
-  /// No description provided for @error.
-  ///
-  /// In en, this message translates to:
-  /// **'Error'**
-  String get error;
 
   /// No description provided for @analyzingMessage.
   ///
@@ -386,17 +104,89 @@ abstract class AppLocalizations {
   /// **'Analyzing videos to determine the fastest way to merge them. Checking if re-encoding is required...'**
   String get analyzingMessage;
 
-  /// No description provided for @mergingMessage.
+  /// No description provided for @appName.
   ///
   /// In en, this message translates to:
-  /// **'Merging videos in a fast and efficient way. This process may take a while so please be patient!'**
-  String get mergingMessage;
+  /// **'VMerge'**
+  String get appName;
 
-  /// No description provided for @savingMessage.
+  /// No description provided for @aspectRatio.
   ///
   /// In en, this message translates to:
-  /// **'Saving the merged video to your device. Hang tight, this won\'t take long!'**
-  String get savingMessage;
+  /// **'Aspect Ratio'**
+  String get aspectRatio;
+
+  /// No description provided for @auto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get auto;
+
+  /// No description provided for @autoAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will use the aspect ratio of the selected resolution.'**
+  String get autoAspectRatioTooltip;
+
+  /// No description provided for @blue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get blue;
+
+  /// No description provided for @brown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get brown;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @contactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contactUs;
+
+  /// No description provided for @copyrightMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Copyright © 2024 BBK Development'**
+  String get copyrightMessage;
+
+  /// No description provided for @cyan.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get cyan;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get discardChanges;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
 
   /// No description provided for @doneMessage.
   ///
@@ -404,17 +194,263 @@ abstract class AppLocalizations {
   /// **'The video has been successfully saved to your device!'**
   String get doneMessage;
 
+  /// No description provided for @exceptionDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception Detail'**
+  String get exceptionDetail;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
   /// No description provided for @errorMessage.
   ///
   /// In en, this message translates to:
   /// **'An error occurred while merging the videos. Please try again!'**
   String get errorMessage;
 
+  /// No description provided for @firstAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will use the aspect ratio of the first video.'**
+  String get firstAspectRatioTooltip;
+
+  /// No description provided for @firstVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'First video'**
+  String get firstVideo;
+
+  /// No description provided for @green.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get green;
+
+  /// No description provided for @independent.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent'**
+  String get independent;
+
+  /// No description provided for @independentAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will keep their original aspect ratio.'**
+  String get independentAspectRatioTooltip;
+
+  /// No description provided for @indigo.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigo'**
+  String get indigo;
+
+  /// No description provided for @leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leave;
+
+  /// No description provided for @licenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Licenses'**
+  String get licenses;
+
+  /// No description provided for @lime.
+  ///
+  /// In en, this message translates to:
+  /// **'Lime'**
+  String get lime;
+
+  /// No description provided for @mainColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Color'**
+  String get mainColor;
+
+  /// No description provided for @merge.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge'**
+  String get merge;
+
+  /// No description provided for @merging.
+  ///
+  /// In en, this message translates to:
+  /// **'Merging'**
+  String get merging;
+
+  /// No description provided for @mergingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Merging videos in a fast and efficient way. This process may take a while so please be patient!'**
+  String get mergingMessage;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get off;
+
+  /// No description provided for @on.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get on;
+
+  /// No description provided for @openPicker.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Picker'**
+  String get openPicker;
+
+  /// No description provided for @orange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get orange;
+
+  /// No description provided for @original.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get original;
+
+  /// No description provided for @originalResolutionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will keep their original resolution.'**
+  String get originalResolutionTooltip;
+
+  /// No description provided for @pink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get pink;
+
+  /// No description provided for @playbackSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Speed'**
+  String get playbackSpeed;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @purple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get purple;
+
+  /// No description provided for @rateUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Us'**
+  String get rateUs;
+
+  /// No description provided for @red.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get red;
+
+  /// No description provided for @resolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution'**
+  String get resolution;
+
+  /// No description provided for @saveVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Video'**
+  String get saveVideo;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get saving;
+
+  /// No description provided for @savingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving the merged video to your device. Hang tight, this won\'t take long!'**
+  String get savingMessage;
+
   /// No description provided for @seeInTheGallery.
   ///
   /// In en, this message translates to:
   /// **'See in the Gallery'**
   String get seeInTheGallery;
+
+  /// No description provided for @selectTwoVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least 2 videos to continue!'**
+  String get selectTwoVideosMessage;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @sound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get sound;
+
+  /// No description provided for @teal.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get teal;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @unsavedChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Are you sure you want to leave this page?'**
+  String get unsavedChangesMessage;
+
+  /// No description provided for @video.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// No description provided for @yellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get yellow;
 }
 
 class _AppLocalizationsDelegate

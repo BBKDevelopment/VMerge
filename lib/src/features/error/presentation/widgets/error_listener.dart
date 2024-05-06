@@ -2,32 +2,44 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
-import 'package:vmerge/utilities/utilities.dart';
 
-part 'error_modal_bottom_sheet.dart';
+part 'error_dialog.dart';
 
 class ErrorListener extends StatelessWidget {
-  const ErrorListener({super.key});
+  const ErrorListener({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => ErrorCubit(),
+      child: _ErrorListener(child: child),
+    );
+  }
+}
+
+class _ErrorListener extends StatelessWidget {
+  const _ErrorListener({required this.child});
+
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return BlocListener<ErrorCubit, ErrorState>(
       listener: (context, state) {
         switch (state) {
-          case ErrorInitial():
+          case ErrorIdle():
             break;
-          case ErrorCatched():
-            showModalBottomSheet<void>(
-              backgroundColor: Colors.transparent,
+          case ErrorCaught():
+            showDialog<void>(
               context: context,
-              useRootNavigator: true,
-              elevation: 4,
-              isDismissible: false,
-              builder: (_) => _ErrorModalBottomSheet(
+              builder: (_) => _ErrorDialog(
                 message: state.message,
                 error: state.error,
                 stackTrace: state.stackTrace,
@@ -35,7 +47,7 @@ class ErrorListener extends StatelessWidget {
             ).then((_) => context.read<ErrorCubit>().reset());
         }
       },
-      child: Container(),
+      child: child,
     );
   }
 }

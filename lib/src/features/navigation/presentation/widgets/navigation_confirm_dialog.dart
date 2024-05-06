@@ -5,26 +5,27 @@ class _NavigationConfirmDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return AlertDialog(
-      // icon: Icon(Icons.warning_amber),
-      title: const Text(
-        'Discard changes',
+      title: Text(
+        l10n.discardChanges,
       ),
-      content: const Text(
-        'You have unsaved changes. Are you sure you want to leave this page?',
+      content: Text(
+        l10n.unsavedChangesMessage,
       ),
       actions: [
         TextButton(
-          onPressed: () {
-            context.pop(false);
-          },
-          child: const Text('Cancel'),
+          onPressed: () => context.pop(false),
+          child: Text(
+            l10n.cancel,
+          ),
         ),
         TextButton(
-          onPressed: () {
-            context.pop(true);
-          },
-          child: const Text('Leave'),
+          onPressed: () => context.pop(true),
+          child: Text(
+            l10n.leave,
+          ),
         ),
       ],
     );

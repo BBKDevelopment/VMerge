@@ -40,11 +40,11 @@ class _MorePageOption extends StatelessWidget {
         getIt<LaunchReviewService>()
             .launch()
             .onError<LaunchReviewException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch review service! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.contactUs:
@@ -57,50 +57,46 @@ class _MorePageOption extends StatelessWidget {
           ),
         )
             .onError<SendEmailException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch email service! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.termsAndConditions:
         getIt<UrlLauncherService>()
-            .launch(url: Uri(path: kTermsAndConditions))
+            .launch(url: Uri.parse(AppUrl.termsAndConditions))
             .onError<UrlLaunchException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch url! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.privacyPolicy:
         getIt<UrlLauncherService>()
-            .launch(url: Uri(path: kPrivacyPolicy))
+            .launch(url: Uri.parse(AppUrl.privacyPolicy))
             .onError<UrlLaunchException>((error, stackTrace) {
-          context.read<ErrorCubit>().catched(
+          context.read<ErrorCubit>().caught(
                 message:
                     'Could not launch url! Please check your internet connection and try again.',
-                error: '$error',
-                stackTrace: '$stackTrace',
+                error: error,
+                stackTrace: stackTrace,
               );
         });
       case MorePageOption.licenses:
-        showAboutDialog(
+        showLicensePage(
           context: context,
           applicationName: context.l10n.appName,
           applicationIcon: Padding(
             padding: AppPadding.verticalMedium,
-            child: Assets.images.vmerge.svg(
+            child: Assets.images.vmerge.image(
               width: AppIconSize.xxLarge,
-              colorFilter: ColorFilter.mode(
-                context.theme.iconTheme.color!,
-                BlendMode.srcIn,
-              ),
             ),
           ),
-          applicationVersion: '1.0.0',
+          applicationVersion: getIt<PackageInfo>().version,
           applicationLegalese: context.l10n.copyrightMessage,
         );
     }

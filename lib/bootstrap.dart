@@ -6,12 +6,14 @@ import 'dart:async';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:ffmpeg_service/ffmpeg_service.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:launch_review_service/launch_review_service.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:url_launcher_service/url_launcher_service.dart';
@@ -21,7 +23,7 @@ import 'package:vmerge/src/app/app.dart';
 import 'package:vmerge/src/config/config.dart';
 import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
-import 'package:vmerge/utilities/utilities.dart';
+import 'package:wakelock_service/wakelock_service.dart';
 
 final getIt = GetIt.instance;
 
@@ -78,6 +80,7 @@ Future<void> bootstrap(FutureOr<Widget> Function() builder) async {
 
 Future<void> setup() async {
   final objectBoxService = await ObjectBoxService.create();
+  final packageInfo = await PackageInfo.fromPlatform();
 
   getIt
     ..registerFactoryParam<AppTheme, Color, void>(
@@ -129,11 +132,20 @@ Future<void> setup() async {
         repository: getIt<MergeSettingsRepository>(),
       ),
     )
+    ..registerLazySingleton<PackageInfo>(
+      () => packageInfo,
+    )
     ..registerLazySingleton<LaunchReviewService>(
-      () => const LaunchReviewService(androidAppId: kAndroidAppId),
+      () => LaunchReviewService(androidAppId: getIt<PackageInfo>().packageName),
     )
     ..registerLazySingleton<UrlLauncherService>(
       () => const UrlLauncherService(),
+    )
+    ..registerLazySingleton<FFmpegService>(
+      FFmpegService.new,
+    )
+    ..registerLazySingleton<WakelockService>(
+      () => const WakelockService(),
     )
     ..registerFactory<VideoPlayerService>(
       () => VideoPlayerService(options: VideoPlayerOptions()),

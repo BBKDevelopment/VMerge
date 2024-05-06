@@ -39,6 +39,10 @@ final class FFmpegService {
   bool? _isFrameRateSameOnAll;
   bool? _isAudioSameOnAll;
   bool? _isReencodingRequired;
+  String? _outputDir;
+  int? _outputWidth;
+  int? _outputHeight;
+  bool? _forceFirstAspectRatio;
 
   /// Initialises the FFmpeg service and analyses the videos to determine if
   /// re-encoding is required.
@@ -216,7 +220,12 @@ final class FFmpegService {
   ///
   /// Throws [FFmpegServiceMergeException] if the FFmpeg service fails to merge
   /// the videos.
-  Future<void> mergeVideos({required String outputDir}) async {
+  Future<void> mergeVideos({
+    required String outputDir,
+    int? outputWidth,
+    int? outputHeight,
+    bool? forceFirstAspectRatio,
+  }) async {
     if (_isReencodingRequired == null || _isAudioSameOnAll == null) {
       throw const FFmpegServiceNotInitialisedException();
     }
@@ -225,7 +234,12 @@ final class FFmpegService {
       throw const FFmpegServiceInsufficientVideosException();
     }
 
-    final command = await _createCommand(outputDir);
+    _outputDir = outputDir;
+    _outputWidth = outputWidth;
+    _outputHeight = outputHeight;
+    _forceFirstAspectRatio = forceFirstAspectRatio;
+
+    final command = await _createCommand();
 
     await _enableLogOnDebug();
 
@@ -242,10 +256,12 @@ final class FFmpegService {
   }
 
   /// Creates the FFmpeg command to merge the videos.
-  Future<String> _createCommand(String outputDir) async {
+  Future<String> _createCommand() async {
     final command = StringBuffer('-y ');
+    final isCustomResolutionAvailable =
+        _outputWidth != null && _outputHeight != null;
 
-    if (_isReencodingRequired!) {
+    if (_isReencodingRequired! || isCustomResolutionAvailable) {
       for (final videoInformation in _videoDetails) {
         command.write('-i "${videoInformation.directory}" ');
       }
@@ -256,9 +272,17 @@ final class FFmpegService {
 
       command.write('-filter_complex "');
 
-      final width = _videoDetails.first.width;
-      final height = _videoDetails.first.height;
-      final scale = _isResolutionSameOnAll! ? '' : 'scale=$width:$height,';
+      final String scale;
+      if (isCustomResolutionAvailable) {
+        scale = 'scale=$_outputWidth:$_outputHeight,';
+      } else {
+        final firstVideoWidth = _videoDetails.first.width;
+        final firstVideoHeight = _videoDetails.first.height;
+        scale = _isResolutionSameOnAll!
+            ? ''
+            : 'scale=$firstVideoWidth:$firstVideoHeight,';
+      }
+
       final fps = _isFrameRateSameOnAll! ? '' : 'fps=30,';
 
       for (var i = 0; i < _videoDetails.length; i++) {
@@ -292,7 +316,7 @@ final class FFmpegService {
     } else {
       // Fast concat that works only if the videos have the same resolution,
       // format, codec, frame rate and audio sample rate.
-      final dirname = path.dirname(outputDir);
+      final dirname = path.dirname(_outputDir!);
       final inputsDir = path.join(dirname, 'inputs.txt');
       final inputsFile = File(inputsDir);
       await inputsFile.writeAsString(
@@ -305,7 +329,7 @@ final class FFmpegService {
       command.write('-f concat -safe 0 -i "$inputsDir" -c copy ');
     }
 
-    command.write(outputDir);
+    command.write(_outputDir);
 
     log(command.toString());
 
@@ -396,5 +420,9 @@ final class FFmpegService {
     _isFrameRateSameOnAll = null;
     _isAudioSameOnAll = null;
     _isReencodingRequired = null;
+    _outputDir = null;
+    _outputWidth = null;
+    _outputHeight = null;
+    _forceFirstAspectRatio = null;
   }
 }
