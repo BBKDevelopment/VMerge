@@ -170,11 +170,11 @@ abstract class AppLocalizations {
   /// **'Could not change the volume of the video! Please try again later.'**
   String get couldNotChangeVolumeMessage;
 
-  /// No description provided for @couldNotInitializeVideoPlayerMessage.
+  /// No description provided for @couldNotInitVideoPlayerMessage.
   ///
   /// In en, this message translates to:
   /// **'Could not initialize video player! Please confirm that video files are valid.'**
-  String get couldNotInitializeVideoPlayerMessage;
+  String get couldNotInitVideoPlayerMessage;
 
   /// No description provided for @couldNotPauseVideoMessage.
   ///
@@ -247,6 +247,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred while merging the videos. Please try again!'**
   String get errorMessage;
+
+  /// No description provided for @failedToInitFFmpegMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialise FFmpeg! Please try again later.'**
+  String get failedToInitFFmpegMessage;
+
+  /// No description provided for @failedToMergeVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to merge videos! Please try again later.'**
+  String get failedToMergeVideosMessage;
+
+  /// No description provided for @failedToSaveVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save merged video! Please grant the required permissions.'**
+  String get failedToSaveVideoMessage;
 
   /// No description provided for @firstAspectRatioTooltip.
   ///
@@ -367,6 +385,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Videos will keep their original resolution.'**
   String get originalResolutionTooltip;
+
+  /// No description provided for @permissionDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied! Please grant the required permissions.'**
+  String get permissionDeniedMessage;
 
   /// No description provided for @pink.
   ///

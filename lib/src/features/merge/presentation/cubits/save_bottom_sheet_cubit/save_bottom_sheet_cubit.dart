@@ -35,7 +35,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.readPermissionException,
+          errorType: SaveBottomSheetErrorType.readPermissionException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -61,7 +61,8 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceInitialisationException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.videoInitialisationException,
+          errorType:
+              SaveBottomSheetErrorType.ffmpegServiceInitialisationException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -77,7 +78,8 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceNotInitialisedException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.videoInitialisationException,
+          errorType:
+              SaveBottomSheetErrorType.ffmpegServiceInitialisationException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -86,7 +88,8 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceInsufficientVideosException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.insufficientVideoException,
+          errorType:
+              SaveBottomSheetErrorType.ffmpegServiceInsufficientVideosException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -95,7 +98,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceMergeException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.mergeException,
+          errorType: SaveBottomSheetErrorType.ffmpegServiceMergeException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -112,7 +115,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.saveException,
+          errorType: SaveBottomSheetErrorType.saveException,
           error: error,
           stackTrace: stackTrace,
         ),

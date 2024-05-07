@@ -47,7 +47,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not change the volume of the video! Please try again later.';
 
   @override
-  String get couldNotInitializeVideoPlayerMessage =>
+  String get couldNotInitVideoPlayerMessage =>
       'Could not initialize video player! Please confirm that video files are valid.';
 
   @override
@@ -91,6 +91,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorMessage =>
       'An error occurred while merging the videos. Please try again!';
+
+  @override
+  String get failedToInitFFmpegMessage =>
+      'Failed to initialise FFmpeg! Please try again later.';
+
+  @override
+  String get failedToMergeVideosMessage =>
+      'Failed to merge videos! Please try again later.';
+
+  @override
+  String get failedToSaveVideoMessage =>
+      'Failed to save merged video! Please grant the required permissions.';
 
   @override
   String get firstAspectRatioTooltip =>
@@ -155,6 +167,10 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get originalResolutionTooltip =>
       'Videos will keep their original resolution.';
+
+  @override
+  String get permissionDeniedMessage =>
+      'Permission denied! Please grant the required permissions.';
 
   @override
   String get pink => 'Pink';

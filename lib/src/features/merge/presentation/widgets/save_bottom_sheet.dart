@@ -23,23 +23,7 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final l10n = context.l10n;
-
-    return BlocListener<SaveBottomSheetCubit, SaveBottomSheetState>(
-      listener: (context, state) {
-        switch (state) {
-          case SaveBottomSheetSuccess():
-            context.read<AppNavigationBarCubit>().resetIsSafeToNavigate();
-          case SaveBottomSheetError():
-            context.read<ErrorCubit>().caught(
-                  message: state.type.toString(),
-                  error: state.error,
-                  stackTrace: state.stackTrace,
-                );
-          default:
-            break;
-        }
-      },
+    return _SaveBottomSheetListener(
       child: Padding(
         padding: AppPadding.allLarge,
         child: Column(
@@ -99,6 +83,67 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _SaveBottomSheetListener extends StatelessWidget {
+  const _SaveBottomSheetListener({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
+    return BlocListener<SaveBottomSheetCubit, SaveBottomSheetState>(
+      listener: (context, state) {
+        switch (state) {
+          case SaveBottomSheetInitial():
+          case SaveBottomSheetAnalysing():
+          case SaveBottomSheetMerging():
+          case SaveBottomSheetSaving():
+            break;
+          case SaveBottomSheetSuccess():
+            context.read<AppNavigationBarCubit>().resetIsSafeToNavigate();
+          case SaveBottomSheetError():
+            switch (state.errorType) {
+              case SaveBottomSheetErrorType.readPermissionException:
+                context.read<ErrorCubit>().caught(
+                      message: l10n.permissionDeniedMessage,
+                      error: state.error,
+                      stackTrace: state.stackTrace,
+                    );
+              case SaveBottomSheetErrorType
+                    .ffmpegServiceInitialisationException:
+                context.read<ErrorCubit>().caught(
+                      message: l10n.failedToInitFFmpegMessage,
+                      error: state.error,
+                      stackTrace: state.stackTrace,
+                    );
+              case SaveBottomSheetErrorType
+                    .ffmpegServiceInsufficientVideosException:
+                context.read<ErrorCubit>().caught(
+                      message: l10n.twoVideosRequiredMessage,
+                      error: state.error,
+                      stackTrace: state.stackTrace,
+                    );
+              case SaveBottomSheetErrorType.ffmpegServiceMergeException:
+                context.read<ErrorCubit>().caught(
+                      message: l10n.failedToMergeVideosMessage,
+                      error: state.error,
+                      stackTrace: state.stackTrace,
+                    );
+              case SaveBottomSheetErrorType.saveException:
+                context.read<ErrorCubit>().caught(
+                      message: l10n.failedToSaveVideoMessage,
+                      error: state.error,
+                      stackTrace: state.stackTrace,
+                    );
+            }
+        }
+      },
+      child: child,
     );
   }
 }

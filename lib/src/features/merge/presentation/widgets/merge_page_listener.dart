@@ -34,7 +34,7 @@ class _MergePageListener extends StatelessWidget {
                     );
               case MergePageErrorType.loadVideoException:
                 context.read<ErrorCubit>().caught(
-                      message: l10n.couldNotInitializeVideoPlayerMessage,
+                      message: l10n.couldNotInitVideoPlayerMessage,
                       error: state.error,
                       stackTrace: state.stackTrace,
                     );
