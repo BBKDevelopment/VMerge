@@ -23,6 +23,7 @@ import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:wakelock_service/wakelock_service.dart';
 
 part '../widgets/control_button_row.dart';
+part '../widgets/merge_page_listener.dart';
 part '../widgets/save_bottom_sheet.dart';
 part '../widgets/selected_video_list.dart';
 part '../widgets/settings_bottom_sheet.dart';
@@ -107,21 +108,8 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<MergePageCubit, MergePageState>(
-      listener: (context, state) {
-        switch (state) {
-          case MergePageInitial():
-            break;
-          case MergePageLoading():
-            _animationController.reset();
-          case MergePageLoaded():
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              _animationController.forward();
-            });
-          case MergePageError():
-            break;
-        }
-      },
+    return _MergePageListener(
+      controller: _animationController,
       child: Scaffold(
         appBar: CustomAppBar(title: context.l10n.appName),
         body: Padding(

@@ -43,6 +43,30 @@ class AppLocalizationsEn extends AppLocalizations {
   String get copyrightMessage => 'Copyright © 2024 BBK Development';
 
   @override
+  String get couldNotChangeVolumeMessage =>
+      'Could not change the volume of the video! Please try again later.';
+
+  @override
+  String get couldNotInitializeVideoPlayerMessage =>
+      'Could not initialize video player! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotPauseVideoMessage =>
+      'Could not pause video! Please try again later.';
+
+  @override
+  String get couldNotPlayVideoMessage =>
+      'Could not play video! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotSeekVideoPositionMessage =>
+      'Could not seek video position! Please try again later.';
+
+  @override
+  String get couldNotSetVideoSpeedMessage =>
+      'Could not set video playback speed! Please try again later.';
+
+  @override
   String get cyan => 'Cyan';
 
   @override
@@ -184,6 +208,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get theme => 'Theme';
+
+  @override
+  String get twoVideosRequiredMessage =>
+      'At least two videos are required to merge!';
 
   @override
   String get unsavedChangesMessage =>

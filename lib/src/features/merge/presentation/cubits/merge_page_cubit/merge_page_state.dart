@@ -96,7 +96,6 @@ enum ActiveVideoIndex {
 }
 
 enum MergePageErrorType {
-  none,
   insufficientVideoException,
   loadVideoException,
   playVideoException,

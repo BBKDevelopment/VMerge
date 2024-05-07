@@ -164,6 +164,42 @@ abstract class AppLocalizations {
   /// **'Copyright © 2024 BBK Development'**
   String get copyrightMessage;
 
+  /// No description provided for @couldNotChangeVolumeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not change the volume of the video! Please try again later.'**
+  String get couldNotChangeVolumeMessage;
+
+  /// No description provided for @couldNotInitializeVideoPlayerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not initialize video player! Please confirm that video files are valid.'**
+  String get couldNotInitializeVideoPlayerMessage;
+
+  /// No description provided for @couldNotPauseVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not pause video! Please try again later.'**
+  String get couldNotPauseVideoMessage;
+
+  /// No description provided for @couldNotPlayVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not play video! Please confirm that video files are valid.'**
+  String get couldNotPlayVideoMessage;
+
+  /// No description provided for @couldNotSeekVideoPositionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not seek video position! Please try again later.'**
+  String get couldNotSeekVideoPositionMessage;
+
+  /// No description provided for @couldNotSetVideoSpeedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not set video playback speed! Please try again later.'**
+  String get couldNotSetVideoSpeedMessage;
+
   /// No description provided for @cyan.
   ///
   /// In en, this message translates to:
@@ -433,6 +469,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theme'**
   String get theme;
+
+  /// No description provided for @twoVideosRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'At least two videos are required to merge!'**
+  String get twoVideosRequiredMessage;
 
   /// No description provided for @unsavedChangesMessage.
   ///
