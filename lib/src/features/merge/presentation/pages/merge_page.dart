@@ -93,9 +93,12 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
       if (videoMetadatas == null) return;
       if (videoMetadatas is! List<VideoMetadata>) return;
 
+      final settingsBottomSheetState = context
+          .read<SettingsBottomSheetCubit>()
+          .state as SettingsBottomSheetLoaded;
       await context.read<MergePageCubit>().loadVideoMetadata(
             videoMetadatas,
-            isSoundOn: context.read<SettingsBottomSheetCubit>().state.isSoundOn,
+            isSoundOn: settingsBottomSheetState.isSoundOn,
           );
     });
   }
