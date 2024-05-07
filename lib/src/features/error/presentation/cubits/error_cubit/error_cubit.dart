@@ -10,8 +10,8 @@ final class ErrorCubit extends Cubit<ErrorState> {
 
   void caught({
     required String message,
-    required Object error,
-    required StackTrace stackTrace,
+    Object? error,
+    StackTrace? stackTrace,
   }) {
     emit(ErrorCaught(message: message, error: error, stackTrace: stackTrace));
   }
