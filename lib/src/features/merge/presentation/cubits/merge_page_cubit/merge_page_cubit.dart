@@ -75,7 +75,11 @@ final class MergePageCubit extends Cubit<MergePageState> {
     required bool isSoundOn,
   }) async {
     if (metadatas.length != 2) {
-      emit(const MergePageError());
+      emit(
+        const MergePageError(
+          errorType: MergePageErrorType.insufficientVideoException,
+        ),
+      );
       return;
     }
 
@@ -117,7 +121,13 @@ final class MergePageCubit extends Cubit<MergePageState> {
         error: error,
         stackTrace: stackTrace,
       );
-      emit(const MergePageError());
+      emit(
+        MergePageError(
+          errorType: MergePageErrorType.loadVideoException,
+          error: error,
+          stackTrace: stackTrace,
+        ),
+      );
     }
   }
 
@@ -145,7 +155,13 @@ final class MergePageCubit extends Cubit<MergePageState> {
 
           _removeVideoPlayerListeners();
 
-          emit(const MergePageError());
+          emit(
+            MergePageError(
+              errorType: MergePageErrorType.playVideoException,
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          );
           // Restores last success state.
           emit(state);
         }
@@ -174,7 +190,13 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-          emit(const MergePageError());
+          emit(
+            MergePageError(
+              errorType: MergePageErrorType.pauseVideoException,
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          );
           // Restores last success state.
           emit(state);
         }
@@ -211,7 +233,13 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-          emit(const MergePageError());
+          emit(
+            MergePageError(
+              errorType: MergePageErrorType.setVideoPlaybackSpeedException,
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          );
           // Restores last success state.
           emit(state);
         } on SeekVideoPositionException catch (error, stackTrace) {
@@ -221,7 +249,13 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-          emit(const MergePageError());
+          emit(
+            MergePageError(
+              errorType: MergePageErrorType.seekVideoPositionException,
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          );
           // Restores last success state.
           emit(state);
         }
@@ -248,7 +282,13 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-          emit(const MergePageError());
+          emit(
+            MergePageError(
+              errorType: MergePageErrorType.setVolumeException,
+              error: error,
+              stackTrace: stackTrace,
+            ),
+          );
           // Restores last success state.
           emit(state);
         }
