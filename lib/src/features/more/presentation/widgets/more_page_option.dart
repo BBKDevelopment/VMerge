@@ -14,6 +14,8 @@ class _MorePageOption extends StatelessWidget {
   final Animation<double> animation;
 
   void _onTapOption(BuildContext context) {
+    final l10n = context.l10n;
+
     switch (option) {
       case MorePageOption.theme:
         // `showModalBottomSheet` is not used here since it does not support
@@ -41,8 +43,7 @@ class _MorePageOption extends StatelessWidget {
             .launch()
             .onError<LaunchReviewException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
-                message:
-                    'Could not launch review service! Please check your internet connection and try again.',
+                message: l10n.couldNotLaunchReviewServiceMessage,
                 error: error,
                 stackTrace: stackTrace,
               );
@@ -58,8 +59,7 @@ class _MorePageOption extends StatelessWidget {
         )
             .onError<SendEmailException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
-                message:
-                    'Could not launch email service! Please check your internet connection and try again.',
+                message: l10n.couldNotLaunchEmailServiceMessage,
                 error: error,
                 stackTrace: stackTrace,
               );
@@ -69,8 +69,7 @@ class _MorePageOption extends StatelessWidget {
             .launch(url: Uri.parse(AppUrl.termsAndConditions))
             .onError<UrlLaunchException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
-                message:
-                    'Could not launch url! Please check your internet connection and try again.',
+                message: l10n.couldNotOpenTermsAndConditionsMessage,
                 error: error,
                 stackTrace: stackTrace,
               );
@@ -80,8 +79,7 @@ class _MorePageOption extends StatelessWidget {
             .launch(url: Uri.parse(AppUrl.privacyPolicy))
             .onError<UrlLaunchException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
-                message:
-                    'Could not launch url! Please check your internet connection and try again.',
+                message: l10n.couldNotOpenPrivacyPolicyMessage,
                 error: error,
                 stackTrace: stackTrace,
               );
