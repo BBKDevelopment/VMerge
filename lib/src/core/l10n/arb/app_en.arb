@@ -14,6 +14,8 @@
   "copyrightMessage": "Copyright © 2024 BBK Development",
   "couldNotChangeVolumeMessage": "Could not change the volume of the video! Please try again later.",
   "couldNotInitVideoPlayerMessage": "Could not initialize video player! Please confirm that video files are valid.",
+  "couldNotLoadVideosMessage": "Could not load videos! Please confirm that video files are valid.",
+  "couldNotOpenAssetPickerMessage": "Could not open the asset picker! Please grant the necessary permissions.",
   "couldNotOpenPrivacyPolicyMessage": "Could not open privacy policy! Please check your internet connection and try again.",
   "couldNotOpenTermsAndConditionsMessage": "Could not open terms and conditions! Please check your internet connection and try again.",
   "couldNotPauseVideoMessage": "Could not pause video! Please try again later.",

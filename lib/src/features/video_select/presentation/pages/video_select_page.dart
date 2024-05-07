@@ -7,9 +7,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
+import 'package:vmerge/src/features/error/error.dart';
 import 'package:vmerge/src/features/navigation/navigation.dart';
 import 'package:vmerge/src/features/video_select/video_select.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
+
+part '../widgets/video_select_page_listener.dart';
 
 class VideoSelectPage extends StatelessWidget {
   const VideoSelectPage({super.key});
@@ -79,12 +82,17 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
           ),
         ),
       );
-    } catch (_) {
+    } catch (error, stackTrace) {
       assets = null;
+      if (!mounted) return;
+      context.read<ErrorCubit>().caught(
+            message: context.l10n.couldNotOpenAssetPickerMessage,
+            error: error,
+            stackTrace: stackTrace,
+          );
     }
 
     if (!mounted) return;
-
     await context.read<VideoSelectPageCubit>().updateVideos(assets);
   }
 
@@ -101,76 +109,79 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: CustomAppBar(title: context.l10n.appName),
-      body: Padding(
-        padding: AppPadding.general,
-        child: BlocConsumer<VideoSelectPageCubit, VideoSelectPageState>(
-          listener: (context, state) {
-            switch (state) {
-              case VideoSelectPageLoading():
-                _openAssetPicker();
-                _animationController.reset();
-              case VideoSelectPageLoaded():
-                context.read<AppNavigationBarCubit>().updatePage(
-                      NavigationBarPage.merge,
-                      args: state.metadataList,
-                    );
-              case VideoSelectPageError():
-                WidgetsBinding.instance.addPostFrameCallback(
-                  (_) => _animationController.forward(),
-                );
-            }
-          },
-          builder: (context, state) {
-            return switch (state) {
-              VideoSelectPageLoading() => Center(
-                  child: SizedBox.square(
-                    dimension: context.screenWidth / 4 / 3,
-                    child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                        context.theme.iconTheme.color!,
+    return _VideoSelectPageListener(
+      child: Scaffold(
+        appBar: CustomAppBar(title: context.l10n.appName),
+        body: Padding(
+          padding: AppPadding.general,
+          child: BlocConsumer<VideoSelectPageCubit, VideoSelectPageState>(
+            listener: (context, state) {
+              switch (state) {
+                case VideoSelectPageLoading():
+                  _openAssetPicker();
+                  _animationController.reset();
+                case VideoSelectPageLoaded():
+                  context.read<AppNavigationBarCubit>().updatePage(
+                        NavigationBarPage.merge,
+                        args: state.metadataList,
+                      );
+                case VideoSelectPageError():
+                  WidgetsBinding.instance.addPostFrameCallback(
+                    (_) => _animationController.forward(),
+                  );
+              }
+            },
+            builder: (context, state) {
+              return switch (state) {
+                VideoSelectPageLoading() => Center(
+                    child: SizedBox.square(
+                      dimension: context.screenWidth / 4 / 3,
+                      child: CircularProgressIndicator(
+                        valueColor: AlwaysStoppedAnimation<Color>(
+                          context.theme.iconTheme.color!,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              VideoSelectPageLoaded() => const SizedBox.shrink(),
-              VideoSelectPageError() => AnimatedBuilder(
-                  animation: _animation,
-                  builder: (context, child) {
-                    return FadeTransition(
-                      opacity: CurvedAnimation(
-                        parent: _animation,
-                        curve: const Interval(
-                          0,
-                          1,
-                          curve: Curves.easeOut,
-                        ),
-                      ),
-                      child: SlideTransition(
-                        position: Tween(
-                          begin: const Offset(0, -0.05),
-                          end: Offset.zero,
-                        ).animate(
-                          CurvedAnimation(
-                            parent: _animation,
-                            curve: const Interval(
-                              0,
-                              1,
-                              curve: Curves.easeOut,
-                            ),
+                VideoSelectPageLoaded() => const SizedBox.shrink(),
+                VideoSelectPageError() => AnimatedBuilder(
+                    animation: _animation,
+                    builder: (context, child) {
+                      return FadeTransition(
+                        opacity: CurvedAnimation(
+                          parent: _animation,
+                          curve: const Interval(
+                            0,
+                            1,
+                            curve: Curves.easeOut,
                           ),
                         ),
-                        child: child,
-                      ),
-                    );
-                  },
-                  child: NoVideoWarning(
-                    onPressed: context.read<VideoSelectPageCubit>().resetVideos,
+                        child: SlideTransition(
+                          position: Tween(
+                            begin: const Offset(0, -0.05),
+                            end: Offset.zero,
+                          ).animate(
+                            CurvedAnimation(
+                              parent: _animation,
+                              curve: const Interval(
+                                0,
+                                1,
+                                curve: Curves.easeOut,
+                              ),
+                            ),
+                          ),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: NoVideoWarning(
+                      onPressed:
+                          context.read<VideoSelectPageCubit>().resetVideos,
+                    ),
                   ),
-                ),
-            };
-          },
+              };
+            },
+          ),
         ),
       ),
     );

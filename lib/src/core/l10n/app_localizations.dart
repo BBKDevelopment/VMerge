@@ -176,6 +176,30 @@ abstract class AppLocalizations {
   /// **'Could not initialize video player! Please confirm that video files are valid.'**
   String get couldNotInitVideoPlayerMessage;
 
+  /// No description provided for @couldNotLoadVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load videos! Please confirm that video files are valid.'**
+  String get couldNotLoadVideosMessage;
+
+  /// No description provided for @couldNotOpenAssetPickerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the asset picker! Please grant the necessary permissions.'**
+  String get couldNotOpenAssetPickerMessage;
+
+  /// No description provided for @couldNotOpenPrivacyPolicyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open privacy policy! Please check your internet connection and try again.'**
+  String get couldNotOpenPrivacyPolicyMessage;
+
+  /// No description provided for @couldNotOpenTermsAndConditionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open terms and conditions! Please check your internet connection and try again.'**
+  String get couldNotOpenTermsAndConditionsMessage;
+
   /// No description provided for @couldNotPauseVideoMessage.
   ///
   /// In en, this message translates to:
@@ -187,6 +211,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not play video! Please confirm that video files are valid.'**
   String get couldNotPlayVideoMessage;
+
+  /// No description provided for @couldNotLaunchEmailServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch email service! Please check your internet connection and try again.'**
+  String get couldNotLaunchEmailServiceMessage;
+
+  /// No description provided for @couldNotLaunchReviewServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch review service! Please check your internet connection and try again.'**
+  String get couldNotLaunchReviewServiceMessage;
 
   /// No description provided for @couldNotSeekVideoPositionMessage.
   ///

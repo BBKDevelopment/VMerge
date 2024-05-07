@@ -51,12 +51,36 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not initialize video player! Please confirm that video files are valid.';
 
   @override
+  String get couldNotLoadVideosMessage =>
+      'Could not load videos! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotOpenAssetPickerMessage =>
+      'Could not open the asset picker! Please grant the necessary permissions.';
+
+  @override
+  String get couldNotOpenPrivacyPolicyMessage =>
+      'Could not open privacy policy! Please check your internet connection and try again.';
+
+  @override
+  String get couldNotOpenTermsAndConditionsMessage =>
+      'Could not open terms and conditions! Please check your internet connection and try again.';
+
+  @override
   String get couldNotPauseVideoMessage =>
       'Could not pause video! Please try again later.';
 
   @override
   String get couldNotPlayVideoMessage =>
       'Could not play video! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotLaunchEmailServiceMessage =>
+      'Could not launch email service! Please check your internet connection and try again.';
+
+  @override
+  String get couldNotLaunchReviewServiceMessage =>
+      'Could not launch review service! Please check your internet connection and try again.';
 
   @override
   String get couldNotSeekVideoPositionMessage =>
