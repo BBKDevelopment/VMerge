@@ -23,6 +23,7 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
 
       context.read<SaveBottomSheetCubit>().mergeVideos(
             isAudioOn: settingsBottomSheetState.isAudioOn,
+            speed: settingsBottomSheetState.playbackSpeed.value,
             outputWidth:
                 settingsBottomSheetState.videoResolution.width?.toInt(),
             outputHeight:

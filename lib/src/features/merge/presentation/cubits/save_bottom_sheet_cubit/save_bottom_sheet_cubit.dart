@@ -30,6 +30,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
 
   Future<void> mergeVideos({
     required bool isAudioOn,
+    required double speed,
     int? outputWidth,
     int? outputHeight,
     bool? forceFirstAspectRatio,
@@ -59,9 +60,12 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     try {
       emit(const SaveBottomSheetAnalysing());
       await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
-      await _ffmpegService.enableProgressCallback((progress) {
-        emit(SaveBottomSheetMerging(progress: progress.ceil()));
-      });
+      await _ffmpegService.enableProgressCallback(
+        (progress) {
+          emit(SaveBottomSheetMerging(progress: progress.ceil()));
+        },
+        speed: speed,
+      );
       await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceInitialisationException catch (error, stackTrace) {
       emit(
@@ -80,6 +84,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       emit(const SaveBottomSheetMerging(progress: 0));
       await _ffmpegService.mergeVideos(
         outputDir: outputVideoDir,
+        speed: speed,
         isAudioOn: isAudioOn,
         outputWidth: outputWidth,
         outputHeight: outputHeight,
