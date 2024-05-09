@@ -50,6 +50,7 @@
   "mergingMessage": "Merging videos in a fast and efficient way. This process may take a while so please be patient!",
   "more": "More",
   "off": "Off",
+  "ok": "OK",
   "on": "On",
   "openPicker": "Open Picker",
   "orange": "Orange",
@@ -58,11 +59,13 @@
   "permissionDeniedMessage": "Permission denied! Please grant the required permissions.",
   "pink": "Pink",
   "playbackSpeed": "Playback Speed",
+  "playbackSpeedWarningMessage": "Setting a custom playback speed will force re-encoding during the merge process and may take longer to complete.",
   "privacyPolicy": "Privacy Policy",
   "purple": "Purple",
   "rateUs": "Rate Us",
   "red": "Red",
   "resolution": "Resolution",
+  "resolutionWarningMessage": "Setting a custom resolution will force re-encoding during the merge process and may take longer to complete.",
   "saveVideo": "Save Video",
   "saving": "Saving",
   "savingMessage": "Saving the merged video to your device. Hang tight, this won't take long!",
@@ -76,5 +79,6 @@
   "twoVideosRequiredMessage": "At least two videos are required to merge!",
   "unsavedChangesMessage": "You have unsaved changes. Are you sure you want to leave this page?",
   "video": "Video",
+  "warning": "Warning",
   "yellow": "Yellow"
 }

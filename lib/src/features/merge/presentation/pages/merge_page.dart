@@ -27,6 +27,7 @@ part '../widgets/merge_page_listener.dart';
 part '../widgets/save_bottom_sheet.dart';
 part '../widgets/selected_video_list.dart';
 part '../widgets/settings_bottom_sheet.dart';
+part '../widgets/settings_warning_dialog.dart';
 part '../widgets/video_player.dart';
 part '../widgets/video_thumbnail.dart';
 
