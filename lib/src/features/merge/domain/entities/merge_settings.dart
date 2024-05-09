@@ -3,27 +3,27 @@ import 'package:vmerge/src/core/core.dart';
 
 final class MergeSettings extends DomainEntity {
   const MergeSettings({
-    required this.isSoundOn,
+    required this.isAudioOn,
     required this.playbackSpeed,
     required this.videoResolution,
     required this.videoAspectRatio,
   });
 
-  final bool isSoundOn;
+  final bool isAudioOn;
   final PlaybackSpeed playbackSpeed;
   final VideoResolution videoResolution;
   final VideoAspectRatio videoAspectRatio;
 
   @override
   String toString() {
-    return 'MergeSettings(isSoundOn: $isSoundOn, playbackSpeed: $playbackSpeed,'
+    return 'MergeSettings(isSoundOn: $isAudioOn, playbackSpeed: $playbackSpeed,'
         ' videoResolution: $videoResolution, videoAspectRatio: '
         '$videoAspectRatio)';
   }
 
   @override
   List<Object> get props => [
-        isSoundOn,
+        isAudioOn,
         playbackSpeed,
         videoResolution,
         videoAspectRatio,

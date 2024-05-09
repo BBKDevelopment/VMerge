@@ -14,7 +14,7 @@ final class LocalMergeSettings implements DataModel<MergeSettings> {
 
   LocalMergeSettings.fromEntity(MergeSettings entity)
       : this.fromArgs(
-          isSoundOn: entity.isSoundOn,
+          isSoundOn: entity.isAudioOn,
           playbackSpeed: entity.playbackSpeed.toString(),
           videoResolution: entity.videoResolution.toString(),
           videoAspectRatio: entity.videoAspectRatio.toString(),
@@ -29,7 +29,7 @@ final class LocalMergeSettings implements DataModel<MergeSettings> {
   @override
   MergeSettings toEntity() {
     return MergeSettings(
-      isSoundOn: isSoundOn,
+      isAudioOn: isSoundOn,
       playbackSpeed: PlaybackSpeed.fromString(playbackSpeed),
       videoResolution: VideoResolution.fromString(videoResolution),
       videoAspectRatio: VideoAspectRatio.fromString(videoAspectRatio),

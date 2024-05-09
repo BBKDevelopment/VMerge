@@ -26,8 +26,25 @@ final class VideoSelectPageLoaded extends VideoSelectPageState {
 }
 
 final class VideoSelectPageError extends VideoSelectPageState {
-  const VideoSelectPageError();
+  const VideoSelectPageError({
+    required this.errorType,
+    this.error,
+    this.stackTrace,
+  });
+
+  final VideoSelectPageErrorType errorType;
+  final Object? error;
+  final StackTrace? stackTrace;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        errorType,
+        error,
+        stackTrace,
+      ];
+}
+
+enum VideoSelectPageErrorType {
+  insufficientVideoException,
+  loadingVideoException,
 }

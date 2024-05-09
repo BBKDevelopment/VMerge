@@ -164,6 +164,78 @@ abstract class AppLocalizations {
   /// **'Copyright © 2024 BBK Development'**
   String get copyrightMessage;
 
+  /// No description provided for @couldNotChangeVolumeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not change the volume of the video! Please try again later.'**
+  String get couldNotChangeVolumeMessage;
+
+  /// No description provided for @couldNotInitVideoPlayerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not initialize video player! Please confirm that video files are valid.'**
+  String get couldNotInitVideoPlayerMessage;
+
+  /// No description provided for @couldNotLoadVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load videos! Please confirm that video files are valid.'**
+  String get couldNotLoadVideosMessage;
+
+  /// No description provided for @couldNotOpenAssetPickerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the asset picker! Please grant the necessary permissions.'**
+  String get couldNotOpenAssetPickerMessage;
+
+  /// No description provided for @couldNotOpenPrivacyPolicyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open privacy policy! Please check your internet connection and try again.'**
+  String get couldNotOpenPrivacyPolicyMessage;
+
+  /// No description provided for @couldNotOpenTermsAndConditionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open terms and conditions! Please check your internet connection and try again.'**
+  String get couldNotOpenTermsAndConditionsMessage;
+
+  /// No description provided for @couldNotPauseVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not pause video! Please try again later.'**
+  String get couldNotPauseVideoMessage;
+
+  /// No description provided for @couldNotPlayVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not play video! Please confirm that video files are valid.'**
+  String get couldNotPlayVideoMessage;
+
+  /// No description provided for @couldNotLaunchEmailServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch email service! Please check your internet connection and try again.'**
+  String get couldNotLaunchEmailServiceMessage;
+
+  /// No description provided for @couldNotLaunchReviewServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch review service! Please check your internet connection and try again.'**
+  String get couldNotLaunchReviewServiceMessage;
+
+  /// No description provided for @couldNotSeekVideoPositionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not seek video position! Please try again later.'**
+  String get couldNotSeekVideoPositionMessage;
+
+  /// No description provided for @couldNotSetVideoSpeedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not set video playback speed! Please try again later.'**
+  String get couldNotSetVideoSpeedMessage;
+
   /// No description provided for @cyan.
   ///
   /// In en, this message translates to:
@@ -211,6 +283,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'An error occurred while merging the videos. Please try again!'**
   String get errorMessage;
+
+  /// No description provided for @failedToInitFFmpegMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialise FFmpeg! Please try again later.'**
+  String get failedToInitFFmpegMessage;
+
+  /// No description provided for @failedToMergeVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to merge videos! Please try again later.'**
+  String get failedToMergeVideosMessage;
+
+  /// No description provided for @failedToSaveVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save merged video! Please grant the required permissions.'**
+  String get failedToSaveVideoMessage;
 
   /// No description provided for @firstAspectRatioTooltip.
   ///
@@ -332,6 +422,12 @@ abstract class AppLocalizations {
   /// **'Videos will keep their original resolution.'**
   String get originalResolutionTooltip;
 
+  /// No description provided for @permissionDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied! Please grant the required permissions.'**
+  String get permissionDeniedMessage;
+
   /// No description provided for @pink.
   ///
   /// In en, this message translates to:
@@ -433,6 +529,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Theme'**
   String get theme;
+
+  /// No description provided for @twoVideosRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'At least two videos are required to merge!'**
+  String get twoVideosRequiredMessage;
 
   /// No description provided for @unsavedChangesMessage.
   ///

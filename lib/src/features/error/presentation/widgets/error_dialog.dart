@@ -12,12 +12,13 @@ class _ErrorDialog extends StatelessWidget {
   });
 
   final String message;
-  final Object error;
-  final StackTrace stackTrace;
+  final Object? error;
+  final StackTrace? stackTrace;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final showExpansionTile = kDebugMode && error != null && stackTrace != null;
 
     return AlertDialog(
       title: Text(
@@ -29,7 +30,7 @@ class _ErrorDialog extends StatelessWidget {
           Text(
             message,
           ),
-          if (kDebugMode) ...[
+          if (showExpansionTile) ...[
             const SizedBox(
               height: AppPadding.large,
             ),

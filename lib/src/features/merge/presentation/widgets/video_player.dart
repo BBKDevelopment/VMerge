@@ -47,17 +47,21 @@ class _VideoPlayer extends StatelessWidget {
       },
       child: BlocBuilder<MergePageCubit, MergePageState>(
         buildWhen: (previous, current) {
-          if (previous is MergePageLoaded && current is MergePageLoaded) {
-            return previous.isVideoPlaying != current.isVideoPlaying ||
-                previous.videoPlayerController != current.videoPlayerController;
-          }
+          if (previous is! MergePageLoaded) return true;
+          if (current is! MergePageLoaded) return true;
 
-          return true;
+          return previous.isVideoPlaying != current.isVideoPlaying ||
+              previous.videoPlayerController != current.videoPlayerController;
         },
         builder: (context, state) {
           final videoResolution =
               context.select<SettingsBottomSheetCubit, VideoResolution>(
-            (cubit) => cubit.state.videoResolution,
+            (cubit) {
+              return switch (cubit.state) {
+                final SettingsBottomSheetLoaded state => state.videoResolution,
+                _ => VideoResolution.original,
+              };
+            },
           );
 
           return switch (state) {

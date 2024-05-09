@@ -17,19 +17,19 @@ final class ErrorIdle extends ErrorState {
 
 final class ErrorCaught extends ErrorState {
   const ErrorCaught({
-    required this.error,
-    required this.stackTrace,
     required this.message,
+    this.error,
+    this.stackTrace,
   });
 
   final String message;
 
-  final Object error;
+  final Object? error;
 
-  final StackTrace stackTrace;
+  final StackTrace? stackTrace;
 
   @override
-  List<Object> get props => [
+  List<Object?> get props => [
         message,
         error,
         stackTrace,

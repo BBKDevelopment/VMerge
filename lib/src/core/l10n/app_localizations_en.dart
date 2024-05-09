@@ -43,6 +43,54 @@ class AppLocalizationsEn extends AppLocalizations {
   String get copyrightMessage => 'Copyright © 2024 BBK Development';
 
   @override
+  String get couldNotChangeVolumeMessage =>
+      'Could not change the volume of the video! Please try again later.';
+
+  @override
+  String get couldNotInitVideoPlayerMessage =>
+      'Could not initialize video player! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotLoadVideosMessage =>
+      'Could not load videos! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotOpenAssetPickerMessage =>
+      'Could not open the asset picker! Please grant the necessary permissions.';
+
+  @override
+  String get couldNotOpenPrivacyPolicyMessage =>
+      'Could not open privacy policy! Please check your internet connection and try again.';
+
+  @override
+  String get couldNotOpenTermsAndConditionsMessage =>
+      'Could not open terms and conditions! Please check your internet connection and try again.';
+
+  @override
+  String get couldNotPauseVideoMessage =>
+      'Could not pause video! Please try again later.';
+
+  @override
+  String get couldNotPlayVideoMessage =>
+      'Could not play video! Please confirm that video files are valid.';
+
+  @override
+  String get couldNotLaunchEmailServiceMessage =>
+      'Could not launch email service! Please check your internet connection and try again.';
+
+  @override
+  String get couldNotLaunchReviewServiceMessage =>
+      'Could not launch review service! Please check your internet connection and try again.';
+
+  @override
+  String get couldNotSeekVideoPositionMessage =>
+      'Could not seek video position! Please try again later.';
+
+  @override
+  String get couldNotSetVideoSpeedMessage =>
+      'Could not set video playback speed! Please try again later.';
+
+  @override
   String get cyan => 'Cyan';
 
   @override
@@ -67,6 +115,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get errorMessage =>
       'An error occurred while merging the videos. Please try again!';
+
+  @override
+  String get failedToInitFFmpegMessage =>
+      'Failed to initialise FFmpeg! Please try again later.';
+
+  @override
+  String get failedToMergeVideosMessage =>
+      'Failed to merge videos! Please try again later.';
+
+  @override
+  String get failedToSaveVideoMessage =>
+      'Failed to save merged video! Please grant the required permissions.';
 
   @override
   String get firstAspectRatioTooltip =>
@@ -133,6 +193,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Videos will keep their original resolution.';
 
   @override
+  String get permissionDeniedMessage =>
+      'Permission denied! Please grant the required permissions.';
+
+  @override
   String get pink => 'Pink';
 
   @override
@@ -184,6 +248,10 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get theme => 'Theme';
+
+  @override
+  String get twoVideosRequiredMessage =>
+      'At least two videos are required to merge!';
 
   @override
   String get unsavedChangesMessage =>

@@ -56,18 +56,18 @@ final class SaveBottomSheetSuccess extends SaveBottomSheetState {
 
 final class SaveBottomSheetError extends SaveBottomSheetState {
   const SaveBottomSheetError({
-    required this.type,
+    required this.errorType,
     required this.error,
     required this.stackTrace,
   });
 
-  final SaveBottomSheetErrorType type;
+  final SaveBottomSheetErrorType errorType;
   final Object error;
   final StackTrace stackTrace;
 
   @override
   List<Object?> get props => [
-        type,
+        errorType,
         error,
         stackTrace,
       ];
@@ -75,43 +75,8 @@ final class SaveBottomSheetError extends SaveBottomSheetState {
 
 enum SaveBottomSheetErrorType {
   readPermissionException,
-  videoInitialisationException,
-  insufficientVideoException,
-  mergeException,
+  ffmpegServiceInitialisationException,
+  ffmpegServiceInsufficientVideosException,
+  ffmpegServiceMergeException,
   saveException,
 }
-
-// final class SaveBottomSheetState extends Equatable {
-//   const SaveBottomSheetState({
-//     required this.videoMetadatas,
-//     required this.status,
-//     required this.progress,
-//   });
-//
-//   final List<VideoMetadata> videoMetadatas;
-//   final SaveBottomSheetStatus status;
-//   final int progress;
-//
-//   SaveBottomSheetState copyWith({
-//     List<VideoMetadata>? videoMetadatas,
-//     SaveBottomSheetStatus? status,
-//     int? progress,
-//   }) {
-//     return SaveBottomSheetState(
-//       videoMetadatas: videoMetadatas ?? this.videoMetadatas,
-//       status: status ?? this.status,
-//       progress: progress ?? this.progress,
-//     );
-//   }
-//
-//   @override
-//   List<Object?> get props => [videoMetadatas, status, progress];
-// }
-//
-// enum SaveBottomSheetStatus {
-//   analyse,
-//   merge,
-//   save,
-//   success,
-//   error,
-// }

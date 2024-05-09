@@ -72,13 +72,35 @@ final class MergePageLoaded extends MergePageState {
 }
 
 final class MergePageError extends MergePageState {
-  const MergePageError();
+  const MergePageError({
+    required this.errorType,
+    this.error,
+    this.stackTrace,
+  });
+
+  final MergePageErrorType errorType;
+  final Object? error;
+  final StackTrace? stackTrace;
 
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [
+        errorType,
+        error,
+        stackTrace,
+      ];
 }
 
 enum ActiveVideoIndex {
   one,
   two,
+}
+
+enum MergePageErrorType {
+  insufficientVideoException,
+  loadVideoException,
+  playVideoException,
+  pauseVideoException,
+  setVideoPlaybackSpeedException,
+  seekVideoPositionException,
+  setVolumeException,
 }

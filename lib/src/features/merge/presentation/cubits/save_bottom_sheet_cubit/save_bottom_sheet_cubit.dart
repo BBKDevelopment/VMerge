@@ -28,14 +28,19 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     emit(SaveBottomSheetInitial(videoMetadatas: videoMetadatas));
   }
 
-  Future<void> mergeVideos() async {
+  Future<void> mergeVideos({
+    required bool isAudioOn,
+    int? outputWidth,
+    int? outputHeight,
+    bool? forceFirstAspectRatio,
+  }) async {
     final Directory appDocsDir;
     try {
       appDocsDir = await getApplicationDocumentsDirectory();
     } catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.readPermissionException,
+          errorType: SaveBottomSheetErrorType.readPermissionException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -61,7 +66,8 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceInitialisationException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.videoInitialisationException,
+          errorType:
+              SaveBottomSheetErrorType.ffmpegServiceInitialisationException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -72,12 +78,19 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
 
     try {
       emit(const SaveBottomSheetMerging(progress: 0));
-      await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
+      await _ffmpegService.mergeVideos(
+        outputDir: outputVideoDir,
+        isAudioOn: isAudioOn,
+        outputWidth: outputWidth,
+        outputHeight: outputHeight,
+        forceFirstAspectRatio: forceFirstAspectRatio,
+      );
       await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceNotInitialisedException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.videoInitialisationException,
+          errorType:
+              SaveBottomSheetErrorType.ffmpegServiceInitialisationException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -86,7 +99,8 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceInsufficientVideosException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.insufficientVideoException,
+          errorType:
+              SaveBottomSheetErrorType.ffmpegServiceInsufficientVideosException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -95,7 +109,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } on FFmpegServiceMergeException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.mergeException,
+          errorType: SaveBottomSheetErrorType.ffmpegServiceMergeException,
           error: error,
           stackTrace: stackTrace,
         ),
@@ -112,7 +126,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     } catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
-          type: SaveBottomSheetErrorType.saveException,
+          errorType: SaveBottomSheetErrorType.saveException,
           error: error,
           stackTrace: stackTrace,
         ),

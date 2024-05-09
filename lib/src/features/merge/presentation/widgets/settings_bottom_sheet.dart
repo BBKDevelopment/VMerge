@@ -9,92 +9,157 @@ class _SettingsBottomSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<SettingsBottomSheetCubit, SettingsBottomSheetState>(
-      listener: (context, state) =>
-          context.read<MergePageCubit>().setVideoSpeed(state.playbackSpeed),
-      listenWhen: (previous, current) =>
-          previous.playbackSpeed != current.playbackSpeed,
-      child: BlocListener<SettingsBottomSheetCubit, SettingsBottomSheetState>(
-        listener: (context, state) =>
-            context.read<MergePageCubit>().setSound(isSoundOn: state.isSoundOn),
-        listenWhen: (previous, current) =>
-            previous.isSoundOn != current.isSoundOn,
-        child: Padding(
-          padding: AppPadding.allLarge,
-          child:
-              BlocBuilder<SettingsBottomSheetCubit, SettingsBottomSheetState>(
-            builder: (context, state) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: AppButtonSize.small),
-                      Hero(
-                        tag: 'settings',
-                        child: Assets.images.settings.svg(
-                          height: AppIconSize.xLarge,
-                          colorFilter: ColorFilter.mode(
-                            context.theme.iconTheme.color!,
-                            BlendMode.srcIn,
-                          ),
-                        ),
-                      ),
-                      SizedBox.square(
-                        dimension: AppButtonSize.small,
-                        child: IconButton.filledTonal(
-                          onPressed: context.pop,
-                          icon: Assets.images.close.svg(
-                            height: AppIconSize.xxSmall,
-                            colorFilter: ColorFilter.mode(
-                              context.colorScheme.onSecondaryContainer,
-                              BlendMode.srcIn,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: AppPadding.medium,
-                  ),
-                  Text(
-                    context.l10n.settings,
-                    style: context.textTheme.titleLarge,
-                  ),
-                  const SizedBox(
-                    height: AppPadding.xxLarge,
-                  ),
-                  _SoundSelector(
-                    isSoundOn: state.isSoundOn,
-                  ),
-                  const Divider(
-                    height: AppPadding.large,
-                  ),
-                  _ResolutionSelector(
-                    state.videoResolution,
-                  ),
-                  const SizedBox(
-                    height: AppPadding.large,
-                  ),
-                  _AspectRatioSelector(
-                    state.videoAspectRatio,
-                    state.videoResolution,
-                  ),
-                  const Divider(
-                    height: AppPadding.large,
-                  ),
-                  _SpeedSelector(
-                    state.playbackSpeed,
-                  ),
-                ],
-              );
-            },
-          ),
+    return _SettingsBottomSheetListener(
+      child: Padding(
+        padding: AppPadding.allLarge,
+        child: BlocBuilder<SettingsBottomSheetCubit, SettingsBottomSheetState>(
+          builder: (context, state) {
+            return switch (state) {
+              SettingsBottomSheetInitial() => const SizedBox.shrink(),
+              SettingsBottomSheetLoading() => const Center(
+                  child: CircularProgressIndicator(),
+                ),
+              SettingsBottomSheetLoaded() =>
+                _SettingsBottomSheetLoaded(state: state),
+              SettingsBottomSheetError() => const SizedBox.shrink(),
+            };
+          },
         ),
       ),
+    );
+  }
+}
+
+class _SettingsBottomSheetListener extends StatelessWidget {
+  const _SettingsBottomSheetListener({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<SettingsBottomSheetCubit, SettingsBottomSheetState>(
+          listener: (context, state) {
+            switch (state) {
+              case SettingsBottomSheetInitial():
+              case SettingsBottomSheetLoading():
+                break;
+              case SettingsBottomSheetLoaded():
+                context
+                    .read<MergePageCubit>()
+                    .setVideoSpeed(state.playbackSpeed);
+              case SettingsBottomSheetError():
+                break;
+            }
+          },
+          listenWhen: (previous, current) {
+            if (previous is! SettingsBottomSheetLoaded) return false;
+            if (current is! SettingsBottomSheetLoaded) return false;
+
+            return previous.playbackSpeed != current.playbackSpeed;
+          },
+        ),
+        BlocListener<SettingsBottomSheetCubit, SettingsBottomSheetState>(
+          listener: (context, state) {
+            switch (state) {
+              case SettingsBottomSheetInitial():
+              case SettingsBottomSheetLoading():
+                break;
+              case SettingsBottomSheetLoaded():
+                context
+                    .read<MergePageCubit>()
+                    .setSound(isSoundOn: state.isAudioOn);
+              case SettingsBottomSheetError():
+                break;
+            }
+          },
+          listenWhen: (previous, current) {
+            if (previous is! SettingsBottomSheetLoaded) return false;
+            if (current is! SettingsBottomSheetLoaded) return false;
+
+            return previous.isAudioOn != current.isAudioOn;
+          },
+        ),
+      ],
+      child: child,
+    );
+  }
+}
+
+class _SettingsBottomSheetLoaded extends StatelessWidget {
+  const _SettingsBottomSheetLoaded({required this.state});
+
+  final SettingsBottomSheetLoaded state;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(width: AppButtonSize.small),
+            Hero(
+              tag: 'settings',
+              child: Assets.images.settings.svg(
+                height: AppIconSize.xLarge,
+                colorFilter: ColorFilter.mode(
+                  context.theme.iconTheme.color!,
+                  BlendMode.srcIn,
+                ),
+              ),
+            ),
+            SizedBox.square(
+              dimension: AppButtonSize.small,
+              child: IconButton.filledTonal(
+                onPressed: context.pop,
+                icon: Assets.images.close.svg(
+                  height: AppIconSize.xxSmall,
+                  colorFilter: ColorFilter.mode(
+                    context.colorScheme.onSecondaryContainer,
+                    BlendMode.srcIn,
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(
+          height: AppPadding.medium,
+        ),
+        Text(
+          context.l10n.settings,
+          style: context.textTheme.titleLarge,
+        ),
+        const SizedBox(
+          height: AppPadding.xxLarge,
+        ),
+        _SoundSelector(
+          isSoundOn: state.isAudioOn,
+        ),
+        const Divider(
+          height: AppPadding.large,
+        ),
+        _ResolutionSelector(
+          state.videoResolution,
+        ),
+        const SizedBox(
+          height: AppPadding.large,
+        ),
+        _AspectRatioSelector(
+          state.videoAspectRatio,
+          state.videoResolution,
+        ),
+        const Divider(
+          height: AppPadding.large,
+        ),
+        _SpeedSelector(
+          state.playbackSpeed,
+        ),
+      ],
     );
   }
 }

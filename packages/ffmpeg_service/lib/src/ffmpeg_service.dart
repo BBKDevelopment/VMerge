@@ -5,6 +5,7 @@
 import 'dart:async';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math' as math;
 
 import 'package:collection/collection.dart';
 import 'package:ffmpeg_kit_flutter_full_gpl/ffmpeg_kit.dart';
@@ -39,10 +40,6 @@ final class FFmpegService {
   bool? _isFrameRateSameOnAll;
   bool? _isAudioSameOnAll;
   bool? _isReencodingRequired;
-  String? _outputDir;
-  int? _outputWidth;
-  int? _outputHeight;
-  bool? _forceFirstAspectRatio;
 
   /// Initialises the FFmpeg service and analyses the videos to determine if
   /// re-encoding is required.
@@ -222,6 +219,7 @@ final class FFmpegService {
   /// the videos.
   Future<void> mergeVideos({
     required String outputDir,
+    bool isAudioOn = true,
     int? outputWidth,
     int? outputHeight,
     bool? forceFirstAspectRatio,
@@ -234,12 +232,13 @@ final class FFmpegService {
       throw const FFmpegServiceInsufficientVideosException();
     }
 
-    _outputDir = outputDir;
-    _outputWidth = outputWidth;
-    _outputHeight = outputHeight;
-    _forceFirstAspectRatio = forceFirstAspectRatio;
-
-    final command = await _createCommand();
+    final command = await _createCommand(
+      outputDir,
+      isAudioOn,
+      outputWidth,
+      outputHeight,
+      forceFirstAspectRatio,
+    );
 
     await _enableLogOnDebug();
 
@@ -256,17 +255,24 @@ final class FFmpegService {
   }
 
   /// Creates the FFmpeg command to merge the videos.
-  Future<String> _createCommand() async {
+  Future<String> _createCommand(
+    String outputDir,
+    bool isAudioOn,
+    int? outputWidth,
+    int? outputHeight,
+    bool? forceFirstAspectRatio,
+  ) async {
     final command = StringBuffer('-y ');
     final isCustomResolutionAvailable =
-        _outputWidth != null && _outputHeight != null;
+        outputWidth != null && outputHeight != null;
 
     if (_isReencodingRequired! || isCustomResolutionAvailable) {
       for (final videoInformation in _videoDetails) {
         command.write('-i "${videoInformation.directory}" ');
       }
 
-      if (!_isAudioSameOnAll!) {
+      if (!_isAudioSameOnAll! && isAudioOn) {
+        // Adds silent audio for videos that do not have audio.
         command.write('-f lavfi -t 1 -i anullsrc ');
       }
 
@@ -274,13 +280,33 @@ final class FFmpegService {
 
       final String scale;
       if (isCustomResolutionAvailable) {
-        scale = 'scale=$_outputWidth:$_outputHeight,';
-      } else {
+        scale = 'scale=$outputWidth:$outputHeight,';
+      } else if (_isResolutionSameOnAll!) {
+        scale = '';
+      } else if (forceFirstAspectRatio!) {
         final firstVideoWidth = _videoDetails.first.width;
         final firstVideoHeight = _videoDetails.first.height;
-        scale = _isResolutionSameOnAll!
-            ? ''
-            : 'scale=$firstVideoWidth:$firstVideoHeight,';
+        // Scales all videos to the resolution of the first video.
+        scale = 'scale=$firstVideoWidth:$firstVideoHeight,';
+      } else {
+        final maxWidth = _videoDetails.map((videoInformation) {
+          print('w: ${videoInformation.width} h: ${videoInformation.height}');
+          return videoInformation.width!;
+        }).reduce(math.max);
+        final maxHeight = _videoDetails
+            .map(
+              (videoInformation) {
+                return videoInformation.height! /
+                    videoInformation.width! *
+                    maxWidth;
+              },
+            )
+            .reduce(math.max)
+            .round();
+        // Scales all videos' width to the maximum width while maintaining the
+        // aspect ratio.
+        scale =
+            'scale=$maxWidth:-1,pad=$maxWidth:${maxHeight + 1}:(ow-iw)/2:(oh-ih)/2,';
       }
 
       final fps = _isFrameRateSameOnAll! ? '' : 'fps=30,';
@@ -289,26 +315,41 @@ final class FFmpegService {
         command.write('[$i:v:0]$scale${fps}setsar=1[v$i]; ');
       }
 
-      const audio =
-          'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
-          ',aresample=48000:first_pts=0';
+      if (isAudioOn) {
+        const audio =
+            'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
+            ',aresample=async=1:first_pts=0';
 
-      for (var i = 0; i < _videoDetails.length; i++) {
-        if (_videoDetails[i].hasAudio) {
-          command.write('[$i:a:0]$audio[a$i]; ');
-        } else {
-          command.write('[${_videoDetails.length}:a]$audio[a$i]; ');
+        for (var i = 0; i < _videoDetails.length; i++) {
+          if (_videoDetails[i].hasAudio) {
+            command.write('[$i:a:0]$audio[a$i]; ');
+          } else {
+            command.write('[${_videoDetails.length}:a]$audio[a$i]; ');
+          }
         }
       }
 
       for (var i = 0; i < _videoDetails.length; i++) {
-        command.write('[v$i][a$i] ');
+        if (isAudioOn) {
+          command.write('[v$i][a$i] ');
+        } else {
+          command.write('[v$i] ');
+        }
       }
 
-      command
-        ..write('concat=n=${_videoDetails.length}:v=1:a=1[outv][outa]" ')
-        ..write('-map "[outv]" -map "[outa]" ')
-        ..write('-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuvj420p ');
+      if (isAudioOn) {
+        command
+          ..write('concat=n=${_videoDetails.length}:v=1:a=1[outv][outa]" ')
+          ..write('-map "[outv]" -map "[outa]" ')
+          ..write('-c:v libx264 -preset veryfast -crf 23 -pix_fmt yuvj420p ');
+      } else {
+        command
+          ..write('concat=n=${_videoDetails.length}:v=1[outv]" ')
+          ..write('-map "[outv]" ')
+          ..write(
+            '-c:v libx264 -an -preset veryfast -crf 23 -pix_fmt yuvj420p ',
+          );
+      }
 
       if (!_isFrameRateSameOnAll!) {
         command.write('-fps_mode vfr ');
@@ -316,7 +357,7 @@ final class FFmpegService {
     } else {
       // Fast concat that works only if the videos have the same resolution,
       // format, codec, frame rate and audio sample rate.
-      final dirname = path.dirname(_outputDir!);
+      final dirname = path.dirname(outputDir);
       final inputsDir = path.join(dirname, 'inputs.txt');
       final inputsFile = File(inputsDir);
       await inputsFile.writeAsString(
@@ -326,10 +367,14 @@ final class FFmpegService {
         mode: FileMode.writeOnly,
       );
 
-      command.write('-f concat -safe 0 -i "$inputsDir" -c copy ');
+      if (isAudioOn) {
+        command.write('-f concat -safe 0 -i "$inputsDir" -c copy ');
+      } else {
+        command.write('-f concat -safe 0 -i "$inputsDir" -c copy -an ');
+      }
     }
 
-    command.write(_outputDir);
+    command.write(outputDir);
 
     log(command.toString());
 
@@ -420,9 +465,5 @@ final class FFmpegService {
     _isFrameRateSameOnAll = null;
     _isAudioSameOnAll = null;
     _isReencodingRequired = null;
-    _outputDir = null;
-    _outputWidth = null;
-    _outputHeight = null;
-    _forceFirstAspectRatio = null;
   }
 }
