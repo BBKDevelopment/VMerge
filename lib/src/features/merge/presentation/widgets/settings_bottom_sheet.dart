@@ -69,7 +69,7 @@ class _SettingsBottomSheetListener extends StatelessWidget {
               case SettingsBottomSheetLoaded():
                 context
                     .read<MergePageCubit>()
-                    .setSound(isSoundOn: state.isSoundOn);
+                    .setSound(isSoundOn: state.isAudioOn);
               case SettingsBottomSheetError():
                 break;
             }
@@ -78,7 +78,7 @@ class _SettingsBottomSheetListener extends StatelessWidget {
             if (previous is! SettingsBottomSheetLoaded) return false;
             if (current is! SettingsBottomSheetLoaded) return false;
 
-            return previous.isSoundOn != current.isSoundOn;
+            return previous.isAudioOn != current.isAudioOn;
           },
         ),
       ],
@@ -138,7 +138,7 @@ class _SettingsBottomSheetLoaded extends StatelessWidget {
           height: AppPadding.xxLarge,
         ),
         _SoundSelector(
-          isSoundOn: state.isSoundOn,
+          isSoundOn: state.isAudioOn,
         ),
         const Divider(
           height: AppPadding.large,

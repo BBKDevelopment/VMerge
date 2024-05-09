@@ -109,9 +109,11 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return _VideoSelectPageListener(
       child: Scaffold(
-        appBar: CustomAppBar(title: context.l10n.appName),
+        appBar: CustomAppBar(title: l10n.appName),
         body: Padding(
           padding: AppPadding.general,
           child: BlocConsumer<VideoSelectPageCubit, VideoSelectPageState>(

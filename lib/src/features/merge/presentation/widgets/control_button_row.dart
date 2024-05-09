@@ -64,6 +64,9 @@ class _ControlButtonRow extends StatelessWidget {
               ..init(mergePageState.videoMetadatas),
           ),
           BlocProvider.value(
+            value: BlocProvider.of<SettingsBottomSheetCubit>(context),
+          ),
+          BlocProvider.value(
             value: BlocProvider.of<AppNavigationBarCubit>(context),
           ),
           BlocProvider.value(

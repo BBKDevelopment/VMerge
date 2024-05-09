@@ -28,7 +28,12 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     emit(SaveBottomSheetInitial(videoMetadatas: videoMetadatas));
   }
 
-  Future<void> mergeVideos() async {
+  Future<void> mergeVideos({
+    required bool isAudioOn,
+    int? outputWidth,
+    int? outputHeight,
+    bool? forceFirstAspectRatio,
+  }) async {
     final Directory appDocsDir;
     try {
       appDocsDir = await getApplicationDocumentsDirectory();
@@ -73,7 +78,13 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
 
     try {
       emit(const SaveBottomSheetMerging(progress: 0));
-      await _ffmpegService.mergeVideos(outputDir: outputVideoDir);
+      await _ffmpegService.mergeVideos(
+        outputDir: outputVideoDir,
+        isAudioOn: isAudioOn,
+        outputWidth: outputWidth,
+        outputHeight: outputHeight,
+        forceFirstAspectRatio: forceFirstAspectRatio,
+      );
       await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceNotInitialisedException catch (error, stackTrace) {
       emit(

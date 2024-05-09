@@ -18,19 +18,20 @@ final class VideoSelectPageCubit extends Cubit<VideoSelectPageState> {
   }
 
   Future<void> updateVideos(List<AssetEntity>? assets) async {
-    if (assets!.length < 2) {
+    if (assets == null || assets.length < 2) {
       emit(
         const VideoSelectPageError(
           errorType: VideoSelectPageErrorType.insufficientVideoException,
         ),
       );
+      return;
     }
 
-    final videoMetadataList = <VideoMetadata>[];
+    final videoMetadatas = <VideoMetadata>[];
     try {
       for (final asset in assets) {
         final loadedAsset = await _loadAsset(asset);
-        videoMetadataList.add(
+        videoMetadatas.add(
           VideoMetadata(
             title: asset.title,
             duration: asset.duration,
@@ -40,7 +41,7 @@ final class VideoSelectPageCubit extends Cubit<VideoSelectPageState> {
         );
       }
 
-      emit(VideoSelectPageLoaded(metadataList: videoMetadataList));
+      emit(VideoSelectPageLoaded(metadataList: videoMetadatas));
     } catch (error, stackTrace) {
       emit(
         VideoSelectPageError(

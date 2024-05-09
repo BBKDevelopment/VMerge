@@ -17,7 +17,19 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
     super.initState();
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<SaveBottomSheetCubit>().mergeVideos();
+      final settingsBottomSheetState = context
+          .read<SettingsBottomSheetCubit>()
+          .state as SettingsBottomSheetLoaded;
+
+      context.read<SaveBottomSheetCubit>().mergeVideos(
+            isAudioOn: settingsBottomSheetState.isAudioOn,
+            outputWidth:
+                settingsBottomSheetState.videoResolution.width?.toInt(),
+            outputHeight:
+                settingsBottomSheetState.videoResolution.height?.toInt(),
+            forceFirstAspectRatio: settingsBottomSheetState.videoAspectRatio ==
+                VideoAspectRatio.firstVideo,
+          );
     });
   }
 

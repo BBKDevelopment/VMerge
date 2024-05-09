@@ -9,7 +9,7 @@ class _VideoSelectPageListener extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
 
-    return BlocListener(
+    return BlocListener<VideoSelectPageCubit, VideoSelectPageState>(
       listener: (context, state) {
         switch (state) {
           case VideoSelectPageLoading():

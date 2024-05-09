@@ -21,13 +21,13 @@ final class SettingsBottomSheetLoading extends SettingsBottomSheetState {
 
 final class SettingsBottomSheetLoaded extends SettingsBottomSheetState {
   const SettingsBottomSheetLoaded({
-    required this.isSoundOn,
+    required this.isAudioOn,
     required this.playbackSpeed,
     required this.videoResolution,
     required this.videoAspectRatio,
   });
 
-  final bool isSoundOn;
+  final bool isAudioOn;
   final PlaybackSpeed playbackSpeed;
   final VideoResolution videoResolution;
   final VideoAspectRatio videoAspectRatio;
@@ -39,7 +39,7 @@ final class SettingsBottomSheetLoaded extends SettingsBottomSheetState {
     VideoAspectRatio? videoAspectRatio,
   }) {
     return SettingsBottomSheetLoaded(
-      isSoundOn: isSoundOn ?? this.isSoundOn,
+      isAudioOn: isSoundOn ?? this.isAudioOn,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       videoResolution: videoResolution ?? this.videoResolution,
       videoAspectRatio: videoAspectRatio ?? this.videoAspectRatio,
@@ -48,7 +48,7 @@ final class SettingsBottomSheetLoaded extends SettingsBottomSheetState {
 
   @override
   List<Object?> get props => [
-        isSoundOn,
+        isAudioOn,
         playbackSpeed,
         videoResolution,
         videoAspectRatio,

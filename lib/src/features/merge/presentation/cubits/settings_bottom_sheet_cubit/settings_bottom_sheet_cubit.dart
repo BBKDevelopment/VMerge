@@ -12,7 +12,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
         _saveMergeSettingsUseCase = saveMergeSettingsUseCase,
         super(
           SettingsBottomSheetLoaded(
-            isSoundOn: _defaultMergeSettings.isSoundOn,
+            isAudioOn: _defaultMergeSettings.isAudioOn,
             playbackSpeed: _defaultMergeSettings.playbackSpeed,
             videoResolution: _defaultMergeSettings.videoResolution,
             videoAspectRatio: _defaultMergeSettings.videoAspectRatio,
@@ -23,7 +23,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
   final SaveMergeSettingsUseCase _saveMergeSettingsUseCase;
 
   static const _defaultMergeSettings = MergeSettings(
-    isSoundOn: true,
+    isAudioOn: true,
     playbackSpeed: PlaybackSpeed.one,
     videoResolution: VideoResolution.original,
     videoAspectRatio: VideoAspectRatio.independent,
@@ -34,7 +34,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
 
     emit(
       SettingsBottomSheetLoaded(
-        isSoundOn: settings.isSoundOn,
+        isAudioOn: settings.isAudioOn,
         playbackSpeed: settings.playbackSpeed,
         videoResolution: settings.videoResolution,
         videoAspectRatio: settings.videoAspectRatio,
@@ -88,7 +88,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
   void _saveStateAsMergeSettings() {
     if (state case final SettingsBottomSheetLoaded loadedState) {
       final settings = MergeSettings(
-        isSoundOn: loadedState.isSoundOn,
+        isAudioOn: loadedState.isAudioOn,
         playbackSpeed: loadedState.playbackSpeed,
         videoResolution: loadedState.videoResolution,
         videoAspectRatio: loadedState.videoAspectRatio,
