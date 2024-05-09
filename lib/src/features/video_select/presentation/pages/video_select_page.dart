@@ -66,6 +66,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
           requestType: RequestType.video,
           specialPickerType: SpecialPickerType.noPreview,
           pickerTheme: context.theme.copyWith(
+            // AppBarTheme is used for the app bar in the picker.
             appBarTheme: context.theme.appBarTheme.copyWith(
               systemOverlayStyle: SystemUiOverlayStyle(
                 systemNavigationBarColor:
@@ -73,8 +74,24 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                 systemNavigationBarIconBrightness: context.theme.brightness,
               ),
             ),
+            // BottomAppBarTheme is used for the bottom bar in the picker.
             bottomAppBarTheme: context.theme.bottomAppBarTheme.copyWith(
               color: context.colorScheme.secondaryContainer,
+            ),
+            // IconTheme is used for the loading indicator and the icons in the
+            // picker.
+            iconTheme: context.theme.iconTheme.copyWith(
+              color: context.colorScheme.primary,
+            ),
+            // ColorScheme is used for the select indicator in the picker.
+            colorScheme: context.colorScheme.copyWith(
+              secondary: context.colorScheme.primary,
+            ),
+            // TextTheme is used for the index and confirm text in the picker.
+            textTheme: context.theme.textTheme.copyWith(
+              bodyLarge: context.theme.textTheme.bodyLarge!.copyWith(
+                color: context.colorScheme.onPrimary,
+              ),
             ),
           ),
           textDelegate: _getAssetPickerTextDelegateFromLocale(
@@ -138,11 +155,7 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
                 VideoSelectPageLoading() => Center(
                     child: SizedBox.square(
                       dimension: context.screenWidth / 4 / 3,
-                      child: CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(
-                          context.theme.iconTheme.color!,
-                        ),
-                      ),
+                      child: const CircularProgressIndicator(),
                     ),
                   ),
                 VideoSelectPageLoaded() => const SizedBox.shrink(),
