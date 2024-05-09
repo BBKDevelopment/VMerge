@@ -41,6 +41,8 @@ class MergePage extends StatelessWidget {
           create: (_) => MergePageCubit(
             firstVideoPlayerService: getIt<VideoPlayerService>(),
             secondVideoPlayerService: getIt<VideoPlayerService>(),
+            thirdVideoPlayerService: getIt<VideoPlayerService>(),
+            fourthVideoPlayerService: getIt<VideoPlayerService>(),
           ),
         ),
         BlocProvider(
