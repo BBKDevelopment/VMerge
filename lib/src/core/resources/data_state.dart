@@ -1,3 +1,7 @@
+// Copyright 2024 BBK Development. All rights reserved.
+// Use of this source code is governed by a GPL-style license that can be found
+// in the LICENSE file.
+
 import 'package:equatable/equatable.dart';
 import 'package:vmerge/src/core/core.dart';
 
@@ -23,7 +27,10 @@ final class DataFailure<T> extends DataState<T> {
   const DataFailure(Failure failure) : super(failure: failure);
 
   String get message => _failure!.message;
+
   String get name => _failure!.name;
+
   Object get error => _failure!.error;
+
   StackTrace get stackTrace => _failure!.stackTrace;
 }
