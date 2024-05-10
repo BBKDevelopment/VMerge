@@ -153,18 +153,16 @@ Future<void> setup() async {
 }
 
 final class ObjectBoxService {
-  ObjectBoxService._create(this.store) {
-    // Add any additional setup code, e.g. build queries.
-  }
+  ObjectBoxService._create(this.store);
 
   /// The Store of this app.
   final Store store;
 
-  /// Create an instance of ObjectBoxService to use throughout the app.
+  /// Creates an instance of ObjectBoxService to use throughout the app.
   static Future<ObjectBoxService> create() async {
     final appDocsDir = await getApplicationDocumentsDirectory();
     final store =
-        await openStore(directory: join(appDocsDir.path, 'obx-example'));
+        await openStore(directory: join(appDocsDir.path, 'vmerge_db'));
     return ObjectBoxService._create(store);
   }
 }
