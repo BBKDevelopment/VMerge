@@ -94,6 +94,8 @@ class _SettingsBottomSheetLoaded extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
@@ -131,7 +133,7 @@ class _SettingsBottomSheetLoaded extends StatelessWidget {
           height: AppPadding.medium,
         ),
         Text(
-          context.l10n.settings,
+          l10n.settings,
           style: context.textTheme.titleLarge,
         ),
         const SizedBox(
@@ -171,6 +173,8 @@ class _SoundSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -178,11 +182,11 @@ class _SoundSelector extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.sound,
+              l10n.sound,
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              isSoundOn ? context.l10n.on : context.l10n.off,
+              isSoundOn ? l10n.on : l10n.off,
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
@@ -194,7 +198,7 @@ class _SoundSelector extends StatelessWidget {
           onChanged: (isSoundOn) {
             context
                 .read<SettingsBottomSheetCubit>()
-                .toggleSound(isSoundOn: isSoundOn);
+                .toggleSound(isAudioOn: isSoundOn);
           },
         ),
       ],
@@ -207,30 +211,32 @@ class _ResolutionSelector extends StatelessWidget {
 
   final VideoResolution resolution;
 
-  String getSubtitle(BuildContext context, VideoResolution? resolution) {
+  String getSubtitle(AppLocalizations l10n, VideoResolution? resolution) {
     if (resolution == null) return '';
 
     final width = resolution.width?.toInt();
     final height = resolution.height?.toInt();
 
-    if (width == null || height == null) return context.l10n.original;
+    if (width == null || height == null) return l10n.original;
 
     return '${width}x$height';
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Row(
       children: [
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.resolution,
+              l10n.resolution,
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              getSubtitle(context, resolution),
+              getSubtitle(l10n, resolution),
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
@@ -240,7 +246,7 @@ class _ResolutionSelector extends StatelessWidget {
         const Spacer(),
         if (resolution == VideoResolution.original)
           Tooltip(
-            message: context.l10n.originalResolutionTooltip,
+            message: l10n.originalResolutionTooltip,
             triggerMode: TooltipTriggerMode.tap,
             child: Icon(
               Icons.info_outline,
@@ -257,15 +263,23 @@ class _ResolutionSelector extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   resolution == VideoResolution.original
-                      ? context.l10n.original
+                      ? l10n.original
                       : resolution.value,
                 ),
               ),
           ],
           value: resolution,
-          tooltip: getSubtitle(context, resolution),
+          tooltip: getSubtitle(l10n, resolution),
           onChanged: (resolution) {
             if (resolution == null) return;
+            if (resolution != VideoResolution.original) {
+              showDialog<void>(
+                context: context,
+                builder: (_) => _SettingsWarningDialog(
+                  message: l10n.resolutionWarningMessage,
+                ),
+              );
+            }
 
             context
                 .read<SettingsBottomSheetCubit>()
@@ -283,39 +297,40 @@ class _AspectRatioSelector extends StatelessWidget {
   final VideoAspectRatio aspectRatio;
   final VideoResolution resolution;
 
-  String getSubtitle(BuildContext context, VideoAspectRatio? ratio) {
+  String getSubtitle(AppLocalizations l10n, VideoAspectRatio? ratio) {
     if (ratio == null) return '';
 
     return switch (ratio) {
-      VideoAspectRatio.independent => context.l10n.independent,
-      VideoAspectRatio.firstVideo => context.l10n.firstVideo,
+      VideoAspectRatio.independent => l10n.independent,
+      VideoAspectRatio.firstVideo => l10n.firstVideo,
       VideoAspectRatio.auto => resolution.aspectRatio ?? '',
     };
   }
 
-  String getTooltip(BuildContext context, VideoAspectRatio? ratio) {
+  String getTooltip(AppLocalizations l10n, VideoAspectRatio? ratio) {
     if (ratio == null) return '';
 
     return switch (ratio) {
-      VideoAspectRatio.independent =>
-        context.l10n.independentAspectRatioTooltip,
-      VideoAspectRatio.firstVideo => context.l10n.firstAspectRatioTooltip,
-      VideoAspectRatio.auto => context.l10n.autoAspectRatioTooltip,
+      VideoAspectRatio.independent => l10n.independentAspectRatioTooltip,
+      VideoAspectRatio.firstVideo => l10n.firstAspectRatioTooltip,
+      VideoAspectRatio.auto => l10n.autoAspectRatioTooltip,
     };
   }
 
-  String getDropdownLabel(BuildContext context, VideoAspectRatio? ratio) {
+  String getDropdownLabel(AppLocalizations l10n, VideoAspectRatio? ratio) {
     if (ratio == null) return '';
 
     return switch (ratio) {
-      VideoAspectRatio.independent => context.l10n.independent,
-      VideoAspectRatio.firstVideo => context.l10n.firstVideo,
-      VideoAspectRatio.auto => context.l10n.auto,
+      VideoAspectRatio.independent => l10n.independent,
+      VideoAspectRatio.firstVideo => l10n.firstVideo,
+      VideoAspectRatio.auto => l10n.auto,
     };
   }
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -323,11 +338,11 @@ class _AspectRatioSelector extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.aspectRatio,
+              l10n.aspectRatio,
               style: context.textTheme.bodyMedium,
             ),
             Text(
-              getSubtitle(context, aspectRatio),
+              getSubtitle(l10n, aspectRatio),
               style: context.textTheme.bodySmall?.copyWith(
                 color: context.theme.hintColor,
               ),
@@ -336,7 +351,7 @@ class _AspectRatioSelector extends StatelessWidget {
         ),
         const Spacer(),
         Tooltip(
-          message: getTooltip(context, aspectRatio),
+          message: getTooltip(l10n, aspectRatio),
           triggerMode: TooltipTriggerMode.tap,
           child: Icon(
             Icons.info_outline,
@@ -352,13 +367,13 @@ class _AspectRatioSelector extends StatelessWidget {
                 value: ratio,
                 enabled: ratio != VideoAspectRatio.auto,
                 child: Text(
-                  getDropdownLabel(context, ratio),
+                  getDropdownLabel(l10n, ratio),
                 ),
               ),
           ],
           value: aspectRatio,
           enabled: aspectRatio != VideoAspectRatio.auto,
-          tooltip: getTooltip(context, aspectRatio),
+          tooltip: getTooltip(l10n, aspectRatio),
           onChanged: (ratio) {
             if (ratio == null) return;
 
@@ -379,6 +394,8 @@ class _SpeedSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -386,7 +403,7 @@ class _SpeedSelector extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              context.l10n.playbackSpeed,
+              l10n.playbackSpeed,
               style: context.textTheme.bodyMedium,
             ),
             Text(
@@ -404,6 +421,15 @@ class _SpeedSelector extends StatelessWidget {
             onChanged: (value) {
               final speed = PlaybackSpeed.fromValue(value);
               if (speed == null) return;
+
+              if (speed != PlaybackSpeed.one) {
+                showDialog<void>(
+                  context: context,
+                  builder: (_) => _SettingsWarningDialog(
+                    message: l10n.playbackSpeedWarningMessage,
+                  ),
+                );
+              }
 
               context
                   .read<SettingsBottomSheetCubit>()

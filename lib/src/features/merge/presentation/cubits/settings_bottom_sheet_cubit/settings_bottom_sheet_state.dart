@@ -33,13 +33,13 @@ final class SettingsBottomSheetLoaded extends SettingsBottomSheetState {
   final VideoAspectRatio videoAspectRatio;
 
   SettingsBottomSheetLoaded copyWith({
-    bool? isSoundOn,
+    bool? isAudioOn,
     PlaybackSpeed? playbackSpeed,
     VideoResolution? videoResolution,
     VideoAspectRatio? videoAspectRatio,
   }) {
     return SettingsBottomSheetLoaded(
-      isAudioOn: isSoundOn ?? this.isAudioOn,
+      isAudioOn: isAudioOn ?? this.isAudioOn,
       playbackSpeed: playbackSpeed ?? this.playbackSpeed,
       videoResolution: videoResolution ?? this.videoResolution,
       videoAspectRatio: videoAspectRatio ?? this.videoAspectRatio,

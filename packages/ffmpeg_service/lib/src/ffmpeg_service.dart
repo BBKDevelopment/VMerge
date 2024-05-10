@@ -209,6 +209,8 @@ final class FFmpegService {
 
   /// Merges the videos.
   ///
+  /// Returns `true` if the videos are successfully merged.
+  ///
   /// Throws [FFmpegServiceNotInitialisedException] if the FFmpeg service is not
   /// initialised.
   ///
@@ -217,9 +219,10 @@ final class FFmpegService {
   ///
   /// Throws [FFmpegServiceMergeException] if the FFmpeg service fails to merge
   /// the videos.
-  Future<void> mergeVideos({
+  Future<bool> mergeVideos({
     required String outputDir,
     bool isAudioOn = true,
+    double speed = 1.0,
     int? outputWidth,
     int? outputHeight,
     bool? forceFirstAspectRatio,
@@ -234,6 +237,7 @@ final class FFmpegService {
 
     final command = await _createCommand(
       outputDir,
+      speed,
       isAudioOn,
       outputWidth,
       outputHeight,
@@ -246,7 +250,7 @@ final class FFmpegService {
       final session = await FFmpegKit.execute(command);
       final returnCode = await session.getReturnCode();
       final isSuccess = returnCode?.isValueSuccess() ?? false;
-      if (!isSuccess) throw Exception('Failed to merge videos');
+      return isSuccess;
     } catch (_) {
       throw const FFmpegServiceMergeException();
     } finally {
@@ -257,6 +261,7 @@ final class FFmpegService {
   /// Creates the FFmpeg command to merge the videos.
   Future<String> _createCommand(
     String outputDir,
+    double speed,
     bool isAudioOn,
     int? outputWidth,
     int? outputHeight,
@@ -265,8 +270,11 @@ final class FFmpegService {
     final command = StringBuffer('-y ');
     final isCustomResolutionAvailable =
         outputWidth != null && outputHeight != null;
+    final isSpeedModified = speed != 1.0;
 
-    if (_isReencodingRequired! || isCustomResolutionAvailable) {
+    if (_isReencodingRequired! ||
+        isCustomResolutionAvailable ||
+        isSpeedModified) {
       for (final videoInformation in _videoDetails) {
         command.write('-i "${videoInformation.directory}" ');
       }
@@ -289,42 +297,45 @@ final class FFmpegService {
         // Scales all videos to the resolution of the first video.
         scale = 'scale=$firstVideoWidth:$firstVideoHeight,';
       } else {
-        final maxWidth = _videoDetails.map((videoInformation) {
-          print('w: ${videoInformation.width} h: ${videoInformation.height}');
-          return videoInformation.width!;
-        }).reduce(math.max);
+        final maxWidth = _videoDetails
+            .map((videoInformation) => videoInformation.width!)
+            .reduce(math.max);
         final maxHeight = _videoDetails
-            .map(
-              (videoInformation) {
-                return videoInformation.height! /
-                    videoInformation.width! *
-                    maxWidth;
-              },
-            )
-            .reduce(math.max)
-            .round();
+                .map(
+                  (videoInformation) =>
+                      videoInformation.height! /
+                      videoInformation.width! *
+                      maxWidth,
+                )
+                .reduce(math.max)
+                .round() +
+            1;
         // Scales all videos' width to the maximum width while maintaining the
         // aspect ratio.
         scale =
-            'scale=$maxWidth:-1,pad=$maxWidth:${maxHeight + 1}:(ow-iw)/2:(oh-ih)/2,';
+            'scale=$maxWidth:-1,pad=$maxWidth:$maxHeight:(ow-iw)/2:(oh-ih)/2,';
       }
 
       final fps = _isFrameRateSameOnAll! ? '' : 'fps=30,';
 
+      final videoSpeed = 'setpts=${1 / speed}*PTS,';
+
       for (var i = 0; i < _videoDetails.length; i++) {
-        command.write('[$i:v:0]$scale${fps}setsar=1[v$i]; ');
+        command.write('[$i:v:0]$scale$fps${videoSpeed}setsar=1[v$i]; ');
       }
 
       if (isAudioOn) {
         const audio =
             'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
-            ',aresample=async=1:first_pts=0';
+            ',aresample=async=1:first_pts=0,';
+        final audioSpeed = 'atempo=$speed';
 
         for (var i = 0; i < _videoDetails.length; i++) {
           if (_videoDetails[i].hasAudio) {
-            command.write('[$i:a:0]$audio[a$i]; ');
+            command.write('[$i:a:0]$audio$audioSpeed[a$i]; ');
           } else {
-            command.write('[${_videoDetails.length}:a]$audio[a$i]; ');
+            command
+                .write('[${_videoDetails.length}:a]$audio$audioSpeed[a$i]; ');
           }
         }
       }
@@ -383,7 +394,10 @@ final class FFmpegService {
 
   /// Enables progress callback to allow the consumer of this service to get the
   /// progress of the FFmpeg command.
-  Future<void> enableProgressCallback(ProgressCallback callback) async {
+  Future<void> enableProgressCallback(
+    ProgressCallback callback, {
+    double speed = 1.0,
+  }) async {
     // Calculates the total duration of all videos.
     final totalDuration = _videoDetails.fold<int>(
       0,
@@ -396,7 +410,7 @@ final class FFmpegService {
       await FFmpegKitConfig.enableStatistics();
 
       FFmpegKitConfig.enableStatisticsCallback((statistics) {
-        final percentage = _calculateProgress(statistics, totalDuration);
+        final percentage = _calculateProgress(statistics, totalDuration, speed);
         callback(percentage);
       });
     } catch (error, stackTrace) {
@@ -423,17 +437,35 @@ final class FFmpegService {
     }
   }
 
+  /// Cancels the FFmpeg command for merging the videos.
+  Future<void> cancelMerge() async {
+    try {
+      await FFmpegKit.cancel();
+    } catch (error, stackTrace) {
+      log(
+        'Could not cancel the FFmpeg command!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
   /// Calculates the progress percentage of the FFmpeg command.
-  double _calculateProgress(Statistics? statistics, int totalDuration) {
+  double _calculateProgress(
+    Statistics? statistics,
+    int totalDuration,
+    double speed,
+  ) {
     if (statistics == null) return 0;
 
     // The current time in the execution.
     final currentTime = statistics.getTime();
 
     // Calculates the progress percentage.
-    final progress = (currentTime / totalDuration) * 100;
+    final progress = (currentTime / totalDuration) * speed * 100;
 
-    return progress;
+    return progress > 100 ? 100 : progress;
   }
 
   /// Enables logs and log callback for debugging purposes.

@@ -93,6 +93,8 @@ final class MergePageError extends MergePageState {
 enum ActiveVideoIndex {
   one,
   two,
+  three,
+  four,
 }
 
 enum MergePageErrorType {

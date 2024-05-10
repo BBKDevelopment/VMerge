@@ -86,12 +86,11 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
               showElevation: false,
               onItemSelected: (index) async {
                 if (!state.isSafeToNavigate) {
-                  final canNavigate = await showDialog<bool>(
+                  final shouldNavigate = await showDialog<bool>(
                     context: context,
                     builder: (_) => const _NavigationConfirmDialog(),
                   );
-
-                  if (canNavigate == null || !canNavigate) return;
+                  if (shouldNavigate == null || !shouldNavigate) return;
                 }
 
                 if (!context.mounted) return;

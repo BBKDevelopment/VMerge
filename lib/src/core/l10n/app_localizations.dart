@@ -146,11 +146,29 @@ abstract class AppLocalizations {
   /// **'Cancel'**
   String get cancel;
 
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @cancelledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The video merge process has been cancelled!'**
+  String get cancelledMessage;
+
   /// No description provided for @close.
   ///
   /// In en, this message translates to:
   /// **'Close'**
   String get close;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
 
   /// No description provided for @contactUs.
   ///
@@ -290,10 +308,16 @@ abstract class AppLocalizations {
   /// **'Failed to initialise FFmpeg! Please try again later.'**
   String get failedToInitFFmpegMessage;
 
+  /// No description provided for @failedToLaunchGalleryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to launch gallery! Please grant the required permissions.'**
+  String get failedToLaunchGalleryMessage;
+
   /// No description provided for @failedToMergeVideosMessage.
   ///
   /// In en, this message translates to:
-  /// **'Failed to merge videos! Please try again later.'**
+  /// **'Failed to merge videos! Please try with different configurations.'**
   String get failedToMergeVideosMessage;
 
   /// No description provided for @failedToSaveVideoMessage.
@@ -386,6 +410,12 @@ abstract class AppLocalizations {
   /// **'More'**
   String get more;
 
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
   /// No description provided for @off.
   ///
   /// In en, this message translates to:
@@ -440,6 +470,12 @@ abstract class AppLocalizations {
   /// **'Playback Speed'**
   String get playbackSpeed;
 
+  /// No description provided for @playbackSpeedWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting a custom playback speed will force re-encoding during the merge process and may take longer to complete.'**
+  String get playbackSpeedWarningMessage;
+
   /// No description provided for @privacyPolicy.
   ///
   /// In en, this message translates to:
@@ -469,6 +505,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Resolution'**
   String get resolution;
+
+  /// No description provided for @resolutionWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting a custom resolution will force re-encoding during the merge process and may take longer to complete.'**
+  String get resolutionWarningMessage;
+
+  /// No description provided for @saveCancellationConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel the video merging process? Any progress will be lost.'**
+  String get saveCancellationConfirmMessage;
 
   /// No description provided for @saveVideo.
   ///
@@ -548,11 +596,23 @@ abstract class AppLocalizations {
   /// **'Video'**
   String get video;
 
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warning;
+
   /// No description provided for @yellow.
   ///
   /// In en, this message translates to:
   /// **'Yellow'**
   String get yellow;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
 }
 
 class _AppLocalizationsDelegate
