@@ -325,7 +325,7 @@ final class FFmpegService {
       if (isAudioOn) {
         const audio =
             'aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo'
-            ',aresample=async=1:first_pts=0';
+            ',aresample=async=1:first_pts=0,';
         final audioSpeed = 'atempo=$speed';
 
         for (var i = 0; i < _videoDetails.length; i++) {
