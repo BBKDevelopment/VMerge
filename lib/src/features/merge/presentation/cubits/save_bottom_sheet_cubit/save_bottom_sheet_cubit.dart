@@ -59,14 +59,15 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
 
     try {
       emit(const SaveBottomSheetAnalysing());
+      await Future<void>.delayed(_kMinStatusDuration);
       await _ffmpegService.initThenAnalyseVideos(inputDirs: inputVideoDirs);
       await _ffmpegService.enableProgressCallback(
         (progress) {
+          if (state case SaveBottomSheetCancelled()) return;
           emit(SaveBottomSheetMerging(progress: progress.ceil()));
         },
         speed: speed,
       );
-      await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceInitialisationException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
@@ -81,7 +82,10 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     }
 
     try {
+      if (state case SaveBottomSheetCancelled()) return;
       emit(const SaveBottomSheetMerging(progress: 0));
+      await Future<void>.delayed(_kMinStatusDuration);
+      if (state case SaveBottomSheetCancelled()) return;
       await _ffmpegService.mergeVideos(
         outputDir: outputVideoDir,
         speed: speed,
@@ -90,7 +94,6 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
         outputHeight: outputHeight,
         forceFirstAspectRatio: forceFirstAspectRatio,
       );
-      await Future<void>.delayed(_kMinStatusDuration);
     } on FFmpegServiceNotInitialisedException catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
@@ -125,9 +128,11 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     }
 
     try {
+      if (state case SaveBottomSheetCancelled()) return;
       emit(const SaveBottomSheetSaving());
-      await ImageGallerySaver.saveFile(outputVideoDir);
       await Future<void>.delayed(_kMinStatusDuration);
+      if (state case SaveBottomSheetCancelled()) return;
+      await ImageGallerySaver.saveFile(outputVideoDir);
     } catch (error, stackTrace) {
       emit(
         SaveBottomSheetError(
@@ -140,6 +145,13 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     }
 
     emit(const SaveBottomSheetSuccess());
+  }
+
+  Future<void> cancelMerge() async {
+    if (state case SaveBottomSheetSuccess()) return;
+
+    emit(const SaveBottomSheetCancelled());
+    await _ffmpegService.cancelMerge();
   }
 }
 

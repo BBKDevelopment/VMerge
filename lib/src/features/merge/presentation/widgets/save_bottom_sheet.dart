@@ -62,8 +62,31 @@ class _SaveBottomSheetState extends State<_SaveBottomSheet> {
                 SizedBox.square(
                   dimension: AppButtonSize.small,
                   child: IconButton.filledTonal(
-                    onPressed: () {
-                      context.pop();
+                    onPressed: () async {
+                      final state = context.read<SaveBottomSheetCubit>().state;
+
+                      switch (state) {
+                        case SaveBottomSheetInitial():
+                        case SaveBottomSheetAnalysing():
+                        case SaveBottomSheetMerging():
+                        case SaveBottomSheetSaving():
+                          final shouldCancel = await showDialog<bool>(
+                            context: context,
+                            builder: (_) =>
+                                const _SaveCancellationConfirmDialog(),
+                          );
+                          if (shouldCancel == null || !shouldCancel) return;
+
+                          if (!context.mounted) return;
+                          unawaited(
+                            context.read<SaveBottomSheetCubit>().cancelMerge(),
+                          );
+                          context.pop();
+                        case SaveBottomSheetSuccess():
+                        case SaveBottomSheetCancelled():
+                        case SaveBottomSheetError():
+                          context.pop();
+                      }
                     },
                     icon: Assets.images.close.svg(
                       height: AppIconSize.xxSmall,
@@ -116,6 +139,7 @@ class _SaveBottomSheetListener extends StatelessWidget {
           case SaveBottomSheetAnalysing():
           case SaveBottomSheetMerging():
           case SaveBottomSheetSaving():
+          case SaveBottomSheetCancelled():
             break;
           case SaveBottomSheetSuccess():
             context.read<AppNavigationBarCubit>().resetIsSafeToNavigate();
@@ -185,7 +209,9 @@ class _ProgressIndicator extends StatelessWidget {
                 },
                 valueColor: AlwaysStoppedAnimation<Color>(
                   switch (state) {
-                    SaveBottomSheetError() => context.colorScheme.error,
+                    SaveBottomSheetError() ||
+                    SaveBottomSheetCancelled() =>
+                      context.colorScheme.error,
                     _ => context.theme.iconTheme.color!,
                   },
                 ),
@@ -213,7 +239,7 @@ class _ProgressIndicator extends StatelessWidget {
                       color: context.theme.iconTheme.color,
                       size: AppIconSize.large,
                     ),
-                  SaveBottomSheetError() => Icon(
+                  SaveBottomSheetError() || SaveBottomSheetCancelled() => Icon(
                       Icons.close_rounded,
                       color: context.colorScheme.error,
                       size: AppIconSize.large,
@@ -258,6 +284,7 @@ class _Status extends StatelessWidget {
               SaveBottomSheetMerging() => l10n.merging,
               SaveBottomSheetSaving() => l10n.saving,
               SaveBottomSheetSuccess() => l10n.done,
+              SaveBottomSheetCancelled() => l10n.cancelled,
               SaveBottomSheetError() => l10n.error,
             },
             key: ValueKey('$_Status:${state.runtimeType}'),
@@ -290,6 +317,7 @@ class _StatusMessage extends StatelessWidget {
                 SaveBottomSheetMerging() => l10n.mergingMessage,
                 SaveBottomSheetSaving() => l10n.savingMessage,
                 SaveBottomSheetSuccess() => l10n.doneMessage,
+                SaveBottomSheetCancelled() => l10n.cancelledMessage,
                 SaveBottomSheetError() => l10n.errorMessage,
               },
               key: ValueKey('$_StatusMessage:${state.runtimeType}'),
@@ -343,7 +371,7 @@ class _GalleryButton extends StatelessWidget {
                       stackTrace: stackTrace,
                     );
                     context.read<ErrorCubit>().caught(
-                          message: 'Failed to launch gallery!',
+                          message: l10n.failedToLaunchGalleryMessage,
                           error: error,
                           stackTrace: stackTrace,
                         );

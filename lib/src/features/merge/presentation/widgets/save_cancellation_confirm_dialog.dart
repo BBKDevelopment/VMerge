@@ -1,11 +1,7 @@
 part of '../pages/merge_page.dart';
 
-class _SettingsWarningDialog extends StatelessWidget {
-  const _SettingsWarningDialog({
-    required this.message,
-  });
-
-  final String message;
+class _SaveCancellationConfirmDialog extends StatelessWidget {
+  const _SaveCancellationConfirmDialog();
 
   @override
   Widget build(BuildContext context) {
@@ -13,16 +9,22 @@ class _SettingsWarningDialog extends StatelessWidget {
 
     return AlertDialog(
       title: Text(
-        l10n.warning,
+        l10n.confirm,
       ),
       content: Text(
-        message,
+        l10n.saveCancellationConfirmMessage,
       ),
       actions: [
         TextButton(
+          onPressed: () => context.pop(false),
+          child: Text(
+            l10n.no,
+          ),
+        ),
+        TextButton(
           onPressed: () => context.pop(true),
           child: Text(
-            l10n.close,
+            l10n.yes,
           ),
         ),
       ],

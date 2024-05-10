@@ -34,7 +34,16 @@ class AppLocalizationsEn extends AppLocalizations {
   String get cancel => 'Cancel';
 
   @override
+  String get cancelled => 'Cancelled';
+
+  @override
+  String get cancelledMessage => 'The video merge process has been cancelled!';
+
+  @override
   String get close => 'Close';
+
+  @override
+  String get confirm => 'Confirm';
 
   @override
   String get contactUs => 'Contact Us';
@@ -121,8 +130,12 @@ class AppLocalizationsEn extends AppLocalizations {
       'Failed to initialise FFmpeg! Please try again later.';
 
   @override
+  String get failedToLaunchGalleryMessage =>
+      'Failed to launch gallery! Please grant the required permissions.';
+
+  @override
   String get failedToMergeVideosMessage =>
-      'Failed to merge videos! Please try again later.';
+      'Failed to merge videos! Please try with different configurations.';
 
   @override
   String get failedToSaveVideoMessage =>
@@ -174,6 +187,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get more => 'More';
 
   @override
+  String get no => 'No';
+
+  @override
   String get off => 'Off';
 
   @override
@@ -203,6 +219,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get playbackSpeed => 'Playback Speed';
 
   @override
+  String get playbackSpeedWarningMessage =>
+      'Setting a custom playback speed will force re-encoding during the merge process and may take longer to complete.';
+
+  @override
   String get privacyPolicy => 'Privacy Policy';
 
   @override
@@ -216,6 +236,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get resolution => 'Resolution';
+
+  @override
+  String get resolutionWarningMessage =>
+      'Setting a custom resolution will force re-encoding during the merge process and may take longer to complete.';
+
+  @override
+  String get saveCancellationConfirmMessage =>
+      'Are you sure you want to cancel the video merging process? Any progress will be lost.';
 
   @override
   String get saveVideo => 'Save Video';
@@ -261,5 +289,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get video => 'Video';
 
   @override
+  String get warning => 'Warning';
+
+  @override
   String get yellow => 'Yellow';
+
+  @override
+  String get yes => 'Yes';
 }

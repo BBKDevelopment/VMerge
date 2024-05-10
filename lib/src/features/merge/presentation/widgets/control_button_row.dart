@@ -56,6 +56,8 @@ class _ControlButtonRow extends StatelessWidget {
     showCupertinoModalBottomSheet<void>(
       context: context,
       useRootNavigator: true,
+      isDismissible: false,
+      enableDrag: false,
       topRadius: const Radius.circular(AppBorderRadius.xxxLarge),
       builder: (_) => MultiBlocProvider(
         providers: [

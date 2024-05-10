@@ -97,9 +97,9 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
     }
   }
 
-  void toggleSound({required bool isSoundOn}) {
+  void toggleSound({required bool isAudioOn}) {
     if (state case final SettingsBottomSheetLoaded loadedState) {
-      emit(loadedState.copyWith(isSoundOn: isSoundOn));
+      emit(loadedState.copyWith(isAudioOn: isAudioOn));
       _saveStateAsMergeSettings();
     }
   }

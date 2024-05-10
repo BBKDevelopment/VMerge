@@ -198,7 +198,7 @@ class _SoundSelector extends StatelessWidget {
           onChanged: (isSoundOn) {
             context
                 .read<SettingsBottomSheetCubit>()
-                .toggleSound(isSoundOn: isSoundOn);
+                .toggleSound(isAudioOn: isSoundOn);
           },
         ),
       ],

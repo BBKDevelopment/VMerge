@@ -209,6 +209,8 @@ final class FFmpegService {
 
   /// Merges the videos.
   ///
+  /// Returns `true` if the videos are successfully merged.
+  ///
   /// Throws [FFmpegServiceNotInitialisedException] if the FFmpeg service is not
   /// initialised.
   ///
@@ -217,7 +219,7 @@ final class FFmpegService {
   ///
   /// Throws [FFmpegServiceMergeException] if the FFmpeg service fails to merge
   /// the videos.
-  Future<void> mergeVideos({
+  Future<bool> mergeVideos({
     required String outputDir,
     bool isAudioOn = true,
     double speed = 1.0,
@@ -248,7 +250,7 @@ final class FFmpegService {
       final session = await FFmpegKit.execute(command);
       final returnCode = await session.getReturnCode();
       final isSuccess = returnCode?.isValueSuccess() ?? false;
-      if (!isSuccess) throw Exception('Failed to merge videos');
+      return isSuccess;
     } catch (_) {
       throw const FFmpegServiceMergeException();
     } finally {
@@ -428,6 +430,20 @@ final class FFmpegService {
     } catch (error, stackTrace) {
       log(
         'Could not disable statistics!',
+        name: '$FFmpegService',
+        error: error,
+        stackTrace: stackTrace,
+      );
+    }
+  }
+
+  /// Cancels the FFmpeg command for merging the videos.
+  Future<void> cancelMerge() async {
+    try {
+      await FFmpegKit.cancel();
+    } catch (error, stackTrace) {
+      log(
+        'Could not cancel the FFmpeg command!',
         name: '$FFmpegService',
         error: error,
         stackTrace: stackTrace,

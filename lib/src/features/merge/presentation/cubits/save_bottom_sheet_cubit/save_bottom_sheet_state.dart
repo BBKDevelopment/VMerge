@@ -54,6 +54,13 @@ final class SaveBottomSheetSuccess extends SaveBottomSheetState {
   List<Object?> get props => [];
 }
 
+final class SaveBottomSheetCancelled extends SaveBottomSheetState {
+  const SaveBottomSheetCancelled();
+
+  @override
+  List<Object?> get props => [];
+}
+
 final class SaveBottomSheetError extends SaveBottomSheetState {
   const SaveBottomSheetError({
     required this.errorType,
