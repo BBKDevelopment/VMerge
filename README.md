@@ -1,4 +1,4 @@
-# <p align="center">VMerge</p> 
+# <p align="center">VMerge</p>
 
 <p align="justify">VMerge can merge two videos for you. It also provides the user some possibilities like muting video, changing the playback speed of the video, changing the quality of output video.</p>
 
@@ -11,19 +11,20 @@
 &nbsp;
 
 ### Key Features
--	Merge videos right on your device.
--   Review the video, before process it.
--   Mute video.
--   Change the playback speed of the video.
--   Change the quality of the output video.
--   On your gallery, you may access clips/videos after the process.
--   Share them anywhere you want.
--   No watermark on output video.
--   VMerge provides premium content, yet it is ad-free.
+
+- Merge videos right on your device.
+- Review the video, before process it.
+- Mute video.
+- Change the playback speed of the video.
+- Change the quality of the output video.
+- On your gallery, you may access clips/videos after the process.
+- Share them anywhere you want.
+- No watermark on output video.
+- VMerge provides premium content, yet it is ad-free.
 
 &nbsp;
 
-## <p align="center">Available on Stores</p> 
+## <p align="center">Available on Stores</p>
 
 &nbsp;
 
@@ -32,6 +33,24 @@
 &nbsp;
 
 ## <p align="center">Versions</p>
+
+&nbsp;
+
+<p align=right>May 11, 2024</p>
+<p align=left>2.0.0</p> 
+
+Release notes:
+
+- Modernized the design with the Material 3 (You) guidelines to provide a more user-friendly
+  experience.
+- Increased the number of maximum supported videos for merging from two to four.
+- Improved the video merging process to enhance the performance and stability of the application.
+- Improved error handling mechanisms and resources to increase application stability and robustness.
+- Replaced state management library to improve application performance and efficiency.
+- Refactored architecture for better modularity and separation of concerns.
+- Upgraded dependencies to the latest versions to ensure compatibility and security.
+
+&nbsp;
 
 &nbsp;
 
@@ -114,7 +133,7 @@ Release notes:
 
 &nbsp;
 
-## <p align="center">Privacy & Terms</p> 
+## <p align="center">Privacy & Terms</p>
 
 &nbsp;
 
