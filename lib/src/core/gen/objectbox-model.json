@@ -1,0 +1,76 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:8551260808493273318",
+      "lastPropertyId": "5:4282369276157571834",
+      "name": "LocalMergeSettings",
+      "properties": [
+        {
+          "id": "1:3360665689172726783",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5578878731541755337",
+          "name": "isSoundOn",
+          "type": 1
+        },
+        {
+          "id": "3:6608534077247407929",
+          "name": "playbackSpeed",
+          "type": 9
+        },
+        {
+          "id": "4:6444398988388069063",
+          "name": "videoResolution",
+          "type": 9
+        },
+        {
+          "id": "5:4282369276157571834",
+          "name": "videoAspectRatio",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4520518054235479906",
+      "lastPropertyId": "3:7180929920422589669",
+      "name": "LocalThemeConfiguration",
+      "properties": [
+        {
+          "id": "1:3171587212615611172",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:470621667412049234",
+          "name": "themeMode",
+          "type": 9
+        },
+        {
+          "id": "3:7180929920422589669",
+          "name": "mainColor",
+          "type": 9
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:4520518054235479906",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}

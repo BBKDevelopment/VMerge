@@ -1,0 +1,647 @@
+import 'dart:async';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart' as intl;
+
+import 'app_localizations_en.dart';
+
+/// Callers can lookup localized strings with an instance of AppLocalizations
+/// returned by `AppLocalizations.of(context)`.
+///
+/// Applications need to include `AppLocalizations.delegate()` in their app's
+/// `localizationDelegates` list, and the locales they support in the app's
+/// `supportedLocales` list. For example:
+///
+/// ```dart
+/// import 'l10n/app_localizations.dart';
+///
+/// return MaterialApp(
+///   localizationsDelegates: AppLocalizations.localizationsDelegates,
+///   supportedLocales: AppLocalizations.supportedLocales,
+///   home: MyApplicationHome(),
+/// );
+/// ```
+///
+/// ## Update pubspec.yaml
+///
+/// Please make sure to update your pubspec.yaml to include the following
+/// packages:
+///
+/// ```yaml
+/// dependencies:
+///   # Internationalization support.
+///   flutter_localizations:
+///     sdk: flutter
+///   intl: any # Use the pinned version from flutter_localizations
+///
+///   # Rest of dependencies
+/// ```
+///
+/// ## iOS Applications
+///
+/// iOS applications define key application metadata, including supported
+/// locales, in an Info.plist file that is built into the application bundle.
+/// To configure the locales supported by your app, you’ll need to edit this
+/// file.
+///
+/// First, open your project’s ios/Runner.xcworkspace Xcode workspace file.
+/// Then, in the Project Navigator, open the Info.plist file under the Runner
+/// project’s Runner folder.
+///
+/// Next, select the Information Property List item, select Add Item from the
+/// Editor menu, then select Localizations from the pop-up menu.
+///
+/// Select and expand the newly-created Localizations item then, for each
+/// locale your application supports, add a new item and select the locale
+/// you wish to add from the pop-up menu in the Value field. This list should
+/// be consistent with the languages listed in the AppLocalizations.supportedLocales
+/// property.
+abstract class AppLocalizations {
+  AppLocalizations(String locale)
+      : localeName = intl.Intl.canonicalizedLocale(locale.toString());
+
+  final String localeName;
+
+  static AppLocalizations of(BuildContext context) {
+    return Localizations.of<AppLocalizations>(context, AppLocalizations)!;
+  }
+
+  static const LocalizationsDelegate<AppLocalizations> delegate =
+      _AppLocalizationsDelegate();
+
+  /// A list of this localizations delegate along with the default localizations
+  /// delegates.
+  ///
+  /// Returns a list of localizations delegates containing this delegate along with
+  /// GlobalMaterialLocalizations.delegate, GlobalCupertinoLocalizations.delegate,
+  /// and GlobalWidgetsLocalizations.delegate.
+  ///
+  /// Additional delegates can be added by appending to this list in
+  /// MaterialApp. This list does not have to be used at all if a custom list
+  /// of delegates is preferred or required.
+  static const List<LocalizationsDelegate<dynamic>> localizationsDelegates =
+      <LocalizationsDelegate<dynamic>>[
+    delegate,
+    GlobalMaterialLocalizations.delegate,
+    GlobalCupertinoLocalizations.delegate,
+    GlobalWidgetsLocalizations.delegate,
+  ];
+
+  /// A list of this localizations delegate's supported locales.
+  static const List<Locale> supportedLocales = <Locale>[Locale('en')];
+
+  /// No description provided for @analyzing.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing'**
+  String get analyzing;
+
+  /// No description provided for @analyzingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyzing videos to determine the fastest way to merge them. Checking if re-encoding is required...'**
+  String get analyzingMessage;
+
+  /// No description provided for @appName.
+  ///
+  /// In en, this message translates to:
+  /// **'VMerge'**
+  String get appName;
+
+  /// No description provided for @aspectRatio.
+  ///
+  /// In en, this message translates to:
+  /// **'Aspect Ratio'**
+  String get aspectRatio;
+
+  /// No description provided for @auto.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto'**
+  String get auto;
+
+  /// No description provided for @autoAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will use the aspect ratio of the selected resolution.'**
+  String get autoAspectRatioTooltip;
+
+  /// No description provided for @blue.
+  ///
+  /// In en, this message translates to:
+  /// **'Blue'**
+  String get blue;
+
+  /// No description provided for @brown.
+  ///
+  /// In en, this message translates to:
+  /// **'Brown'**
+  String get brown;
+
+  /// No description provided for @cancel.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancel'**
+  String get cancel;
+
+  /// No description provided for @cancelled.
+  ///
+  /// In en, this message translates to:
+  /// **'Cancelled'**
+  String get cancelled;
+
+  /// No description provided for @cancelledMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The video merge process has been cancelled!'**
+  String get cancelledMessage;
+
+  /// No description provided for @close.
+  ///
+  /// In en, this message translates to:
+  /// **'Close'**
+  String get close;
+
+  /// No description provided for @confirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm'**
+  String get confirm;
+
+  /// No description provided for @contactUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Contact Us'**
+  String get contactUs;
+
+  /// No description provided for @copyrightMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Copyright © 2024 BBK Development'**
+  String get copyrightMessage;
+
+  /// No description provided for @couldNotChangeVolumeMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not change the volume of the video! Please try again later.'**
+  String get couldNotChangeVolumeMessage;
+
+  /// No description provided for @couldNotInitVideoPlayerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not initialize video player! Please confirm that video files are valid.'**
+  String get couldNotInitVideoPlayerMessage;
+
+  /// No description provided for @couldNotLoadVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not load videos! Please confirm that video files are valid.'**
+  String get couldNotLoadVideosMessage;
+
+  /// No description provided for @couldNotOpenAssetPickerMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open the asset picker! Please grant the necessary permissions.'**
+  String get couldNotOpenAssetPickerMessage;
+
+  /// No description provided for @couldNotOpenPrivacyPolicyMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open privacy policy! Please check your internet connection and try again.'**
+  String get couldNotOpenPrivacyPolicyMessage;
+
+  /// No description provided for @couldNotOpenTermsAndConditionsMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open terms and conditions! Please check your internet connection and try again.'**
+  String get couldNotOpenTermsAndConditionsMessage;
+
+  /// No description provided for @couldNotPauseVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not pause video! Please try again later.'**
+  String get couldNotPauseVideoMessage;
+
+  /// No description provided for @couldNotPlayVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not play video! Please confirm that video files are valid.'**
+  String get couldNotPlayVideoMessage;
+
+  /// No description provided for @couldNotLaunchEmailServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch email service! Please check your internet connection and try again.'**
+  String get couldNotLaunchEmailServiceMessage;
+
+  /// No description provided for @couldNotLaunchReviewServiceMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not launch review service! Please check your internet connection and try again.'**
+  String get couldNotLaunchReviewServiceMessage;
+
+  /// No description provided for @couldNotSeekVideoPositionMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not seek video position! Please try again later.'**
+  String get couldNotSeekVideoPositionMessage;
+
+  /// No description provided for @couldNotSetVideoSpeedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not set video playback speed! Please try again later.'**
+  String get couldNotSetVideoSpeedMessage;
+
+  /// No description provided for @cyan.
+  ///
+  /// In en, this message translates to:
+  /// **'Cyan'**
+  String get cyan;
+
+  /// No description provided for @darkMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Dark Mode'**
+  String get darkMode;
+
+  /// No description provided for @discardChanges.
+  ///
+  /// In en, this message translates to:
+  /// **'Discard changes'**
+  String get discardChanges;
+
+  /// No description provided for @done.
+  ///
+  /// In en, this message translates to:
+  /// **'Done'**
+  String get done;
+
+  /// No description provided for @doneMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'The video has been successfully saved to your device!'**
+  String get doneMessage;
+
+  /// No description provided for @exceptionDetail.
+  ///
+  /// In en, this message translates to:
+  /// **'Exception Detail'**
+  String get exceptionDetail;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @errorMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'An error occurred while merging the videos. Please try again!'**
+  String get errorMessage;
+
+  /// No description provided for @failedToInitFFmpegMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to initialise FFmpeg! Please try again later.'**
+  String get failedToInitFFmpegMessage;
+
+  /// No description provided for @failedToLaunchGalleryMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to launch gallery! Please grant the required permissions.'**
+  String get failedToLaunchGalleryMessage;
+
+  /// No description provided for @failedToMergeVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to merge videos! Please try with different configurations.'**
+  String get failedToMergeVideosMessage;
+
+  /// No description provided for @failedToSaveVideoMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to save merged video! Please grant the required permissions.'**
+  String get failedToSaveVideoMessage;
+
+  /// No description provided for @firstAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will use the aspect ratio of the first video.'**
+  String get firstAspectRatioTooltip;
+
+  /// No description provided for @firstVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'First video'**
+  String get firstVideo;
+
+  /// No description provided for @green.
+  ///
+  /// In en, this message translates to:
+  /// **'Green'**
+  String get green;
+
+  /// No description provided for @independent.
+  ///
+  /// In en, this message translates to:
+  /// **'Independent'**
+  String get independent;
+
+  /// No description provided for @independentAspectRatioTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will keep their original aspect ratio.'**
+  String get independentAspectRatioTooltip;
+
+  /// No description provided for @indigo.
+  ///
+  /// In en, this message translates to:
+  /// **'Indigo'**
+  String get indigo;
+
+  /// No description provided for @leave.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave'**
+  String get leave;
+
+  /// No description provided for @licenses.
+  ///
+  /// In en, this message translates to:
+  /// **'Licenses'**
+  String get licenses;
+
+  /// No description provided for @lime.
+  ///
+  /// In en, this message translates to:
+  /// **'Lime'**
+  String get lime;
+
+  /// No description provided for @mainColor.
+  ///
+  /// In en, this message translates to:
+  /// **'Main Color'**
+  String get mainColor;
+
+  /// No description provided for @merge.
+  ///
+  /// In en, this message translates to:
+  /// **'Merge'**
+  String get merge;
+
+  /// No description provided for @merging.
+  ///
+  /// In en, this message translates to:
+  /// **'Merging'**
+  String get merging;
+
+  /// No description provided for @mergingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Merging videos in a fast and efficient way. This process may take a while so please be patient!'**
+  String get mergingMessage;
+
+  /// No description provided for @more.
+  ///
+  /// In en, this message translates to:
+  /// **'More'**
+  String get more;
+
+  /// No description provided for @no.
+  ///
+  /// In en, this message translates to:
+  /// **'No'**
+  String get no;
+
+  /// No description provided for @off.
+  ///
+  /// In en, this message translates to:
+  /// **'Off'**
+  String get off;
+
+  /// No description provided for @on.
+  ///
+  /// In en, this message translates to:
+  /// **'On'**
+  String get on;
+
+  /// No description provided for @openPicker.
+  ///
+  /// In en, this message translates to:
+  /// **'Open Picker'**
+  String get openPicker;
+
+  /// No description provided for @orange.
+  ///
+  /// In en, this message translates to:
+  /// **'Orange'**
+  String get orange;
+
+  /// No description provided for @original.
+  ///
+  /// In en, this message translates to:
+  /// **'Original'**
+  String get original;
+
+  /// No description provided for @originalResolutionTooltip.
+  ///
+  /// In en, this message translates to:
+  /// **'Videos will keep their original resolution.'**
+  String get originalResolutionTooltip;
+
+  /// No description provided for @permissionDeniedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Permission denied! Please grant the required permissions.'**
+  String get permissionDeniedMessage;
+
+  /// No description provided for @pink.
+  ///
+  /// In en, this message translates to:
+  /// **'Pink'**
+  String get pink;
+
+  /// No description provided for @playbackSpeed.
+  ///
+  /// In en, this message translates to:
+  /// **'Playback Speed'**
+  String get playbackSpeed;
+
+  /// No description provided for @playbackSpeedWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting a custom playback speed will force re-encoding during the merge process and may take longer to complete.'**
+  String get playbackSpeedWarningMessage;
+
+  /// No description provided for @privacyPolicy.
+  ///
+  /// In en, this message translates to:
+  /// **'Privacy Policy'**
+  String get privacyPolicy;
+
+  /// No description provided for @purple.
+  ///
+  /// In en, this message translates to:
+  /// **'Purple'**
+  String get purple;
+
+  /// No description provided for @rateUs.
+  ///
+  /// In en, this message translates to:
+  /// **'Rate Us'**
+  String get rateUs;
+
+  /// No description provided for @red.
+  ///
+  /// In en, this message translates to:
+  /// **'Red'**
+  String get red;
+
+  /// No description provided for @resolution.
+  ///
+  /// In en, this message translates to:
+  /// **'Resolution'**
+  String get resolution;
+
+  /// No description provided for @resolutionWarningMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Setting a custom resolution will force re-encoding during the merge process and may take longer to complete.'**
+  String get resolutionWarningMessage;
+
+  /// No description provided for @saveCancellationConfirmMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Are you sure you want to cancel the video merging process? Any progress will be lost.'**
+  String get saveCancellationConfirmMessage;
+
+  /// No description provided for @saveVideo.
+  ///
+  /// In en, this message translates to:
+  /// **'Save Video'**
+  String get saveVideo;
+
+  /// No description provided for @saving.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving'**
+  String get saving;
+
+  /// No description provided for @savingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Saving the merged video to your device. Hang tight, this won\'t take long!'**
+  String get savingMessage;
+
+  /// No description provided for @seeInTheGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'See in the Gallery'**
+  String get seeInTheGallery;
+
+  /// No description provided for @selectTwoVideosMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Please select at least 2 videos to continue!'**
+  String get selectTwoVideosMessage;
+
+  /// No description provided for @settings.
+  ///
+  /// In en, this message translates to:
+  /// **'Settings'**
+  String get settings;
+
+  /// No description provided for @sound.
+  ///
+  /// In en, this message translates to:
+  /// **'Sound'**
+  String get sound;
+
+  /// No description provided for @teal.
+  ///
+  /// In en, this message translates to:
+  /// **'Teal'**
+  String get teal;
+
+  /// No description provided for @termsAndConditions.
+  ///
+  /// In en, this message translates to:
+  /// **'Terms and Conditions'**
+  String get termsAndConditions;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @twoVideosRequiredMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'At least two videos are required to merge!'**
+  String get twoVideosRequiredMessage;
+
+  /// No description provided for @unsavedChangesMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'You have unsaved changes. Are you sure you want to leave this page?'**
+  String get unsavedChangesMessage;
+
+  /// No description provided for @video.
+  ///
+  /// In en, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// No description provided for @warning.
+  ///
+  /// In en, this message translates to:
+  /// **'Warning'**
+  String get warning;
+
+  /// No description provided for @yellow.
+  ///
+  /// In en, this message translates to:
+  /// **'Yellow'**
+  String get yellow;
+
+  /// No description provided for @yes.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes'**
+  String get yes;
+}
+
+class _AppLocalizationsDelegate
+    extends LocalizationsDelegate<AppLocalizations> {
+  const _AppLocalizationsDelegate();
+
+  @override
+  Future<AppLocalizations> load(Locale locale) {
+    return SynchronousFuture<AppLocalizations>(lookupAppLocalizations(locale));
+  }
+
+  @override
+  bool isSupported(Locale locale) =>
+      <String>['en'].contains(locale.languageCode);
+
+  @override
+  bool shouldReload(_AppLocalizationsDelegate old) => false;
+}
+
+AppLocalizations lookupAppLocalizations(Locale locale) {
+  // Lookup logic when only language code is specified.
+  switch (locale.languageCode) {
+    case 'en':
+      return AppLocalizationsEn();
+  }
+
+  throw FlutterError(
+      'AppLocalizations.delegate failed to load unsupported locale "$locale". This is likely '
+      'an issue with the localizations generation tool. Please file an issue '
+      'on GitHub with a reproducible sample app and the gen-l10n configuration '
+      'that was used.');
+}
