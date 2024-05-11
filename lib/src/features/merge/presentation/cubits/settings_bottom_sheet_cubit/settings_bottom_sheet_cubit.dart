@@ -30,7 +30,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
     isAudioOn: true,
     playbackSpeed: PlaybackSpeed.one,
     videoResolution: VideoResolution.original,
-    videoAspectRatio: VideoAspectRatio.independent,
+    videoAspectRatio: VideoAspectRatio.firstVideo,
   );
 
   Future<void> init() async {

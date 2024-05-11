@@ -58,11 +58,15 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final bottomNavigationBarColor = context.colorScheme.secondaryContainer;
+    final iconBrightness = context.theme.brightness == Brightness.light
+        ? Brightness.dark
+        : Brightness.light;
 
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: bottomNavigationBarColor,
-        systemNavigationBarIconBrightness: context.theme.brightness,
+        systemNavigationBarDividerColor: bottomNavigationBarColor,
+        systemNavigationBarIconBrightness: iconBrightness,
       ),
       child: Scaffold(
         body: PageView(
