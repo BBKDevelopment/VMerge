@@ -71,7 +71,10 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
               systemOverlayStyle: SystemUiOverlayStyle(
                 systemNavigationBarColor:
                     context.colorScheme.secondaryContainer,
-                systemNavigationBarIconBrightness: context.theme.brightness,
+                systemNavigationBarIconBrightness:
+                    context.theme.brightness == Brightness.light
+                        ? Brightness.dark
+                        : Brightness.light,
               ),
             ),
             // BottomAppBarTheme is used for the bottom bar in the picker.
