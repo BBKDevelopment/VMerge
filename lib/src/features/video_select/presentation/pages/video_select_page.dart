@@ -71,6 +71,8 @@ class _PreviewVideoViewState extends State<_PreviewVideoView>
               systemOverlayStyle: SystemUiOverlayStyle(
                 systemNavigationBarColor:
                     context.colorScheme.secondaryContainer,
+                systemNavigationBarDividerColor:
+                    context.colorScheme.secondaryContainer,
                 systemNavigationBarIconBrightness:
                     context.theme.brightness == Brightness.light
                         ? Brightness.dark

@@ -65,6 +65,7 @@ class _AppNavigationBarViewState extends State<_AppNavigationBarView> {
     return AnnotatedRegion(
       value: SystemUiOverlayStyle(
         systemNavigationBarColor: bottomNavigationBarColor,
+        systemNavigationBarDividerColor: bottomNavigationBarColor,
         systemNavigationBarIconBrightness: iconBrightness,
       ),
       child: Scaffold(
