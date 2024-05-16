@@ -53,7 +53,7 @@ class _MorePageOption extends StatelessWidget {
             .sendEmail(
           emailUri: Uri(
             scheme: 'mailto',
-            path: AppConfig.supportEmail,
+            path: AppConfig.contactEmail,
             queryParameters: {'subject': AppConfig.appName},
           ),
         )

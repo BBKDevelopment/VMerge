@@ -7,8 +7,8 @@ abstract final class AppConfig {
   /// Returns the name of the app.
   static const appName = 'VMerge';
 
-  /// Returns the version of the app.
-  static const supportEmail = 'support@bbkdevelopment.com';
+  /// Returns the contact email address.
+  static const contactEmail = 'hello@bbkdevelopment.com';
 
   /// Returns the privacy policy URL.
   static const privacyPolicy =
