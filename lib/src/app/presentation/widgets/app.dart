@@ -36,6 +36,7 @@ class _AppView extends StatelessWidget {
         return switch (state) {
           AppInitializing() => const SizedBox.shrink(),
           AppInitialized() => MaterialApp(
+              title: AppConfig.appName,
               debugShowCheckedModeBanner: false,
               localizationsDelegates: AppLocalizations.localizationsDelegates,
               supportedLocales: AppLocalizations.supportedLocales,

@@ -53,8 +53,8 @@ class _MorePageOption extends StatelessWidget {
             .sendEmail(
           emailUri: Uri(
             scheme: 'mailto',
-            path: 'info@bbkdevelopment.com',
-            queryParameters: {'subject': 'VMerge'},
+            path: AppConfig.contactEmail,
+            queryParameters: {'subject': AppConfig.appName},
           ),
         )
             .onError<SendEmailException>((error, stackTrace) {
@@ -66,7 +66,7 @@ class _MorePageOption extends StatelessWidget {
         });
       case MorePageOption.termsAndConditions:
         getIt<UrlLauncherService>()
-            .launch(url: Uri.parse(AppUrl.termsAndConditions))
+            .launch(url: Uri.parse(AppConfig.termsAndConditions))
             .onError<UrlLaunchException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
                 message: l10n.couldNotOpenTermsAndConditionsMessage,
@@ -76,7 +76,7 @@ class _MorePageOption extends StatelessWidget {
         });
       case MorePageOption.privacyPolicy:
         getIt<UrlLauncherService>()
-            .launch(url: Uri.parse(AppUrl.privacyPolicy))
+            .launch(url: Uri.parse(AppConfig.privacyPolicy))
             .onError<UrlLaunchException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
                 message: l10n.couldNotOpenPrivacyPolicyMessage,
