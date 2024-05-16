@@ -4,7 +4,7 @@ version: 2.0.0+8
 publish_to: none
 
 environment:
-  sdk: '>=3.3.0 <4.0.0'
+  sdk: '>=3.3.0 <3.4.0'
 
 dependencies:
   android_intent_plus: ^5.0.2
