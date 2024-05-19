@@ -28,7 +28,7 @@ dependencies:
     git:
       url: https://github.com/BBKDevelopment/Launch-Review-Service.git
       ref: v1.0.0
-  modal_bottom_sheet: ^3.0.0-pre
+  modal_bottom_sheet: ^3.0.0
   objectbox: ^2.5.1
   objectbox_flutter_libs: ^2.5.1
   package_info_plus: ^8.0.0
