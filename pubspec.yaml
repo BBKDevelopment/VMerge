@@ -50,7 +50,7 @@ dependencies:
   wechat_assets_picker: ^9.0.3
 
 dev_dependencies:
-  build_runner: ^2.4.9
+  build_runner: ^2.4.10
   flutter_gen_runner: ^5.5.0+1
   flutter_lints: ^4.0.0
   flutter_test:
