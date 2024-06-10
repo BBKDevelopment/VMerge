@@ -1177,10 +1177,10 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_assets_picker
-      sha256: d9d3b7219206247898234ce2f330f84dd6ba9d45338f382db787c5dd8789e97a
+      sha256: "6a1193beb2ce170edcf4091d849d2bc811eb2a36a8007fa63e6bfbaf3ac99625"
       url: "https://pub.dev"
     source: hosted
-    version: "9.0.3"
+    version: "9.0.4"
   wechat_picker_library:
     dependency: transitive
     description:

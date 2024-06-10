@@ -47,7 +47,7 @@ dependencies:
     git:
       url: https://github.com/BBKDevelopment/Wakelock-Service.git
       ref: v1.1.0
-  wechat_assets_picker: ^9.0.3
+  wechat_assets_picker: ^9.0.4
 
 dev_dependencies:
   build_runner: ^2.4.11
