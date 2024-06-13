@@ -31,30 +31,38 @@ class _AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppState>(
-      builder: (context, state) {
-        return switch (state) {
-          AppInitializing() => const SizedBox.shrink(),
-          AppInitialized() => MaterialApp(
-              title: AppConfig.appName,
-              debugShowCheckedModeBanner: false,
-              localizationsDelegates: AppLocalizations.localizationsDelegates,
-              supportedLocales: AppLocalizations.supportedLocales,
-              theme: getIt<AppTheme>(
-                param1: state.mainColor.value,
-                instanceName: '$LightAppTheme',
-              ).data,
-              darkTheme: getIt<AppTheme>(
-                param1: state.mainColor.value,
-                instanceName: '$DarkAppTheme',
-              ).data,
-              themeMode: state.themeMode,
-              home: const ErrorListener(
-                child: AppNavigationBar(),
+    return MediaQuery(
+      data: MediaQuery.of(context).copyWith(
+        textScaler: MediaQuery.textScalerOf(context).clamp(
+          minScaleFactor: 0.8,
+          maxScaleFactor: 1.5,
+        ),
+      ),
+      child: BlocBuilder<AppCubit, AppState>(
+        builder: (context, state) {
+          return switch (state) {
+            AppInitializing() => const SizedBox.shrink(),
+            AppInitialized() => MaterialApp(
+                title: AppConfig.appName,
+                debugShowCheckedModeBanner: false,
+                localizationsDelegates: AppLocalizations.localizationsDelegates,
+                supportedLocales: AppLocalizations.supportedLocales,
+                theme: getIt<AppTheme>(
+                  param1: state.mainColor.value,
+                  instanceName: '$LightAppTheme',
+                ).data,
+                darkTheme: getIt<AppTheme>(
+                  param1: state.mainColor.value,
+                  instanceName: '$DarkAppTheme',
+                ).data,
+                themeMode: state.themeMode,
+                home: const ErrorListener(
+                  child: AppNavigationBar(),
+                ),
               ),
-            ),
-        };
-      },
+          };
+        },
+      ),
     );
   }
 }

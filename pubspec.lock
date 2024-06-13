@@ -76,10 +76,11 @@ packages:
   bottom_navy_bar:
     dependency: "direct main"
     description:
-      name: bottom_navy_bar
-      sha256: b30d9a566909b9a56f366b9e8abe0c24ef8939e4b464d1cad5ded6a1e2dcfca1
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: master
+      resolved-ref: a840c73653ce8b1497599e5aa88f5182d949b58e
+      url: "https://github.com/BBarisKilic/bottom_navy_bar.git"
+    source: git
     version: "6.0.0"
   build:
     dependency: transitive
@@ -1222,5 +1223,5 @@ packages:
     source: hosted
     version: "3.1.2"
 sdks:
-  dart: ">=3.3.0 <4.0.0"
+  dart: ">=3.4.0 <4.0.0"
   flutter: ">=3.19.0"

@@ -9,7 +9,10 @@ environment:
 dependencies:
   android_intent_plus: ^5.0.2
   bloc: ^8.1.4
-  bottom_navy_bar: ^6.0.0
+  bottom_navy_bar:
+    git:
+      url: https://github.com/BBarisKilic/bottom_navy_bar.git
+      ref: master
   collection: ^1.18.0
   equatable: ^2.0.5
   ffmpeg_service:
