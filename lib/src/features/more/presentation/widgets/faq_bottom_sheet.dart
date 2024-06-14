@@ -127,7 +127,7 @@ class _FaqBottomSheet extends StatelessWidget {
               itemCount: faqQuestions.length,
               itemBuilder: (context, index) {
                 return ExpansionTile(
-                  tilePadding: AppPadding.verticalSmall,
+                  tilePadding: AppPadding.verticalXSmall,
                   childrenPadding: AppPadding.bottomMedium,
                   title: Text(
                     '${index + 1}. ${faqQuestions[index]}',
