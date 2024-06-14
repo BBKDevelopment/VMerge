@@ -16,6 +16,7 @@ import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/error/error.dart';
 
 part '../widgets/copyright_text.dart';
+part '../widgets/faq_bottom_sheet.dart';
 part '../widgets/more_page_option.dart';
 part '../widgets/theme_bottom_sheet.dart';
 
@@ -118,45 +119,34 @@ class _MoreViewState extends State<_MoreView>
 
 enum MorePageOption {
   theme,
+  faq,
   rateUs,
   contactUs,
   termsAndConditions,
   privacyPolicy,
   licenses;
 
-  String get assetPath {
-    switch (this) {
-      case MorePageOption.theme:
-        return Assets.images.palette.path;
-      case MorePageOption.rateUs:
-        return Assets.images.star.path;
-      case MorePageOption.contactUs:
-        return Assets.images.mail.path;
-      case MorePageOption.termsAndConditions:
-        return Assets.images.description.path;
-      case MorePageOption.privacyPolicy:
-        return Assets.images.privacy.path;
-      case MorePageOption.licenses:
-        return Assets.images.license.path;
-    }
-  }
+  String get assetPath => switch (this) {
+        MorePageOption.theme => Assets.images.palette.path,
+        MorePageOption.faq => Assets.images.faq.path,
+        MorePageOption.rateUs => Assets.images.star.path,
+        MorePageOption.contactUs => Assets.images.mail.path,
+        MorePageOption.termsAndConditions => Assets.images.description.path,
+        MorePageOption.privacyPolicy => Assets.images.privacy.path,
+        MorePageOption.licenses => Assets.images.license.path
+      };
 
   String title(BuildContext context) {
     final l10n = context.l10n;
 
-    switch (this) {
-      case MorePageOption.theme:
-        return l10n.theme;
-      case MorePageOption.rateUs:
-        return l10n.rateUs;
-      case MorePageOption.contactUs:
-        return l10n.contactUs;
-      case MorePageOption.termsAndConditions:
-        return l10n.termsAndConditions;
-      case MorePageOption.privacyPolicy:
-        return l10n.privacyPolicy;
-      case MorePageOption.licenses:
-        return l10n.licenses;
-    }
+    return switch (this) {
+      MorePageOption.theme => l10n.theme,
+      MorePageOption.faq => l10n.faq,
+      MorePageOption.rateUs => l10n.rateUs,
+      MorePageOption.contactUs => l10n.contactUs,
+      MorePageOption.termsAndConditions => l10n.termsAndConditions,
+      MorePageOption.privacyPolicy => l10n.privacyPolicy,
+      MorePageOption.licenses => l10n.licenses
+    };
   }
 }

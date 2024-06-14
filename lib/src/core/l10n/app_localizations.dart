@@ -326,6 +326,384 @@ abstract class AppLocalizations {
   /// **'Failed to save merged video! Please grant the required permissions.'**
   String get failedToSaveVideoMessage;
 
+  /// No description provided for @faq.
+  ///
+  /// In en, this message translates to:
+  /// **'FAQ'**
+  String get faq;
+
+  /// No description provided for @faqQuestion1.
+  ///
+  /// In en, this message translates to:
+  /// **'Why does my video merging take too long?'**
+  String get faqQuestion1;
+
+  /// No description provided for @faqAnswer1.
+  ///
+  /// In en, this message translates to:
+  /// **'When video specs are different from each other, re-encoding is applied to ensure that the output video will work on every video player without any problems. This process may take a bit longer based on the video length and the CPU capability of your device.'**
+  String get faqAnswer1;
+
+  /// No description provided for @faqQuestion2.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos without re-encoding?'**
+  String get faqQuestion2;
+
+  /// No description provided for @faqAnswer2.
+  ///
+  /// In en, this message translates to:
+  /// **'If the video specs are identical, the app can merge them without re-encoding, saving time and preserving quality.'**
+  String get faqAnswer2;
+
+  /// No description provided for @faqQuestion3.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I add videos for merging?'**
+  String get faqQuestion3;
+
+  /// No description provided for @faqAnswer3.
+  ///
+  /// In en, this message translates to:
+  /// **'Tap the \"Video\" option on the navigation bar to open the video picker, then select up to four videos.'**
+  String get faqAnswer3;
+
+  /// No description provided for @faqQuestion4.
+  ///
+  /// In en, this message translates to:
+  /// **'How many videos can I merge at the same time?'**
+  String get faqQuestion4;
+
+  /// No description provided for @faqAnswer4.
+  ///
+  /// In en, this message translates to:
+  /// **'You can merge up to four videos at a time.'**
+  String get faqAnswer4;
+
+  /// No description provided for @faqQuestion5.
+  ///
+  /// In en, this message translates to:
+  /// **'How can I order the videos for merging?'**
+  String get faqQuestion5;
+
+  /// No description provided for @faqAnswer5.
+  ///
+  /// In en, this message translates to:
+  /// **'Select the videos in the order you want them merged when using the video picker.'**
+  String get faqAnswer5;
+
+  /// No description provided for @faqQuestion6.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I change the order of the videos before merging?'**
+  String get faqQuestion6;
+
+  /// No description provided for @faqAnswer6.
+  ///
+  /// In en, this message translates to:
+  /// **'No, you must select the videos in the desired order when using the video picker.'**
+  String get faqAnswer6;
+
+  /// No description provided for @faqQuestion7.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I delete a video from the merge list?'**
+  String get faqQuestion7;
+
+  /// No description provided for @faqAnswer7.
+  ///
+  /// In en, this message translates to:
+  /// **'It is not possible to edit merge list after selection, to modify the list you should tap videos on the navigation bar to open video picker and recreate the list.'**
+  String get faqAnswer7;
+
+  /// No description provided for @faqQuestion8.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I save the merged video?'**
+  String get faqQuestion8;
+
+  /// No description provided for @faqAnswer8.
+  ///
+  /// In en, this message translates to:
+  /// **'After tapping the save button, the videos will be merged and automatically saved to your gallery.'**
+  String get faqAnswer8;
+
+  /// No description provided for @faqQuestion9.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I preview the merged video before saving?'**
+  String get faqQuestion9;
+
+  /// No description provided for @faqAnswer9.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the video in the merge section serves as a preview of the final output.'**
+  String get faqAnswer9;
+
+  /// No description provided for @faqQuestion10.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I export the merged video to social media?'**
+  String get faqQuestion10;
+
+  /// No description provided for @faqAnswer10.
+  ///
+  /// In en, this message translates to:
+  /// **'After merging, the output video will be automatically saved to your gallery. From there, you can directly upload it to your social media accounts.'**
+  String get faqAnswer10;
+
+  /// No description provided for @faqQuestion11.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I trim videos before merging them?'**
+  String get faqQuestion11;
+
+  /// No description provided for @faqAnswer11.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes and no. You can use our other app, VClip, to trim videos by selecting the start and end points. This way, you can trim each video before merging them in this app.'**
+  String get faqAnswer11;
+
+  /// No description provided for @faqQuestion12.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I adjust the output video resolution?'**
+  String get faqQuestion12;
+
+  /// No description provided for @faqAnswer12.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to the settings menu and select the desired resolution for the output video before starting the merge process.'**
+  String get faqAnswer12;
+
+  /// No description provided for @faqQuestion13.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos of different resolutions?'**
+  String get faqQuestion13;
+
+  /// No description provided for @faqAnswer13.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, you can merge videos of different resolutions. The app will adjust them to the resolution as set in the settings.'**
+  String get faqAnswer13;
+
+  /// No description provided for @faqQuestion14.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos with different aspect ratios?'**
+  String get faqQuestion14;
+
+  /// No description provided for @faqAnswer14.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the app will adjust the aspect ratios based on the configuration that is set.'**
+  String get faqAnswer14;
+
+  /// No description provided for @faqQuestion15.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos with different frame rates?'**
+  String get faqQuestion15;
+
+  /// No description provided for @faqAnswer15.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the app can handle videos with different frame rates and will adjust them during the merging process.'**
+  String get faqAnswer15;
+
+  /// No description provided for @faqQuestion16.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos with different codecs?'**
+  String get faqQuestion16;
+
+  /// No description provided for @faqAnswer16.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the app supports multiple codecs and will re-encode as necessary to ensure compatibility.'**
+  String get faqAnswer16;
+
+  /// No description provided for @faqQuestion17.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos with different audio formats?'**
+  String get faqQuestion17;
+
+  /// No description provided for @faqAnswer17.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the app will standardize the audio formats during the merging process.'**
+  String get faqAnswer17;
+
+  /// No description provided for @faqQuestion18.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos without audio?'**
+  String get faqQuestion18;
+
+  /// No description provided for @faqAnswer18.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, you can mute the audio tracks before merging if you prefer a silent video. To do this, open the settings menu and set the sound option to off.'**
+  String get faqAnswer18;
+
+  /// No description provided for @faqQuestion19.
+  ///
+  /// In en, this message translates to:
+  /// **'Can I merge videos with subtitles?'**
+  String get faqQuestion19;
+
+  /// No description provided for @faqAnswer19.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the app supports merging videos with embedded subtitles. However, external subtitle files are not supported at this time.'**
+  String get faqAnswer19;
+
+  /// No description provided for @faqQuestion20.
+  ///
+  /// In en, this message translates to:
+  /// **'Does the app support 4K videos?'**
+  String get faqQuestion20;
+
+  /// No description provided for @faqAnswer20.
+  ///
+  /// In en, this message translates to:
+  /// **'Yes, the app supports 4K video merging, provided your device has the necessary resources to handle high-resolution files.'**
+  String get faqAnswer20;
+
+  /// No description provided for @faqQuestion21.
+  ///
+  /// In en, this message translates to:
+  /// **'What is the maximum file size supported for merging?'**
+  String get faqQuestion21;
+
+  /// No description provided for @faqAnswer21.
+  ///
+  /// In en, this message translates to:
+  /// **'The app can handle large files, but the maximum supported size depends on your device’s capabilities.'**
+  String get faqAnswer21;
+
+  /// No description provided for @faqQuestion22.
+  ///
+  /// In en, this message translates to:
+  /// **'What do I do if the app is running slowly?'**
+  String get faqQuestion22;
+
+  /// No description provided for @faqAnswer22.
+  ///
+  /// In en, this message translates to:
+  /// **'Close other applications to free up system resources, and check for any available updates for the app.'**
+  String get faqAnswer22;
+
+  /// No description provided for @faqQuestion23.
+  ///
+  /// In en, this message translates to:
+  /// **'Why is my device overheating during the merge process?'**
+  String get faqQuestion23;
+
+  /// No description provided for @faqAnswer23.
+  ///
+  /// In en, this message translates to:
+  /// **'Video merging is resource-intensive and may cause your device to heat up. Ensure your device has proper ventilation and consider merging fewer videos at a time.'**
+  String get faqAnswer23;
+
+  /// No description provided for @faqQuestion24.
+  ///
+  /// In en, this message translates to:
+  /// **'Why does the app crash during merging?'**
+  String get faqQuestion24;
+
+  /// No description provided for @faqAnswer24.
+  ///
+  /// In en, this message translates to:
+  /// **'This is likely due to a memory-related issue that can occur on devices with low memory.'**
+  String get faqAnswer24;
+
+  /// No description provided for @faqQuestion25.
+  ///
+  /// In en, this message translates to:
+  /// **'What should I do if the app crashes during merging?'**
+  String get faqQuestion25;
+
+  /// No description provided for @faqAnswer25.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure you have sufficient free space. Restart the app and try with fewer videos. If the problem persists, contact support.'**
+  String get faqAnswer25;
+
+  /// No description provided for @faqQuestion26.
+  ///
+  /// In en, this message translates to:
+  /// **'Why does the merged video file size seem large?'**
+  String get faqQuestion26;
+
+  /// No description provided for @faqAnswer26.
+  ///
+  /// In en, this message translates to:
+  /// **'The file size depends on the resolution, bitrate, and length of the merged video.'**
+  String get faqAnswer26;
+
+  /// No description provided for @faqQuestion27.
+  ///
+  /// In en, this message translates to:
+  /// **'Why is the video quality reduced after merging?'**
+  String get faqQuestion27;
+
+  /// No description provided for @faqAnswer27.
+  ///
+  /// In en, this message translates to:
+  /// **'Ensure you are using the highest quality settings. Some loss of quality may occur due to compression and encoding.'**
+  String get faqAnswer27;
+
+  /// No description provided for @faqQuestion28.
+  ///
+  /// In en, this message translates to:
+  /// **'What should I do if the merged video has no sound?'**
+  String get faqQuestion28;
+
+  /// No description provided for @faqAnswer28.
+  ///
+  /// In en, this message translates to:
+  /// **'Check the sound settings and ensure that the source videos have working audio tracks.'**
+  String get faqAnswer28;
+
+  /// No description provided for @faqQuestion29.
+  ///
+  /// In en, this message translates to:
+  /// **'Is there a way to automatically sync audio and video?'**
+  String get faqQuestion29;
+
+  /// No description provided for @faqAnswer29.
+  ///
+  /// In en, this message translates to:
+  /// **'The app includes an automatic sync feature that aligns audio and video tracks during the merging process.'**
+  String get faqAnswer29;
+
+  /// No description provided for @faqQuestion30.
+  ///
+  /// In en, this message translates to:
+  /// **'Why does the app require access to my media files?'**
+  String get faqQuestion30;
+
+  /// No description provided for @faqAnswer30.
+  ///
+  /// In en, this message translates to:
+  /// **'The app needs access to your media files to select, process, and save videos during the merge process.'**
+  String get faqAnswer30;
+
+  /// No description provided for @faqQuestion31.
+  ///
+  /// In en, this message translates to:
+  /// **'How do I change the theme of the app?'**
+  String get faqQuestion31;
+
+  /// No description provided for @faqAnswer31.
+  ///
+  /// In en, this message translates to:
+  /// **'Go to the theme menu and select your preferred theme from the available options.'**
+  String get faqAnswer31;
+
   /// No description provided for @firstAspectRatioTooltip.
   ///
   /// In en, this message translates to:

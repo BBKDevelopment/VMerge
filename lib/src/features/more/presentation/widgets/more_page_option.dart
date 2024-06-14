@@ -38,6 +38,27 @@ class _MorePageOption extends StatelessWidget {
             );
           },
         );
+      case MorePageOption.faq:
+        // `showModalBottomSheet` is not used here since it does not support
+        // `Hero` animations. Please see: https://github.com/flutter/flutter/issues/48467
+        showCupertinoModalBottomSheet<void>(
+          context: context,
+          useRootNavigator: true,
+          topRadius: const Radius.circular(AppBorderRadius.xxxLarge),
+          builder: (_) {
+            return BlocProvider.value(
+              value: BlocProvider.of<AppCubit>(context),
+              // Default `showModalBottomSheet` and dialogs use
+              // `dialogBackgroundColor` and `surfaceTintColor`, so `Card` is
+              // used here to match the design because it uses the same colors.
+              child: const Card(
+                margin: EdgeInsets.zero,
+                shape: ContinuousRectangleBorder(),
+                child: _FaqBottomSheet(),
+              ),
+            );
+          },
+        );
       case MorePageOption.rateUs:
         getIt<LaunchReviewService>()
             .launch()
