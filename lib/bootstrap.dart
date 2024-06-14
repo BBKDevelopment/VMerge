@@ -132,6 +132,26 @@ Future<void> setup() async {
         repository: getIt<MergeSettingsRepository>(),
       ),
     )
+    ..registerLazySingleton<LocalMergeStatisticsService>(
+      () => ObjectBoxMergeStatisticsService(
+        service: getIt<ObjectBoxService>(),
+      ),
+    )
+    ..registerLazySingleton<MergeStatisticsRepository>(
+      () => MergeStatisticsRepositoryImpl(
+        localService: getIt<LocalMergeStatisticsService>(),
+      ),
+    )
+    ..registerLazySingleton<GetMergeStatisticsUseCase>(
+      () => GetMergeStatisticsUseCase(
+        repository: getIt<MergeStatisticsRepository>(),
+      ),
+    )
+    ..registerLazySingleton<SaveMergeStatisticsUseCase>(
+      () => SaveMergeStatisticsUseCase(
+        repository: getIt<MergeStatisticsRepository>(),
+      ),
+    )
     ..registerLazySingleton<PackageInfo>(
       () => packageInfo,
     )

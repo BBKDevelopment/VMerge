@@ -57,6 +57,8 @@ class MergePage extends StatelessWidget {
           create: (_) => SaveBottomSheetCubit(
             ffmpegService: getIt<FFmpegService>(),
             wakelockService: getIt<WakelockService>(),
+            getMergeStatisticsUseCase: getIt<GetMergeStatisticsUseCase>(),
+            saveMergeStatisticsUseCase: getIt<SaveMergeStatisticsUseCase>(),
           ),
         ),
       ],

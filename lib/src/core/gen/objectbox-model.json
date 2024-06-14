@@ -60,9 +60,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:6752277543447190155",
+      "lastPropertyId": "3:4991885907385683044",
+      "name": "LocalMergeStatistics",
+      "properties": [
+        {
+          "id": "1:5740094858668497488",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3379488580577270059",
+          "name": "successMerges",
+          "type": 6
+        },
+        {
+          "id": "3:4991885907385683044",
+          "name": "failedMerges",
+          "type": 6
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:4520518054235479906",
+  "lastEntityId": "3:6752277543447190155",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",

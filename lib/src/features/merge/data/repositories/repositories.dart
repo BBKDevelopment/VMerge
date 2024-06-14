@@ -3,3 +3,4 @@
 // in the LICENSE file.
 
 export 'merge_settings_repository_impl.dart';
+export 'merge_statistics_repository_impl.dart';
