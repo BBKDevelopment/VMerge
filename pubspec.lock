@@ -566,23 +566,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.8.1"
-  launch_review:
-    dependency: transitive
-    description:
-      name: launch_review
-      sha256: "04cdaf752033cefd53bc0fa9c22105801ef53791a93d8b6cdd00fcb3c1c1604b"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.1"
-  launch_review_service:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: "v1.0.0"
-      resolved-ref: a85533d94d4308ee3f50268db225c60ea2080bac
-      url: "https://github.com/BBKDevelopment/Launch-Review-Service.git"
-    source: git
-    version: "1.0.0"
   leak_tracker:
     dependency: transitive
     description:
