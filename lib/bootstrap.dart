@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
-import 'package:launch_review_service/launch_review_service.dart';
+import 'package:in_app_review_service/in_app_review_service.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -155,8 +155,8 @@ Future<void> setup() async {
     ..registerLazySingleton<PackageInfo>(
       () => packageInfo,
     )
-    ..registerLazySingleton<LaunchReviewService>(
-      () => LaunchReviewService(androidAppId: getIt<PackageInfo>().packageName),
+    ..registerLazySingleton<InAppReviewService>(
+      InAppReviewService.new,
     )
     ..registerLazySingleton<UrlLauncherService>(
       () => const UrlLauncherService(),

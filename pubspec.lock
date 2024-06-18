@@ -529,11 +529,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.0.0"
-      resolved-ref: "1b11f4c1f16f3d1bc5f5a0040708375e3bf71f5e"
+      ref: "v1.0.1"
+      resolved-ref: ad4c30c7f6ed404bc70c54decae94fc41db471a9
       url: "https://github.com/BBKDevelopment/In-App-Review-Service.git"
     source: git
-    version: "1.0.0"
+    version: "1.0.1"
   intl:
     dependency: "direct main"
     description:
