@@ -14,39 +14,26 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
     required SaveMergeSettingsUseCase saveMergeSettingsUseCase,
   })  : _getMergeSettingsUseCase = getMergeSettingsUseCase,
         _saveMergeSettingsUseCase = saveMergeSettingsUseCase,
-        super(
-          SettingsBottomSheetLoaded(
-            isAudioOn: _defaultMergeSettings.isAudioOn,
-            playbackSpeed: _defaultMergeSettings.playbackSpeed,
-            videoResolution: _defaultMergeSettings.videoResolution,
-            videoAspectRatio: _defaultMergeSettings.videoAspectRatio,
-          ),
-        );
+        super(const SettingsBottomSheetInitial());
 
   final GetMergeSettingsUseCase _getMergeSettingsUseCase;
   final SaveMergeSettingsUseCase _saveMergeSettingsUseCase;
-
-  static const _defaultMergeSettings = MergeSettings(
-    isAudioOn: true,
-    playbackSpeed: PlaybackSpeed.one,
-    videoResolution: VideoResolution.original,
-    videoAspectRatio: VideoAspectRatio.firstVideo,
-  );
 
   Future<void> init() async {
     final settings = await _getMergeSettings();
 
     emit(
       SettingsBottomSheetLoaded(
-        isAudioOn: settings.isAudioOn,
-        playbackSpeed: settings.playbackSpeed,
-        videoResolution: settings.videoResolution,
-        videoAspectRatio: settings.videoAspectRatio,
+        isAudioOn: settings?.isAudioOn ?? true,
+        playbackSpeed: settings?.playbackSpeed ?? PlaybackSpeed.one,
+        videoResolution: settings?.videoResolution ?? VideoResolution.original,
+        videoAspectRatio:
+            settings?.videoAspectRatio ?? VideoAspectRatio.firstVideo,
       ),
     );
   }
 
-  Future<MergeSettings> _getMergeSettings() async {
+  Future<MergeSettings?> _getMergeSettings() async {
     final dataState = await _getMergeSettingsUseCase();
 
     switch (dataState) {
@@ -59,8 +46,7 @@ final class SettingsBottomSheetCubit extends Cubit<SettingsBottomSheetState> {
           error: dataState.error,
           stackTrace: dataState.stackTrace,
         );
-        await _saveMergeSettings(_defaultMergeSettings);
-        return _defaultMergeSettings;
+        return null;
     }
   }
 
