@@ -20,9 +20,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   SaveBottomSheetCubit({
     required FFmpegService ffmpegService,
     required WakelockService wakelockService,
+    required InAppReviewService inAppReviewService,
     required GetMergeStatisticsUseCase getMergeStatisticsUseCase,
     required SaveMergeStatisticsUseCase saveMergeStatisticsUseCase,
-    required InAppReviewService inAppReviewService,
   })  : _ffmpegService = ffmpegService,
         _wakelockService = wakelockService,
         _getMergeStatisticsUseCase = getMergeStatisticsUseCase,
@@ -36,14 +36,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
 
   final FFmpegService _ffmpegService;
   final WakelockService _wakelockService;
+  final InAppReviewService _inAppReviewService;
   final GetMergeStatisticsUseCase _getMergeStatisticsUseCase;
   final SaveMergeStatisticsUseCase _saveMergeStatisticsUseCase;
-  final InAppReviewService _inAppReviewService;
-
-  static const _defaultMergeStatistics = MergeStatistics(
-    successMergeCount: 0,
-    failedMergeCount: 0,
-  );
 
   Future<void> init(List<VideoMetadata> videoMetadatas) async {
     emit(SaveBottomSheetInitial(videoMetadatas: videoMetadatas));
@@ -71,7 +66,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(
+          statistics?.copyWith(
             failedMergeCount: statistics.failedMergeCount + 1,
           ),
         ),
@@ -109,7 +104,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(
+          statistics?.copyWith(
             failedMergeCount: statistics.failedMergeCount + 1,
           ),
         ),
@@ -142,7 +137,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(
+          statistics?.copyWith(
             failedMergeCount: statistics.failedMergeCount + 1,
           ),
         ),
@@ -159,7 +154,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(
+          statistics?.copyWith(
             failedMergeCount: statistics.failedMergeCount + 1,
           ),
         ),
@@ -175,7 +170,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(
+          statistics?.copyWith(
             failedMergeCount: statistics.failedMergeCount + 1,
           ),
         ),
@@ -201,7 +196,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(
+          statistics?.copyWith(
             failedMergeCount: statistics.failedMergeCount + 1,
           ),
         ),
@@ -209,7 +204,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       return;
     }
 
-    final newStatistics = statistics.copyWith(
+    final newStatistics = statistics?.copyWith(
       successMergeCount: statistics.successMergeCount + 1,
     );
     unawaited(_saveMergeStatistics(newStatistics));
@@ -224,7 +219,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     await _ffmpegService.cancelMerge();
   }
 
-  Future<MergeStatistics> _getMergeStatistics() async {
+  Future<MergeStatistics?> _getMergeStatistics() async {
     final dataState = await _getMergeStatisticsUseCase();
 
     switch (dataState) {
@@ -237,12 +232,13 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
           error: dataState.error,
           stackTrace: dataState.stackTrace,
         );
-        await _saveMergeStatistics(_defaultMergeStatistics);
-        return _defaultMergeStatistics;
+        return null;
     }
   }
 
-  Future<void> _saveMergeStatistics(MergeStatistics statistics) async {
+  Future<void> _saveMergeStatistics(MergeStatistics? statistics) async {
+    if (statistics == null) return;
+
     final dataState = await _saveMergeStatisticsUseCase(params: statistics);
 
     switch (dataState) {
@@ -258,7 +254,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     }
   }
 
-  Future<void> _requestReview(MergeStatistics statistics) async {
+  Future<void> _requestReview(MergeStatistics? statistics) async {
+    if (statistics == null) return;
+
     final totalMergeCount =
         statistics.successMergeCount + statistics.failedMergeCount;
     // If the user has not merged at least 2 videos, don't request review.

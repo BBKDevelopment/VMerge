@@ -19,6 +19,12 @@ final class ObjectBoxMergeStatisticsService
     final box = _service.store.box<LocalMergeStatistics>();
     final query = box.query().build();
     final entities = query.find();
+
+    if (entities.isEmpty) {
+      query.close();
+      return saveMergeStatistics(LocalMergeStatistics());
+    }
+
     final statistics = entities.first;
     query.close();
 
@@ -27,7 +33,9 @@ final class ObjectBoxMergeStatisticsService
 
   /// Saves the [LocalMergeStatistics].
   @override
-  Future<void> saveMergeStatistics(LocalMergeStatistics statistics) async {
+  Future<LocalMergeStatistics> saveMergeStatistics(
+    LocalMergeStatistics statistics,
+  ) async {
     final box = _service.store.box<LocalMergeStatistics>();
     final query = box.query().build();
     final entities = query.find();
@@ -36,6 +44,6 @@ final class ObjectBoxMergeStatisticsService
 
     if (oldStatistics != null) statistics.id = oldStatistics.id;
 
-    box.put(statistics);
+    return box.putAndGetAsync(statistics);
   }
 }
