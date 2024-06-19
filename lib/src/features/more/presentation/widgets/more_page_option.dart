@@ -60,11 +60,11 @@ class _MorePageOption extends StatelessWidget {
           },
         );
       case MorePageOption.rateUs:
-        getIt<LaunchReviewService>()
-            .launch()
-            .onError<LaunchReviewException>((error, stackTrace) {
+        getIt<InAppReviewService>()
+            .openStoreListing()
+            .onError<OpenStoreListingException>((error, stackTrace) {
           context.read<ErrorCubit>().caught(
-                message: l10n.couldNotLaunchReviewServiceMessage,
+                message: l10n.couldNotOpenStoreListingMessage,
                 error: error,
                 stackTrace: stackTrace,
               );

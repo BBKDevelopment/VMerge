@@ -3,3 +3,4 @@
 // in the LICENSE file.
 
 export 'local_merge_settings.dart';
+export 'local_merge_statistics.dart';

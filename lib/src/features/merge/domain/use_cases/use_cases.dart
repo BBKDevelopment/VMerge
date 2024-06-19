@@ -3,4 +3,6 @@
 // in the LICENSE file.
 
 export 'get_merge_settings_use_case.dart';
+export 'get_merge_statistics_use_case.dart';
 export 'save_merge_settings_use_case.dart';
+export 'save_merge_statistics_use_case.dart';

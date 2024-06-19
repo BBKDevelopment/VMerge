@@ -17,6 +17,7 @@ import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
 import '../../../src/app/data/models/local_theme_configuration.dart';
 import '../../../src/features/merge/data/models/local_merge_settings.dart';
+import '../../../src/features/merge/data/models/local_merge_statistics.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
 
@@ -78,6 +79,30 @@ final _entities = <obx_int.ModelEntity>[
             flags: 0)
       ],
       relations: <obx_int.ModelRelation>[],
+      backlinks: <obx_int.ModelBacklink>[]),
+  obx_int.ModelEntity(
+      id: const obx_int.IdUid(3, 6752277543447190155),
+      name: 'LocalMergeStatistics',
+      lastPropertyId: const obx_int.IdUid(5, 7060629709470016846),
+      flags: 0,
+      properties: <obx_int.ModelProperty>[
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(1, 5740094858668497488),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(4, 7986270554451540890),
+            name: 'successMergeCount',
+            type: 6,
+            flags: 0),
+        obx_int.ModelProperty(
+            id: const obx_int.IdUid(5, 7060629709470016846),
+            name: 'failedMergeCount',
+            type: 6,
+            flags: 0)
+      ],
+      relations: <obx_int.ModelRelation>[],
       backlinks: <obx_int.ModelBacklink>[])
 ];
 
@@ -116,13 +141,13 @@ Future<obx.Store> openStore(
 obx_int.ModelDefinition getObjectBoxModel() {
   final model = obx_int.ModelInfo(
       entities: _entities,
-      lastEntityId: const obx_int.IdUid(2, 4520518054235479906),
+      lastEntityId: const obx_int.IdUid(3, 6752277543447190155),
       lastIndexId: const obx_int.IdUid(0, 0),
       lastRelationId: const obx_int.IdUid(0, 0),
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [3379488580577270059, 4991885907385683044],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -198,6 +223,35 @@ obx_int.ModelDefinition getObjectBoxModel() {
                 .vTableGet(buffer, rootOffset, 8, '');
 
           return object;
+        }),
+    LocalMergeStatistics: obx_int.EntityDefinition<LocalMergeStatistics>(
+        model: _entities[2],
+        toOneRelations: (LocalMergeStatistics object) => [],
+        toManyRelations: (LocalMergeStatistics object) => {},
+        getId: (LocalMergeStatistics object) => object.id,
+        setId: (LocalMergeStatistics object, int id) {
+          object.id = id;
+        },
+        objectToFB: (LocalMergeStatistics object, fb.Builder fbb) {
+          fbb.startTable(6);
+          fbb.addInt64(0, object.id);
+          fbb.addInt64(3, object.successMergeCount);
+          fbb.addInt64(4, object.failedMergeCount);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (obx.Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
+
+          final object = LocalMergeStatistics()
+            ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
+            ..successMergeCount =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)
+            ..failedMergeCount =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
+
+          return object;
         })
   };
 
@@ -240,4 +294,21 @@ class LocalThemeConfiguration_ {
   /// see [LocalThemeConfiguration.mainColor]
   static final mainColor = obx.QueryStringProperty<LocalThemeConfiguration>(
       _entities[1].properties[2]);
+}
+
+/// [LocalMergeStatistics] entity fields to define ObjectBox queries.
+class LocalMergeStatistics_ {
+  /// see [LocalMergeStatistics.id]
+  static final id = obx.QueryIntegerProperty<LocalMergeStatistics>(
+      _entities[2].properties[0]);
+
+  /// see [LocalMergeStatistics.successMergeCount]
+  static final successMergeCount =
+      obx.QueryIntegerProperty<LocalMergeStatistics>(
+          _entities[2].properties[1]);
+
+  /// see [LocalMergeStatistics.failedMergeCount]
+  static final failedMergeCount =
+      obx.QueryIntegerProperty<LocalMergeStatistics>(
+          _entities[2].properties[2]);
 }

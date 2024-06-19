@@ -11,6 +11,7 @@ import 'package:android_intent_plus/flag.dart';
 import 'package:ffmpeg_service/ffmpeg_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:in_app_review_service/in_app_review_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:video_player/video_player.dart';
 import 'package:video_player_service/video_player_service.dart';
@@ -57,6 +58,9 @@ class MergePage extends StatelessWidget {
           create: (_) => SaveBottomSheetCubit(
             ffmpegService: getIt<FFmpegService>(),
             wakelockService: getIt<WakelockService>(),
+            inAppReviewService: getIt<InAppReviewService>(),
+            getMergeStatisticsUseCase: getIt<GetMergeStatisticsUseCase>(),
+            saveMergeStatisticsUseCase: getIt<SaveMergeStatisticsUseCase>(),
           ),
         ),
       ],

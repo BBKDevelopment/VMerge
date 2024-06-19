@@ -7,14 +7,19 @@ import 'package:vmerge/src/features/merge/merge.dart';
 
 @Entity()
 final class LocalMergeSettings implements DataModel<MergeSettings> {
-  LocalMergeSettings();
+  LocalMergeSettings()
+      : id = 0,
+        isSoundOn = true,
+        playbackSpeed = PlaybackSpeed.one.toString(),
+        videoResolution = VideoResolution.original.toString(),
+        videoAspectRatio = VideoAspectRatio.firstVideo.toString();
 
   LocalMergeSettings.fromArgs({
     required this.isSoundOn,
     required this.playbackSpeed,
     required this.videoResolution,
     required this.videoAspectRatio,
-  });
+  }) : id = 0;
 
   LocalMergeSettings.fromEntity(MergeSettings entity)
       : this.fromArgs(
@@ -24,11 +29,11 @@ final class LocalMergeSettings implements DataModel<MergeSettings> {
           videoAspectRatio: entity.videoAspectRatio.toString(),
         );
 
-  int id = 0;
-  bool isSoundOn = false;
-  String playbackSpeed = '';
-  String videoResolution = '';
-  String videoAspectRatio = '';
+  int id;
+  bool isSoundOn;
+  String playbackSpeed;
+  String videoResolution;
+  String videoAspectRatio;
 
   @override
   MergeSettings toEntity() {
