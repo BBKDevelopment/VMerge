@@ -9,6 +9,7 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:ffmpeg_service/ffmpeg_service.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
+import 'package:in_app_review_service/in_app_review_service.dart';
 import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
 import 'package:vmerge/src/core/core.dart';
@@ -21,10 +22,12 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
     required WakelockService wakelockService,
     required GetMergeStatisticsUseCase getMergeStatisticsUseCase,
     required SaveMergeStatisticsUseCase saveMergeStatisticsUseCase,
+    required InAppReviewService inAppReviewService,
   })  : _ffmpegService = ffmpegService,
         _wakelockService = wakelockService,
         _getMergeStatisticsUseCase = getMergeStatisticsUseCase,
         _saveMergeStatisticsUseCase = saveMergeStatisticsUseCase,
+        _inAppReviewService = inAppReviewService,
         super(
           const SaveBottomSheetInitial(
             videoMetadatas: [],
@@ -35,10 +38,11 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   final WakelockService _wakelockService;
   final GetMergeStatisticsUseCase _getMergeStatisticsUseCase;
   final SaveMergeStatisticsUseCase _saveMergeStatisticsUseCase;
+  final InAppReviewService _inAppReviewService;
 
   static const _defaultMergeStatistics = MergeStatistics(
-    successMerges: 0,
-    failedMerges: 0,
+    successMergeCount: 0,
+    failedMergeCount: 0,
   );
 
   Future<void> init(List<VideoMetadata> videoMetadatas) async {
@@ -67,7 +71,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(failedMerges: statistics.failedMerges + 1),
+          statistics.copyWith(
+            failedMergeCount: statistics.failedMergeCount + 1,
+          ),
         ),
       );
       return;
@@ -103,7 +109,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(failedMerges: statistics.failedMerges + 1),
+          statistics.copyWith(
+            failedMergeCount: statistics.failedMergeCount + 1,
+          ),
         ),
       );
       unawaited(_wakelockService.disable());
@@ -134,7 +142,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(failedMerges: statistics.failedMerges + 1),
+          statistics.copyWith(
+            failedMergeCount: statistics.failedMergeCount + 1,
+          ),
         ),
       );
       return;
@@ -149,7 +159,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(failedMerges: statistics.failedMerges + 1),
+          statistics.copyWith(
+            failedMergeCount: statistics.failedMergeCount + 1,
+          ),
         ),
       );
       return;
@@ -163,7 +175,9 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(failedMerges: statistics.failedMerges + 1),
+          statistics.copyWith(
+            failedMergeCount: statistics.failedMergeCount + 1,
+          ),
         ),
       );
       return;
@@ -187,18 +201,20 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
       );
       unawaited(
         _saveMergeStatistics(
-          statistics.copyWith(failedMerges: statistics.failedMerges + 1),
+          statistics.copyWith(
+            failedMergeCount: statistics.failedMergeCount + 1,
+          ),
         ),
       );
       return;
     }
 
-    emit(const SaveBottomSheetSuccess());
-    unawaited(
-      _saveMergeStatistics(
-        statistics.copyWith(successMerges: statistics.successMerges + 1),
-      ),
+    final newStatistics = statistics.copyWith(
+      successMergeCount: statistics.successMergeCount + 1,
     );
+    unawaited(_saveMergeStatistics(newStatistics));
+    unawaited(_requestReview(newStatistics));
+    emit(const SaveBottomSheetSuccess());
   }
 
   Future<void> cancelMerge() async {
@@ -239,6 +255,28 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
           error: dataState.error,
           stackTrace: dataState.stackTrace,
         );
+    }
+  }
+
+  Future<void> _requestReview(MergeStatistics statistics) async {
+    final totalMergeCount =
+        statistics.successMergeCount + statistics.failedMergeCount;
+    // If the user has not merged at least 2 videos, don't request review.
+    if (totalMergeCount < 2) return;
+
+    final successRate = statistics.successMergeCount / totalMergeCount;
+    // If the success rate is less than 90%, don't request review.
+    if (successRate < 0.9) return;
+
+    try {
+      await _inAppReviewService.requestReview();
+    } on RequestReviewException catch (error, stackTrace) {
+      log(
+        'Could not request review!',
+        name: '$SaveBottomSheetCubit',
+        error: error,
+        stackTrace: stackTrace,
+      );
     }
   }
 }

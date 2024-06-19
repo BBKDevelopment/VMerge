@@ -10,25 +10,25 @@ final class LocalMergeStatistics implements DataModel<MergeStatistics> {
   LocalMergeStatistics();
 
   LocalMergeStatistics.fromArgs({
-    required this.successMerges,
-    required this.failedMerges,
+    required this.successMergeCount,
+    required this.failedMergeCount,
   });
 
   LocalMergeStatistics.fromEntity(MergeStatistics entity)
       : this.fromArgs(
-          successMerges: entity.successMerges,
-          failedMerges: entity.failedMerges,
+          successMergeCount: entity.successMergeCount,
+          failedMergeCount: entity.failedMergeCount,
         );
 
   int id = 0;
-  int successMerges = 0;
-  int failedMerges = 0;
+  int successMergeCount = 0;
+  int failedMergeCount = 0;
 
   @override
   MergeStatistics toEntity() {
     return MergeStatistics(
-      successMerges: successMerges,
-      failedMerges: failedMerges,
+      successMergeCount: successMergeCount,
+      failedMergeCount: failedMergeCount,
     );
   }
 }

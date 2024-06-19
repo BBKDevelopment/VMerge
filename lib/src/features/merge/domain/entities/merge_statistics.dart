@@ -6,29 +6,29 @@ import 'package:vmerge/src/core/core.dart';
 
 final class MergeStatistics extends DomainEntity {
   const MergeStatistics({
-    required this.successMerges,
-    required this.failedMerges,
+    required this.successMergeCount,
+    required this.failedMergeCount,
   });
 
-  final int successMerges;
-  final int failedMerges;
+  final int successMergeCount;
+  final int failedMergeCount;
 
   @override
   String toString() {
-    return 'MergeStatistics(successMerges: $successMerges, failedMerges: '
-        '$failedMerges)';
+    return 'MergeStatistics(successMergeCount: $successMergeCount, '
+        'failedMergeCount: $failedMergeCount)';
   }
 
   @override
   List<Object> get props => [
-        successMerges,
-        failedMerges,
+        successMergeCount,
+        failedMergeCount,
       ];
 
-  MergeStatistics copyWith({int? successMerges, int? failedMerges}) {
+  MergeStatistics copyWith({int? successMergeCount, int? failedMergeCount}) {
     return MergeStatistics(
-      successMerges: successMerges ?? this.successMerges,
-      failedMerges: failedMerges ?? this.failedMerges,
+      successMergeCount: successMergeCount ?? this.successMergeCount,
+      failedMergeCount: failedMergeCount ?? this.failedMergeCount,
     );
   }
 }

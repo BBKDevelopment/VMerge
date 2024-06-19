@@ -83,7 +83,7 @@ final _entities = <obx_int.ModelEntity>[
   obx_int.ModelEntity(
       id: const obx_int.IdUid(3, 6752277543447190155),
       name: 'LocalMergeStatistics',
-      lastPropertyId: const obx_int.IdUid(3, 4991885907385683044),
+      lastPropertyId: const obx_int.IdUid(5, 7060629709470016846),
       flags: 0,
       properties: <obx_int.ModelProperty>[
         obx_int.ModelProperty(
@@ -92,13 +92,13 @@ final _entities = <obx_int.ModelEntity>[
             type: 6,
             flags: 1),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(2, 3379488580577270059),
-            name: 'successMerges',
+            id: const obx_int.IdUid(4, 7986270554451540890),
+            name: 'successMergeCount',
             type: 6,
             flags: 0),
         obx_int.ModelProperty(
-            id: const obx_int.IdUid(3, 4991885907385683044),
-            name: 'failedMerges',
+            id: const obx_int.IdUid(5, 7060629709470016846),
+            name: 'failedMergeCount',
             type: 6,
             flags: 0)
       ],
@@ -147,7 +147,7 @@ obx_int.ModelDefinition getObjectBoxModel() {
       lastSequenceId: const obx_int.IdUid(0, 0),
       retiredEntityUids: const [],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
+      retiredPropertyUids: const [3379488580577270059, 4991885907385683044],
       retiredRelationUids: const [],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
@@ -233,10 +233,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
           object.id = id;
         },
         objectToFB: (LocalMergeStatistics object, fb.Builder fbb) {
-          fbb.startTable(4);
+          fbb.startTable(6);
           fbb.addInt64(0, object.id);
-          fbb.addInt64(1, object.successMerges);
-          fbb.addInt64(2, object.failedMerges);
+          fbb.addInt64(3, object.successMergeCount);
+          fbb.addInt64(4, object.failedMergeCount);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -246,10 +246,10 @@ obx_int.ModelDefinition getObjectBoxModel() {
 
           final object = LocalMergeStatistics()
             ..id = const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0)
-            ..successMerges =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 6, 0)
-            ..failedMerges =
-                const fb.Int64Reader().vTableGet(buffer, rootOffset, 8, 0);
+            ..successMergeCount =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 10, 0)
+            ..failedMergeCount =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 12, 0);
 
           return object;
         })
@@ -302,11 +302,13 @@ class LocalMergeStatistics_ {
   static final id = obx.QueryIntegerProperty<LocalMergeStatistics>(
       _entities[2].properties[0]);
 
-  /// see [LocalMergeStatistics.successMerges]
-  static final successMerges = obx.QueryIntegerProperty<LocalMergeStatistics>(
-      _entities[2].properties[1]);
+  /// see [LocalMergeStatistics.successMergeCount]
+  static final successMergeCount =
+      obx.QueryIntegerProperty<LocalMergeStatistics>(
+          _entities[2].properties[1]);
 
-  /// see [LocalMergeStatistics.failedMerges]
-  static final failedMerges = obx.QueryIntegerProperty<LocalMergeStatistics>(
-      _entities[2].properties[2]);
+  /// see [LocalMergeStatistics.failedMergeCount]
+  static final failedMergeCount =
+      obx.QueryIntegerProperty<LocalMergeStatistics>(
+          _entities[2].properties[2]);
 }
