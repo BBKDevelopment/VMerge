@@ -40,7 +40,7 @@ final class SaveBottomSheetCubit extends Cubit<SaveBottomSheetState> {
   final GetMergeStatisticsUseCase _getMergeStatisticsUseCase;
   final SaveMergeStatisticsUseCase _saveMergeStatisticsUseCase;
 
-  Future<void> init(List<VideoMetadata> videoMetadatas) async {
+  void init(List<VideoMetadata> videoMetadatas) {
     emit(SaveBottomSheetInitial(videoMetadatas: videoMetadatas));
   }
 
