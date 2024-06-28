@@ -41,7 +41,7 @@ dependencies:
     git:
       url: https://github.com/BBKDevelopment/Url-Launcher-Service.git
       ref: v1.0.0
-  video_player: ^2.8.7
+  video_player: ^2.9.0
   video_player_service:
     git:
       url: https://github.com/BBKDevelopment/Video-Player-Service.git
