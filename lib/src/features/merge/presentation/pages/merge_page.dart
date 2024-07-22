@@ -14,7 +14,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:in_app_review_service/in_app_review_service.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:video_player/video_player.dart';
-import 'package:video_player_service/video_player_service.dart';
 import 'package:vmerge/bootstrap.dart';
 import 'package:vmerge/src/components/components.dart';
 import 'package:vmerge/src/core/core.dart';
@@ -41,12 +40,7 @@ class MergePage extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (_) => MergePageCubit(
-            firstVideoPlayerService: getIt<VideoPlayerService>(),
-            secondVideoPlayerService: getIt<VideoPlayerService>(),
-            thirdVideoPlayerService: getIt<VideoPlayerService>(),
-            fourthVideoPlayerService: getIt<VideoPlayerService>(),
-          ),
+          create: (_) => MergePageCubit(),
         ),
         BlocProvider(
           create: (_) => SettingsBottomSheetCubit(
@@ -107,6 +101,7 @@ class _MergeViewState extends State<_MergeView> with TickerProviderStateMixin {
       await context.read<MergePageCubit>().loadVideoMetadata(
             videoMetadatas,
             isSoundOn: settingsBottomSheetState.isAudioOn,
+            playbackSpeed: settingsBottomSheetState.playbackSpeed.value,
           );
     });
   }
