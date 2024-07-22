@@ -36,6 +36,22 @@
 
 &nbsp;
 
+<p align=right>Jul 22, 2024</p>
+<p align=left>2.1.0</p> 
+
+Release notes:
+
+- Introduced a comprehensive FAQ section to enhance user assistance and overall experience.
+- Implemented an in-app review feature to gather valuable user feedback.
+- Optimized memory management for improved performance on low-end devices.
+- Fixed text overflow issues related to text scaling.
+- Updated contact information for better accessibility.
+- Upgraded package dependencies to ensure the latest features and improvements.
+
+&nbsp;
+
+&nbsp;
+
 <p align=right>May 11, 2024</p>
 <p align=left>2.0.0</p> 
 
