@@ -1,6 +1,6 @@
 name: vmerge
 description: A video merger app created by BBK Development.
-version: 2.0.0+8
+version: 2.1.0+9
 publish_to: none
 
 environment:
