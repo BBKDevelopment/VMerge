@@ -22,6 +22,12 @@ final class ObjectBoxMergeSettingsService implements LocalMergeSettingsService {
     final box = _service.store.box<LocalMergeSettings>();
     final query = box.query().build();
     final entities = query.find();
+
+    if (entities.isEmpty) {
+      query.close();
+      return saveMergeSettings(LocalMergeSettings());
+    }
+
     final settings = entities.first;
     query.close();
 
@@ -30,7 +36,9 @@ final class ObjectBoxMergeSettingsService implements LocalMergeSettingsService {
 
   /// Saves the [LocalMergeSettings].
   @override
-  Future<void> saveMergeSettings(LocalMergeSettings settings) async {
+  Future<LocalMergeSettings> saveMergeSettings(
+    LocalMergeSettings settings,
+  ) async {
     final box = _service.store.box<LocalMergeSettings>();
     final query = box.query().build();
     final entities = query.find();
@@ -39,6 +47,6 @@ final class ObjectBoxMergeSettingsService implements LocalMergeSettingsService {
 
     if (oldSettings != null) settings.id = oldSettings.id;
 
-    box.put(settings);
+    return box.putAndGetAsync(settings);
   }
 }

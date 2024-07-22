@@ -212,6 +212,12 @@ abstract class AppLocalizations {
   /// **'Could not open privacy policy! Please check your internet connection and try again.'**
   String get couldNotOpenPrivacyPolicyMessage;
 
+  /// No description provided for @couldNotOpenStoreListingMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not open store listing! Please check your internet connection and try again.'**
+  String get couldNotOpenStoreListingMessage;
+
   /// No description provided for @couldNotOpenTermsAndConditionsMessage.
   ///
   /// In en, this message translates to:
@@ -235,12 +241,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Could not launch email service! Please check your internet connection and try again.'**
   String get couldNotLaunchEmailServiceMessage;
-
-  /// No description provided for @couldNotLaunchReviewServiceMessage.
-  ///
-  /// In en, this message translates to:
-  /// **'Could not launch review service! Please check your internet connection and try again.'**
-  String get couldNotLaunchReviewServiceMessage;
 
   /// No description provided for @couldNotSeekVideoPositionMessage.
   ///

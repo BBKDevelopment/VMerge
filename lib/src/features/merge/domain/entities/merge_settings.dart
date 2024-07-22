@@ -32,6 +32,20 @@ final class MergeSettings extends DomainEntity {
         videoResolution,
         videoAspectRatio,
       ];
+
+  MergeSettings copyWith({
+    bool? isAudioOn,
+    PlaybackSpeed? playbackSpeed,
+    VideoResolution? videoResolution,
+    VideoAspectRatio? videoAspectRatio,
+  }) {
+    return MergeSettings(
+      isAudioOn: isAudioOn ?? this.isAudioOn,
+      playbackSpeed: playbackSpeed ?? this.playbackSpeed,
+      videoResolution: videoResolution ?? this.videoResolution,
+      videoAspectRatio: videoAspectRatio ?? this.videoAspectRatio,
+    );
+  }
 }
 
 enum PlaybackSpeed {

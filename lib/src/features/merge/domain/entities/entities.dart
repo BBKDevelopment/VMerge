@@ -3,4 +3,5 @@
 // in the LICENSE file.
 
 export 'merge_settings.dart';
+export 'merge_statistics.dart';
 export 'video_metadata.dart';

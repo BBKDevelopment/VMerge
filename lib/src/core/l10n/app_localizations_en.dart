@@ -72,6 +72,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Could not open privacy policy! Please check your internet connection and try again.';
 
   @override
+  String get couldNotOpenStoreListingMessage =>
+      'Could not open store listing! Please check your internet connection and try again.';
+
+  @override
   String get couldNotOpenTermsAndConditionsMessage =>
       'Could not open terms and conditions! Please check your internet connection and try again.';
 
@@ -86,10 +90,6 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get couldNotLaunchEmailServiceMessage =>
       'Could not launch email service! Please check your internet connection and try again.';
-
-  @override
-  String get couldNotLaunchReviewServiceMessage =>
-      'Could not launch review service! Please check your internet connection and try again.';
 
   @override
   String get couldNotSeekVideoPositionMessage =>

@@ -60,9 +60,33 @@
         }
       ],
       "relations": []
+    },
+    {
+      "id": "3:6752277543447190155",
+      "lastPropertyId": "5:7060629709470016846",
+      "name": "LocalMergeStatistics",
+      "properties": [
+        {
+          "id": "1:5740094858668497488",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "4:7986270554451540890",
+          "name": "successMergeCount",
+          "type": 6
+        },
+        {
+          "id": "5:7060629709470016846",
+          "name": "failedMergeCount",
+          "type": 6
+        }
+      ],
+      "relations": []
     }
   ],
-  "lastEntityId": "2:4520518054235479906",
+  "lastEntityId": "3:6752277543447190155",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
@@ -70,7 +94,10 @@
   "modelVersionParserMinimum": 5,
   "retiredEntityUids": [],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    3379488580577270059,
+    4991885907385683044
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

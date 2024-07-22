@@ -8,8 +8,7 @@ import 'package:vmerge/src/features/merge/merge.dart';
 /// An interface that inherits from [MergeSettingsService] and defines the
 /// requirements for implementations that use a local service.
 ///
-/// The [LocalMergeSettings] type is the model
-/// type.
+/// The [LocalMergeSettings] type is the model type.
 /// {@endtemplate}
 abstract interface class LocalMergeSettingsService
     implements MergeSettingsService<LocalMergeSettings> {
