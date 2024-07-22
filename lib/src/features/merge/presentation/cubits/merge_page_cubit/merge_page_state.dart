@@ -35,7 +35,7 @@ final class MergePageLoaded extends MergePageState {
   });
 
   final List<VideoMetadata> videoMetadatas;
-  final ActiveVideoIndex activeVideoIndex;
+  final int activeVideoIndex;
   final VideoPlayerController videoPlayerController;
   final double videoWidth;
   final double videoHeight;
@@ -43,7 +43,7 @@ final class MergePageLoaded extends MergePageState {
 
   MergePageLoaded copyWith({
     List<VideoMetadata>? videoMetadatas,
-    ActiveVideoIndex? activeVideoIndex,
+    int? activeVideoIndex,
     VideoPlayerController? videoPlayerController,
     double? videoWidth,
     double? videoHeight,
@@ -88,13 +88,6 @@ final class MergePageError extends MergePageState {
         error,
         stackTrace,
       ];
-}
-
-enum ActiveVideoIndex {
-  one,
-  two,
-  three,
-  four,
 }
 
 enum MergePageErrorType {

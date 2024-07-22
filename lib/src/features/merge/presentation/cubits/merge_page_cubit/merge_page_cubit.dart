@@ -2,155 +2,26 @@
 // Use of this source code is governed by a GPL-style license that can be found
 // in the LICENSE file.
 
+import 'dart:async';
 import 'dart:developer';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:video_player_service/video_player_service.dart';
+import 'package:vmerge/bootstrap.dart';
+import 'package:vmerge/src/core/core.dart';
 import 'package:vmerge/src/features/merge/merge.dart';
 
 final class MergePageCubit extends Cubit<MergePageState> {
-  MergePageCubit({
-    required VideoPlayerService firstVideoPlayerService,
-    required VideoPlayerService secondVideoPlayerService,
-    required VideoPlayerService thirdVideoPlayerService,
-    required VideoPlayerService fourthVideoPlayerService,
-  })  : _firstVideoPlayerService = firstVideoPlayerService,
-        _secondVideoPlayerService = secondVideoPlayerService,
-        _thirdVideoPlayerService = thirdVideoPlayerService,
-        _fourthVideoPlayerService = fourthVideoPlayerService,
+  MergePageCubit()
+      : _videoPlayerServices = LimitedList(maxLength: 2),
         super(const MergePageInitial());
 
-  final VideoPlayerService _firstVideoPlayerService;
-  final VideoPlayerService _secondVideoPlayerService;
-  final VideoPlayerService _thirdVideoPlayerService;
-  final VideoPlayerService _fourthVideoPlayerService;
-
-  VoidCallback get _firstVideoPlayerListener => () {
-        switch (state) {
-          case final MergePageLoaded state:
-            if (_firstVideoPlayerService.position.inSeconds !=
-                _firstVideoPlayerService.duration.inSeconds) return;
-
-            _firstVideoPlayerService
-              ..seekTo(Duration.zero)
-              ..pause();
-
-            emit(
-              state.copyWith(
-                activeVideoIndex: ActiveVideoIndex.two,
-                videoPlayerController: _secondVideoPlayerService.controller,
-                videoWidth: _secondVideoPlayerService.width,
-                videoHeight: _secondVideoPlayerService.height,
-                isVideoPlaying: true,
-              ),
-            );
-
-            _secondVideoPlayerService.play();
-          default:
-            return;
-        }
-      };
-
-  VoidCallback get _secondVideoPlayerListener => () {
-        switch (state) {
-          case final MergePageLoaded state:
-            if (_secondVideoPlayerService.position.inSeconds !=
-                _secondVideoPlayerService.duration.inSeconds) return;
-
-            _secondVideoPlayerService
-              ..seekTo(Duration.zero)
-              ..pause();
-
-            emit(
-              state.copyWith(
-                activeVideoIndex: _thirdVideoPlayerService.isReady
-                    ? ActiveVideoIndex.three
-                    : ActiveVideoIndex.one,
-                videoPlayerController: _thirdVideoPlayerService.isReady
-                    ? _thirdVideoPlayerService.controller
-                    : _firstVideoPlayerService.controller,
-                videoHeight: _thirdVideoPlayerService.isReady
-                    ? _thirdVideoPlayerService.height
-                    : _firstVideoPlayerService.height,
-                videoWidth: _thirdVideoPlayerService.isReady
-                    ? _thirdVideoPlayerService.width
-                    : _firstVideoPlayerService.width,
-                isVideoPlaying: _thirdVideoPlayerService.isReady,
-              ),
-            );
-
-            if (_thirdVideoPlayerService.isReady) {
-              _thirdVideoPlayerService.play();
-            }
-          default:
-            return;
-        }
-      };
-
-  VoidCallback get _thirdVideoPlayerListener => () {
-        switch (state) {
-          case final MergePageLoaded state:
-            if (_thirdVideoPlayerService.position.inSeconds !=
-                _thirdVideoPlayerService.duration.inSeconds) return;
-
-            _thirdVideoPlayerService
-              ..seekTo(Duration.zero)
-              ..pause();
-
-            emit(
-              state.copyWith(
-                activeVideoIndex: _fourthVideoPlayerService.isReady
-                    ? ActiveVideoIndex.four
-                    : ActiveVideoIndex.one,
-                videoPlayerController: _fourthVideoPlayerService.isReady
-                    ? _fourthVideoPlayerService.controller
-                    : _firstVideoPlayerService.controller,
-                videoHeight: _fourthVideoPlayerService.isReady
-                    ? _fourthVideoPlayerService.height
-                    : _firstVideoPlayerService.height,
-                videoWidth: _fourthVideoPlayerService.isReady
-                    ? _fourthVideoPlayerService.width
-                    : _firstVideoPlayerService.width,
-                isVideoPlaying: _fourthVideoPlayerService.isReady,
-              ),
-            );
-
-            if (_fourthVideoPlayerService.isReady) {
-              _fourthVideoPlayerService.play();
-            }
-          default:
-            return;
-        }
-      };
-
-  VoidCallback get _fourthVideoPlayerListener => () {
-        switch (state) {
-          case final MergePageLoaded state:
-            if (_fourthVideoPlayerService.position.inSeconds !=
-                _fourthVideoPlayerService.duration.inSeconds) return;
-
-            _fourthVideoPlayerService
-              ..seekTo(Duration.zero)
-              ..pause();
-
-            emit(
-              state.copyWith(
-                activeVideoIndex: ActiveVideoIndex.one,
-                videoPlayerController: _firstVideoPlayerService.controller,
-                videoHeight: _firstVideoPlayerService.height,
-                videoWidth: _firstVideoPlayerService.width,
-                isVideoPlaying: false,
-              ),
-            );
-          default:
-            return;
-        }
-      };
+  final LimitedList<VideoPlayerService> _videoPlayerServices;
 
   Future<void> loadVideoMetadata(
     List<VideoMetadata> metadatas, {
     required bool isSoundOn,
+    required double playbackSpeed,
   }) async {
     if (metadatas.length < 2) {
       emit(
@@ -166,47 +37,39 @@ final class MergePageCubit extends Cubit<MergePageState> {
     final volume = isSoundOn ? 1.0 : 0.0;
 
     try {
+      for (var i = 0; i < _videoPlayerServices.maxLength; i++) {
+        _videoPlayerServices.add(getIt<VideoPlayerService>());
+      }
+      // It is important to load the videos in parallel to avoid any delay.
       await Future.wait([
-        _firstVideoPlayerService.loadFile(
-          metadatas[0].file!,
-          volume: volume,
-        ),
-        _secondVideoPlayerService.loadFile(
-          metadatas[1].file!,
-          volume: volume,
-        ),
-        if (metadatas.length > 2)
-          _thirdVideoPlayerService.loadFile(
-            metadatas[2].file!,
-            volume: volume,
-          ),
-        if (metadatas.length > 3)
-          _fourthVideoPlayerService.loadFile(
-            metadatas[3].file!,
+        // To reduce loading time, it is necessary to load only the first two
+        // videos. If there are more than two videos, the rest will be loaded
+        // when the first two videos are played.
+        for (var i = 0; i < _videoPlayerServices.maxLength; i++)
+          _videoPlayerServices[i].loadFile(
+            metadatas[i].file!,
             volume: volume,
           ),
       ]);
 
-      if (metadatas.length > 1 && _firstVideoPlayerService.controller == null ||
-          _secondVideoPlayerService.controller == null) {
-        throw const LoadVideoException();
+      final isEveryVideoPlayerServiceReady =
+          _videoPlayerServices.every((service) => service.isReady);
+      if (!isEveryVideoPlayerServiceReady) throw const LoadVideoException();
+
+      for (final videoPlayerService in _videoPlayerServices) {
+        unawaited(videoPlayerService.setPlaybackSpeed(playbackSpeed));
       }
-      if (metadatas.length > 2 && _thirdVideoPlayerService.controller == null) {
-        throw const LoadVideoException();
-      }
-      if (metadatas.length > 3 &&
-          _fourthVideoPlayerService.controller == null) {
-        throw const LoadVideoException();
-      }
+
+      _videoPlayerServices.first.addListener(_videoPlayerListener);
 
       emit(
         MergePageLoaded(
           videoMetadatas: metadatas,
-          activeVideoIndex: ActiveVideoIndex.one,
-          videoPlayerController: _firstVideoPlayerService.controller!,
-          videoHeight: _firstVideoPlayerService.height,
-          videoWidth: _firstVideoPlayerService.width,
-          isVideoPlaying: _firstVideoPlayerService.isPlaying,
+          activeVideoIndex: 0,
+          videoPlayerController: _videoPlayerServices.first.controller!,
+          videoHeight: _videoPlayerServices.first.height,
+          videoWidth: _videoPlayerServices.first.width,
+          isVideoPlaying: _videoPlayerServices.first.isPlaying,
         ),
       );
     } on LoadVideoException catch (error, stackTrace) {
@@ -229,20 +92,8 @@ final class MergePageCubit extends Cubit<MergePageState> {
   Future<void> playVideo() async {
     switch (state) {
       case final MergePageLoaded state:
-        _addVideoPlayerListeners();
-
         try {
-          switch (state.activeVideoIndex) {
-            case ActiveVideoIndex.one:
-              await _firstVideoPlayerService.play();
-            case ActiveVideoIndex.two:
-              await _secondVideoPlayerService.play();
-            case ActiveVideoIndex.three:
-              await _thirdVideoPlayerService.play();
-            case ActiveVideoIndex.four:
-              await _fourthVideoPlayerService.play();
-          }
-
+          await _videoPlayerServices.first.play();
           emit(state.copyWith(isVideoPlaying: true));
         } on PlayVideoException catch (error, stackTrace) {
           log(
@@ -251,9 +102,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
             error: error,
             stackTrace: stackTrace,
           );
-
-          _removeVideoPlayerListeners();
-
           emit(
             MergePageError(
               errorType: MergePageErrorType.playVideoException,
@@ -272,19 +120,8 @@ final class MergePageCubit extends Cubit<MergePageState> {
   Future<void> stopVideo() async {
     switch (state) {
       case final MergePageLoaded state:
-        _removeVideoPlayerListeners();
-
         try {
-          switch (state.activeVideoIndex) {
-            case ActiveVideoIndex.one:
-              await _firstVideoPlayerService.pause();
-            case ActiveVideoIndex.two:
-              await _secondVideoPlayerService.pause();
-            case ActiveVideoIndex.three:
-              await _thirdVideoPlayerService.pause();
-            case ActiveVideoIndex.four:
-              await _fourthVideoPlayerService.pause();
-          }
+          await _videoPlayerServices.first.pause();
           emit(state.copyWith(isVideoPlaying: false));
         } on PauseVideoException catch (error, stackTrace) {
           log(
@@ -313,25 +150,10 @@ final class MergePageCubit extends Cubit<MergePageState> {
   ) async {
     switch (state) {
       case final MergePageLoaded state:
-        emit(
-          state.copyWith(
-            activeVideoIndex: ActiveVideoIndex.one,
-            videoPlayerController: _firstVideoPlayerService.controller,
-            videoHeight: _firstVideoPlayerService.height,
-            videoWidth: _firstVideoPlayerService.width,
-          ),
-        );
-
         try {
           await Future.wait([
-            _firstVideoPlayerService.setPlaybackSpeed(speed.value),
-            _secondVideoPlayerService.setPlaybackSpeed(speed.value),
-            _thirdVideoPlayerService.setPlaybackSpeed(speed.value),
-            _fourthVideoPlayerService.setPlaybackSpeed(speed.value),
-            _firstVideoPlayerService.seekTo(Duration.zero),
-            _secondVideoPlayerService.seekTo(Duration.zero),
-            _thirdVideoPlayerService.seekTo(Duration.zero),
-            _fourthVideoPlayerService.seekTo(Duration.zero),
+            for (final videoPlayerService in _videoPlayerServices)
+              videoPlayerService.setPlaybackSpeed(speed.value),
           ]);
         } on SetVideoPlaybackSpeedException catch (error, stackTrace) {
           log(
@@ -343,22 +165,6 @@ final class MergePageCubit extends Cubit<MergePageState> {
           emit(
             MergePageError(
               errorType: MergePageErrorType.setVideoPlaybackSpeedException,
-              error: error,
-              stackTrace: stackTrace,
-            ),
-          );
-          // Restores last success state.
-          emit(state);
-        } on SeekVideoPositionException catch (error, stackTrace) {
-          log(
-            'Could not reset the video!',
-            name: '$MergePageCubit',
-            error: error,
-            stackTrace: stackTrace,
-          );
-          emit(
-            MergePageError(
-              errorType: MergePageErrorType.seekVideoPositionException,
               error: error,
               stackTrace: stackTrace,
             ),
@@ -379,10 +185,8 @@ final class MergePageCubit extends Cubit<MergePageState> {
         final volume = isSoundOn ? 1.0 : 0.0;
         try {
           await Future.wait([
-            _firstVideoPlayerService.setVolume(volume),
-            _secondVideoPlayerService.setVolume(volume),
-            _thirdVideoPlayerService.setVolume(volume),
-            _fourthVideoPlayerService.setVolume(volume),
+            for (final videoPlayerService in _videoPlayerServices)
+              videoPlayerService.setVolume(volume),
           ]);
         } on SetVolumeException catch (error, stackTrace) {
           log(
@@ -406,27 +210,60 @@ final class MergePageCubit extends Cubit<MergePageState> {
     }
   }
 
-  void _addVideoPlayerListeners() {
-    _firstVideoPlayerService.addListener(_firstVideoPlayerListener);
-    _secondVideoPlayerService.addListener(_secondVideoPlayerListener);
-    _thirdVideoPlayerService.addListener(_thirdVideoPlayerListener);
-    _fourthVideoPlayerService.addListener(_fourthVideoPlayerListener);
-  }
+  void _videoPlayerListener() {
+    switch (state) {
+      case final MergePageLoaded state:
+        if (_videoPlayerServices.first.position !=
+            _videoPlayerServices.first.duration) return;
 
-  void _removeVideoPlayerListeners() {
-    _firstVideoPlayerService.removeListener(_firstVideoPlayerListener);
-    _secondVideoPlayerService.removeListener(_secondVideoPlayerListener);
-    _thirdVideoPlayerService.removeListener(_thirdVideoPlayerListener);
-    _fourthVideoPlayerService.removeListener(_fourthVideoPlayerListener);
+        final oldVideoPlayerService =
+            _videoPlayerServices.add(getIt<VideoPlayerService>());
+
+        final activeVideoIndex =
+            (state.activeVideoIndex + 1) % state.videoMetadatas.length;
+
+        emit(
+          state.copyWith(
+            activeVideoIndex: activeVideoIndex,
+            videoPlayerController: _videoPlayerServices.first.controller,
+            videoWidth: _videoPlayerServices.first.width,
+            videoHeight: _videoPlayerServices.first.height,
+            isVideoPlaying: activeVideoIndex != 0,
+          ),
+        );
+
+        // Add the listener to the current video player service.
+        _videoPlayerServices.first.addListener(_videoPlayerListener);
+
+        // Dispose the old video player service.
+        oldVideoPlayerService?.removeListener(_videoPlayerListener);
+        oldVideoPlayerService?.dispose();
+
+        // Load the next video.
+        final nextVideoIndex =
+            (activeVideoIndex + 1) % state.videoMetadatas.length;
+        _videoPlayerServices.last.loadFile(
+          state.videoMetadatas[nextVideoIndex].file!,
+          // TODO(all): Add volume getter to the VideoPlayerService.
+          volume: state.videoPlayerController.value.volume,
+        );
+        _videoPlayerServices.last
+            .setPlaybackSpeed(_videoPlayerServices.first.playbackSpeed);
+
+        // Play the current video.
+        if (activeVideoIndex != 0) playVideo();
+      default:
+        return;
+    }
   }
 
   @override
   Future<void> close() {
-    _removeVideoPlayerListeners();
-    _firstVideoPlayerService.dispose();
-    _secondVideoPlayerService.dispose();
-    _thirdVideoPlayerService.dispose();
-    _fourthVideoPlayerService.dispose();
+    for (final videoPlayerService in _videoPlayerServices) {
+      videoPlayerService
+        ..removeListener(_videoPlayerListener)
+        ..dispose();
+    }
     return super.close();
   }
 }
