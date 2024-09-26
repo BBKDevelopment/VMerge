@@ -262,10 +262,10 @@ packages:
     dependency: transitive
     description:
       name: extended_image
-      sha256: d7f091d068fcac7246c4b22a84b8dac59a62e04d29a5c172710c696e67a22f94
+      sha256: "8ad4917eaae7271ce6d975d5c0040c7903010262908fbdb49ff2798fca754d3b"
       url: "https://pub.dev"
     source: hosted
-    version: "8.2.0"
+    version: "8.3.0"
   extended_image_library:
     dependency: transitive
     description:
@@ -778,18 +778,18 @@ packages:
     dependency: transitive
     description:
       name: photo_manager
-      sha256: df594f989f0c31cdb3ed48f3d49cb9ffadf11cc3700d2c3460b1912c93432621
+      sha256: "32a1ce1095aeaaa792a29f28c1f74613aa75109f21c2d4ab85be3ad9964230a4"
       url: "https://pub.dev"
     source: hosted
-    version: "3.0.0"
+    version: "3.5.0"
   photo_manager_image_provider:
     dependency: transitive
     description:
       name: photo_manager_image_provider
-      sha256: "38ef1023dc11de3a8669f16e7c981673b3c5cfee715d17120f4b87daa2cdd0af"
+      sha256: b0a6d59f34e48c2b9aa52a4a655308c29b0fc4b3931607f9e0e252bc49aef974
       url: "https://pub.dev"
     source: hosted
-    version: "2.1.1"
+    version: "2.1.2"
   platform:
     dependency: transitive
     description:
@@ -1125,6 +1125,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  visibility_detector:
+    dependency: transitive
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   vm_service:
     dependency: transitive
     description:
@@ -1186,18 +1194,18 @@ packages:
     dependency: "direct main"
     description:
       name: wechat_assets_picker
-      sha256: aea82a6b523e118197187c6371301de5d15ce5572f353b575b5dcdeb2d17d44a
+      sha256: a7ca044e5fb4eae1b83ef4fad81d19c7612afe062192482eb164885e4289ba37
       url: "https://pub.dev"
     source: hosted
-    version: "9.2.2"
+    version: "9.3.1"
   wechat_picker_library:
     dependency: transitive
     description:
       name: wechat_picker_library
-      sha256: "886cdf80a708fa955c2d7e6a2349c9b4519b322cd941e8c7334512c25294b1b1"
+      sha256: a42e09cb85b15fc9410f6a69671371cc60aa99c4a1f7967f6593a7f665f6f47a
       url: "https://pub.dev"
     source: hosted
-    version: "1.0.2"
+    version: "1.0.5"
   win32:
     dependency: transitive
     description:
